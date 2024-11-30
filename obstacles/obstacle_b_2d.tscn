@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://bd1tw1kjdguui"]
+
+[ext_resource type="PackedScene" uid="uid://cf18jkhdc7q1v" path="res://obstacles/obstacle_2d.tscn" id="1_837f1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_txd3n"]
+radius = 5.0
+
+[node name="ObstacleB2D" instance=ExtResource("1_837f1")]
+
+[node name="Polygon2D" type="Polygon2D" parent="." index="0"]
+color = Color(0.513233, 0.513233, 0.513233, 1)
+polygon = PackedVector2Array(0, 0, 60, 0, 60, 20, 0, 20)
+
+[node name="Polygon2D2" type="Polygon2D" parent="." index="1"]
+color = Color(0.513233, 0.513233, 0.513233, 1)
+polygon = PackedVector2Array(30, 40, 30, 60, 0, 60, 0, 40)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
+position = Vector2(15, 10)
+shape = SubResource("CircleShape2D_txd3n")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D" index="1"]
+position = Vector2(45, 10)
+shape = SubResource("CircleShape2D_txd3n")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Area2D" index="2"]
+position = Vector2(15, 50)
+shape = SubResource("CircleShape2D_txd3n")
