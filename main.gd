@@ -8,7 +8,7 @@ var _sector_offset_span := range(-1, 2)
 var _occupied_sectors := {}
 
 @onready var obstacles: Node2D = %Obstacles2D
-@onready var enemies: Node2D = %Enemies2D
+@onready var enemy_entities: Node2D = %EnemyEntities2D
 @onready var player_entity: PlayerEntity2D = %PlayerEntity2D
 
 @onready var sector_tile_map_layer: TileMapLayer = %SectorTileMapLayer
@@ -20,9 +20,14 @@ var _occupied_sectors := {}
 func _ready() -> void:
 	seed(hash(start_seed))
 	player_entity.move_area.connect("input_event", _on_player_entity_move_area_input_event)
+	for enemy_entity: EnemyEntity2D in enemy_entities.get_children():
+		enemy_entity.eaten.connect(player_entity.update_move_area)
+
 	for sector_offset_x in _sector_offset_span:
 		for sector_offset_y in _sector_offset_span:
 			_generate_obstacles(Vector2i(sector_offset_x, sector_offset_y))
+
+	_start_turn_based_loop()
 
 
 func _generate_obstacles(sector_offset := Vector2i.ZERO) -> void:
@@ -79,3 +84,22 @@ func _get_neighbor_sector_coords(relative_to := Vector2i.ZERO) -> Array[Vector2i
 		for y in _sector_offset_span:
 			result.push_back(relative_to + Vector2i(x, y))
 	return result
+
+
+func _get_entities() -> Array[Entity2D]:
+	var result: Array[Entity2D] = []
+	result.push_back(player_entity)
+	result.append_array(enemy_entities.get_children().filter(
+		func(ee: EnemyEntity2D) -> bool: return not ee.is_queued_for_deletion()
+	))
+	return result
+
+
+func _start_turn_based_loop() -> void:
+	while true:
+		var entities := _get_entities()
+		for entity: Entity2D in entities:
+			entity.is_my_turn = true
+			if entity is EnemyEntity2D:
+				entity.move(player_entity.position)
+			await entity.turn_finished

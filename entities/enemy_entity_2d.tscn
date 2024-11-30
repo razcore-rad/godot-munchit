@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bgp7ukyuf5mtq"]
 
-[ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entity_2d.tscn" id="1_ag3d3"]
-[ext_resource type="Script" path="res://enemy_entity_2d.gd" id="2_5bhia"]
+[ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_ag3d3"]
+[ext_resource type="Script" path="res://entities/enemy_entity_2d.gd" id="2_5bhia"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jw2m4"]
 size = Vector2(26, 16)
@@ -9,8 +9,11 @@ size = Vector2(26, 16)
 [node name="EnemyEntity2D" instance=ExtResource("1_ag3d3")]
 script = ExtResource("2_5bhia")
 
+[node name="DetectArea2D" parent="SkinMeshInstance2D" index="0"]
+collision_layer = 2
+
 [node name="MoveArea2D" parent="." index="1"]
-input_pickable = false
+collision_mask = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MoveArea2D" index="0"]
 position = Vector2(-30, -20)
