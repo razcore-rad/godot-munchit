@@ -28,6 +28,11 @@ window/stretch/scale_mode="integer"
 
 project/assembly_name="redot-dbg"
 
+[global_group]
+
+player="Used for nodes in PlayerEntity2D such as Area2D"
+enemy="Used for nodes in EnemyEntity2D such as Area2D"
+
 [input]
 
 left_click={
@@ -39,6 +44,6 @@ left_click={
 [layer_names]
 
 2d_physics/layer_1="Player"
-2d_physics/layer_2="AI"
+2d_physics/layer_2="Enemies"
 2d_physics/layer_3="Obstacles"
 2d_physics/layer_9="Other"

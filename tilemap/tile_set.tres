@@ -1,0 +1,26 @@
+[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://bcvsbmqg1ktol"]
+
+[ext_resource type="Texture2D" uid="uid://dkgew6iv3er5j" path="res://tilemap/tile_set.svg" id="1_7h6qm"]
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_f0boa"]
+tile_data = PackedInt32Array(0, 65536, 0, 1, 65536, 0)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_w8xyb"]
+tile_data = PackedInt32Array(0, 0, 1, 1, 0, 1, 131073, 0, 1)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wcoyh"]
+texture = ExtResource("1_7h6qm")
+texture_region_size = Vector2i(30, 20)
+0:0/0 = 0
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-15, -10, 15, -10, 15, 10, -15, 10)
+0:1/0 = 0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-15, -10, 15, -10, 15, 10, -15, 10)
+
+[resource]
+tile_size = Vector2i(30, 20)
+physics_layer_0/collision_layer = 4
+physics_layer_0/collision_mask = 0
+sources/0 = SubResource("TileSetAtlasSource_wcoyh")
+pattern_0 = SubResource("TileMapPattern_f0boa")
+pattern_1 = SubResource("TileMapPattern_w8xyb")

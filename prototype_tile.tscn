@@ -1,7 +1,0 @@
-[gd_scene format=3 uid="uid://c8epnfqvckjfe"]
-
-[node name="PrototypeTile" type="Polygon2D"]
-color = Color(0.194349, 0.194349, 0.194349, 1)
-invert_enabled = true
-invert_border = 2.0
-polygon = PackedVector2Array(-13, -8, 13, -8, 13, 8, -13, 8)
