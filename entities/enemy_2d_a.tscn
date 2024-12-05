@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://bgp7ukyuf5mtq"]
+
+[ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_hexpc"]
+[ext_resource type="Script" path="res://entities/enemy_2d.gd" id="2_u2e1t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w30c7"]
+size = Vector2(25, 15)
+
+[node name="EnemyEntity2D" instance=ExtResource("1_hexpc")]
+script = ExtResource("2_u2e1t")
+
+[node name="Areas2D" parent="." index="1"]
+top_level = true
+
+[node name="DetectArea2D" parent="Areas2D" index="0" groups=["enemy"]]
+collision_layer = 2
+collision_mask = 7
+
+[node name="MoveArea2D" parent="Areas2D" index="1" groups=["enemy"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="0"]
+position = Vector2(0, -20)
+shape = SubResource("RectangleShape2D_w30c7")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="1"]
+position = Vector2(30, 0)
+shape = SubResource("RectangleShape2D_w30c7")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="2"]
+position = Vector2(-30, 0)
+shape = SubResource("RectangleShape2D_w30c7")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="3"]
+position = Vector2(0, 20)
+shape = SubResource("RectangleShape2D_w30c7")

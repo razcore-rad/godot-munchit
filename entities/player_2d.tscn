@@ -3,31 +3,38 @@
 [ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_e3jcg"]
 [ext_resource type="Script" path="res://entities/player_2d.gd" id="2_d65nd"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_itrwg"]
-size = Vector2(26, 16)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pvjqh"]
+size = Vector2(25, 15)
 
 [node name="PlayerEntity2D" instance=ExtResource("1_e3jcg")]
 script = ExtResource("2_d65nd")
 
-[node name="DetectArea2D" parent="SkinMeshInstance2D" index="0" groups=["player"]]
-collision_layer = 1
-collision_mask = 2
+[node name="DetectArea2D" parent="Areas2D" index="0" groups=["player"]]
+collision_mask = 6
 
-[node name="MoveArea2D" parent="." index="1" groups=["player"]]
-collision_mask = 4
+[node name="MoveArea2D" parent="Areas2D" index="1" groups=["player"]]
+collision_mask = 6
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MoveArea2D" index="0"]
-position = Vector2(0, -20)
-shape = SubResource("RectangleShape2D_itrwg")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="MoveArea2D" index="1"]
-position = Vector2(30, 0)
-shape = SubResource("RectangleShape2D_itrwg")
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="MoveArea2D" index="2"]
-position = Vector2(-30, 20)
-shape = SubResource("RectangleShape2D_itrwg")
-
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="MoveArea2D" index="3"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="0"]
 position = Vector2(-30, -20)
-shape = SubResource("RectangleShape2D_itrwg")
+shape = SubResource("RectangleShape2D_pvjqh")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="1"]
+position = Vector2(0, -40)
+shape = SubResource("RectangleShape2D_pvjqh")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="2"]
+position = Vector2(30, 0)
+shape = SubResource("RectangleShape2D_pvjqh")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="3"]
+position = Vector2(30, 20)
+shape = SubResource("RectangleShape2D_pvjqh")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="4"]
+position = Vector2(0, 40)
+shape = SubResource("RectangleShape2D_pvjqh")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="5"]
+position = Vector2(-30, 20)
+shape = SubResource("RectangleShape2D_pvjqh")

@@ -9,25 +9,26 @@ radial_segments = 16
 rings = 8
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5mqu2"]
-size = Vector2(15, 10)
+size = Vector2(25, 15)
 
 [node name="Entity2D" type="Node2D"]
 script = ExtResource("1_mwb1m")
 
 [node name="SkinMeshInstance2D" type="MeshInstance2D" parent="."]
-position = Vector2(0, -5)
+position = Vector2(0, -10)
 mesh = SubResource("SphereMesh_7kebq")
 
-[node name="DetectArea2D" type="Area2D" parent="SkinMeshInstance2D"]
+[node name="Areas2D" type="Node2D" parent="."]
 unique_name_in_owner = true
-collision_layer = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SkinMeshInstance2D/DetectArea2D"]
-position = Vector2(0, 6)
+[node name="DetectArea2D" type="Area2D" parent="Areas2D"]
+unique_name_in_owner = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Areas2D/DetectArea2D"]
 shape = SubResource("RectangleShape2D_5mqu2")
 debug_color = Color(0.838982, 0.384625, 0, 0.42)
 
-[node name="MoveArea2D" type="Area2D" parent="."]
+[node name="MoveArea2D" type="Area2D" parent="Areas2D"]
 unique_name_in_owner = true
 collision_layer = 256
 collision_mask = 7
