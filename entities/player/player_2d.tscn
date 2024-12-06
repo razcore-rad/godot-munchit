@@ -1,0 +1,236 @@
+[gd_scene load_steps=10 format=3 uid="uid://c2mhgypppwjb3"]
+
+[ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_e3jcg"]
+[ext_resource type="Script" path="res://entities/player/player_2d.gd" id="2_d65nd"]
+[ext_resource type="Shader" path="res://entities/player/assets/alphaballs_viewport.gdshader" id="3_aymf0"]
+[ext_resource type="PackedScene" uid="uid://jlhatc0x6ggi" path="res://entities/move_area_collision_shape_2d.tscn" id="3_d7pfd"]
+[ext_resource type="Shader" path="res://entities/player/assets/fuzzyball.gdshader" id="4_lnv7a"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pvjqh"]
+size = Vector2(25, 15)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5pdhx"]
+shader = ExtResource("3_aymf0")
+shader_parameter/threshold = 0.05
+shader_parameter/ring = 0.3
+shader_parameter/color = Color(0.870588, 0.545098, 0.435294, 1)
+shader_parameter/outline = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4co2k"]
+shader = ExtResource("4_lnv7a")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/threshold = 0.00999998
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7ixgf"]
+shader = ExtResource("4_lnv7a")
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/threshold = 0.00999998
+
+[node name="Player2D" instance=ExtResource("1_e3jcg")]
+script = ExtResource("2_d65nd")
+
+[node name="DetectArea2D" parent="Areas2D" index="0" groups=["player"]]
+collision_mask = 6
+
+[node name="MoveArea2D" parent="Areas2D" index="1" groups=["player"]]
+collision_mask = 6
+
+[node name="MoveAreaCollisionShape2D" parent="Areas2D/MoveArea2D" index="0" instance=ExtResource("3_d7pfd")]
+position = Vector2(-30, -20)
+
+[node name="ColorRect" parent="Areas2D/MoveArea2D/MoveAreaCollisionShape2D" index="0"]
+color = Color(1, 0.41, 0.41, 0.392157)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="1"]
+position = Vector2(0, -40)
+shape = SubResource("RectangleShape2D_pvjqh")
+
+[node name="ColorRect" type="ColorRect" parent="Areas2D/MoveArea2D/CollisionShape2D2" index="0"]
+custom_minimum_size = Vector2(25, 15)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.5
+offset_top = -7.5
+offset_right = 12.5
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.411765, 0.411765, 0.392157)
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="2"]
+position = Vector2(30, 0)
+shape = SubResource("RectangleShape2D_pvjqh")
+
+[node name="ColorRect" type="ColorRect" parent="Areas2D/MoveArea2D/CollisionShape2D3" index="0"]
+custom_minimum_size = Vector2(25, 15)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.5
+offset_top = -7.5
+offset_right = 12.5
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.411765, 0.411765, 0.392157)
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="3"]
+position = Vector2(30, 20)
+shape = SubResource("RectangleShape2D_pvjqh")
+
+[node name="ColorRect" type="ColorRect" parent="Areas2D/MoveArea2D/CollisionShape2D4" index="0"]
+custom_minimum_size = Vector2(25, 15)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.5
+offset_top = -7.5
+offset_right = 12.5
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.411765, 0.411765, 0.392157)
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="4"]
+position = Vector2(0, 40)
+shape = SubResource("RectangleShape2D_pvjqh")
+
+[node name="ColorRect" type="ColorRect" parent="Areas2D/MoveArea2D/CollisionShape2D5" index="0"]
+custom_minimum_size = Vector2(25, 15)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.5
+offset_top = -7.5
+offset_right = 12.5
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.411765, 0.411765, 0.392157)
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="5"]
+position = Vector2(-30, 20)
+shape = SubResource("RectangleShape2D_pvjqh")
+
+[node name="ColorRect" type="ColorRect" parent="Areas2D/MoveArea2D/CollisionShape2D6" index="0"]
+custom_minimum_size = Vector2(25, 15)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.5
+offset_top = -7.5
+offset_right = 12.5
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.411765, 0.411765, 0.392157)
+
+[node name="SkinSubViewportContainer" type="SubViewportContainer" parent="." index="1"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_5pdhx")
+custom_minimum_size = Vector2(200, 200)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -150.0
+offset_right = 100.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stretch = true
+
+[node name="Eyes2D" type="Node2D" parent="." index="2"]
+unique_name_in_owner = true
+position = Vector2(0, -5)
+
+[node name="LeftEyeColorRect" type="ColorRect" parent="Eyes2D" index="0"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_4co2k")
+custom_minimum_size = Vector2(8, 8)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -9.0
+offset_top = -5.0
+offset_right = -1.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(4, 4)
+mouse_filter = 2
+
+[node name="InnerColorRect" type="ColorRect" parent="Eyes2D/LeftEyeColorRect" index="0"]
+material = SubResource("ShaderMaterial_7ixgf")
+custom_minimum_size = Vector2(4, 4)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -2.0
+offset_bottom = 2.0
+grow_horizontal = 0
+grow_vertical = 2
+pivot_offset = Vector2(2, 2)
+mouse_filter = 2
+
+[node name="RightEyeColorRect" type="ColorRect" parent="Eyes2D" index="1"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_4co2k")
+custom_minimum_size = Vector2(8, 8)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 1.0
+offset_top = -5.0
+offset_right = 9.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(4, 4)
+mouse_filter = 2
+
+[node name="InnerColorRect" type="ColorRect" parent="Eyes2D/RightEyeColorRect" index="0"]
+material = SubResource("ShaderMaterial_7ixgf")
+custom_minimum_size = Vector2(4, 4)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -2.0
+offset_bottom = 2.0
+grow_horizontal = 0
+grow_vertical = 2
+pivot_offset = Vector2(2, 2)
+mouse_filter = 2
+
+[editable path="Areas2D/MoveArea2D/MoveAreaCollisionShape2D"]

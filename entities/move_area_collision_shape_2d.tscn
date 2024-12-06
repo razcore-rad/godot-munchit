@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://jlhatc0x6ggi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pvjqh"]
+size = Vector2(25, 15)
+
+[node name="MoveAreaCollisionShape2D" type="CollisionShape2D"]
+shape = SubResource("RectangleShape2D_pvjqh")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(25, 15)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.5
+offset_top = -7.5
+offset_right = 12.5
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0.392157)

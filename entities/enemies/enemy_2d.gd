@@ -1,9 +1,12 @@
 class_name Enemy2D extends Entity2D
 
+signal died(move_area: Area2D)
+
 const MOVE_RANDOM_CHANCE := 0.2
 
 
 func _ready() -> void:
+	detect_area.connect("area_entered", _on_detect_area_area_entered)
 	detect_area.connect("mouse_entered", _on_detect_area_mouse.bind(true))
 	detect_area.connect("mouse_exited", _on_detect_area_mouse.bind(false))
 
@@ -11,6 +14,13 @@ func _ready() -> void:
 	move_area.visible = false
 
 	_toggle_area_shapes(move_area, {is_disabled = true})
+
+
+func _on_detect_area_area_entered(area: Area2D) -> void:
+	if area.is_in_group("player"):
+		queue_free()
+		if not _is_my_turn:
+			died.emit(move_area.duplicate())
 
 
 func _on_detect_area_mouse(has_entered: bool) -> void:
@@ -27,9 +37,8 @@ func _get_sorted_move_choices(to: Vector2) -> Array[Vector2]:
 	move_choices.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a.angle < b.angle)
 	result.assign(
 		move_choices
-		. filter(func(d: Dictionary) -> bool:
-			return not Blackboard.is_tile_map_layer_obstacle(d.cs.global_position))
-		. map(func(d: Dictionary) -> Vector2: return d.cs.position)
+			.filter(func(d: Dictionary) -> bool: return not Blackboard.is_tile_map_layer_obstacle(d.cs.global_position))
+			.map(func(d: Dictionary) -> Vector2: return d.cs.position)
 	)
 	return result
 
@@ -39,12 +48,9 @@ func _get_random_move_choices() -> Array[Vector2]:
 	var move_choices = move_area.get_children()
 	move_choices.shuffle()
 	result.assign(
-		(
-			move_choices
-			. filter(func(cs: CollisionShape2D) -> bool:
-				return not Blackboard.is_tile_map_layer_obstacle(cs.global_position))
-			. map(func(cs: CollisionShape2D) -> Vector2: return cs.position)
-		)
+		move_choices
+			.filter(func(cs: CollisionShape2D) -> bool: return not Blackboard.is_tile_map_layer_obstacle(cs.global_position))
+			.map(func(cs: CollisionShape2D) -> Vector2: return cs.position)
 	)
 	return result
 

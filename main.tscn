@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bskvs3ko2utnn"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_aaq20"]
-[ext_resource type="PackedScene" uid="uid://c2mhgypppwjb3" path="res://entities/player_2d.tscn" id="4_p2fd5"]
+[ext_resource type="PackedScene" uid="uid://c2mhgypppwjb3" path="res://entities/player/player_2d.tscn" id="4_p2fd5"]
 
 [sub_resource type="TileSet" id="TileSet_b0o41"]
 tile_size = Vector2i(960, 540)
@@ -19,7 +19,6 @@ unique_name_in_owner = true
 
 [node name="Enemies2D" type="Node2D" parent="."]
 unique_name_in_owner = true
-modulate = Color(0.74, 1, 0.74, 1)
 
 [node name="Player2D" parent="." instance=ExtResource("4_p2fd5")]
 unique_name_in_owner = true

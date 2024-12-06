@@ -1,10 +1,38 @@
 class_name Player2D extends Entity2D
 
+const SkinSubViewportPackedScene: PackedScene = preload("skin_sub_viewport.tscn")
+
+const JUMP_HEIGHT := 15
+const DURATION := 0.3
+
+var skin_sub_viewport: SkinSubViewport = null
+
+@onready var skin_sub_viewport_container: SubViewportContainer = %SkinSubViewportContainer
+@onready var eyes: Node2D = %Eyes2D
+
 
 func _ready() -> void:
 	detect_area.connect("area_entered", _on_detect_area_area_entered)
 	detect_area.connect("input_event", _on_detect_area_input_event)
 	_connect_move_area()
+
+	skin_sub_viewport = SkinSubViewportPackedScene.instantiate()
+	skin_sub_viewport.world_2d = World2D.new()
+	skin_sub_viewport_container.add_child(skin_sub_viewport)
+	skin_sub_viewport.connect("blobs_removed", queue_free)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_right"):
+		skin_sub_viewport.add_blob()
+
+	elif event.is_action_pressed("ui_left"):
+		skin_sub_viewport.remove_blob()
+
+	elif event is InputEventMouseMotion:
+		var mouse_global_position := get_global_mouse_position()
+		for eye: ColorRect in eyes.get_children():
+			eye.rotation = eyes.global_position.angle_to_point(mouse_global_position)
 
 
 func _on_detect_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
@@ -14,7 +42,8 @@ func _on_detect_area_input_event(_viewport: Node, event: InputEvent, _shape_idx:
 
 func _on_detect_area_area_entered(area: Area2D) -> void:
 	if not _is_my_turn and area.is_in_group("enemy"):
-		queue_free()
+		skin_sub_viewport.remove_blob()
+
 
 
 func _on_move_area_body_shape_entered(
@@ -26,15 +55,15 @@ func _on_move_area_body_shape_entered(
 
 func _on_move_area_input_event(_viewport: Node, event: InputEvent, shape_index: int) -> void:
 	if _is_my_turn and event.is_action_pressed("left_click"):
-		var collision_shape: CollisionShape2D = move_area.shape_owner_get_owner(shape_index)
-		position += collision_shape.position
+		for node: Node2D in [skin_sub_viewport.blob_animatable_body, eyes]:
+			var tween := create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS).set_trans(Tween.TRANS_QUAD)
+			tween.tween_property(node, "position:y", -JUMP_HEIGHT, DURATION).as_relative()
+			tween.tween_property(node, "position:y", JUMP_HEIGHT, DURATION).as_relative()
 
-		await skip_process_frames()
-		for area: Area2D in detect_area.get_overlapping_areas():
-			if area.is_in_group("enemy"):
-				var enemy: Enemy2D = area.owner
-				_update_move_area(enemy.move_area.duplicate())
-				enemy.queue_free()
+		var collision_shape: CollisionShape2D = move_area.shape_owner_get_owner(shape_index)
+		var tween := create_tween()
+		tween.tween_property(self, "position", collision_shape.position, 2.0 * DURATION).as_relative()
+		await tween.finished
 		turn_finished.emit()
 
 
@@ -43,7 +72,8 @@ func _connect_move_area() -> void:
 	move_area.connect("input_event", _on_move_area_input_event)
 
 
-func _update_move_area(new_move_area: Area2D) -> void:
+func eat_enemy(new_move_area: Area2D) -> void:
+	skin_sub_viewport.add_blob.call_deferred()
 	var collision_layer := move_area.collision_layer
 	var collision_mask := move_area.collision_mask
 

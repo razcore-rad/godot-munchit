@@ -1,0 +1,66 @@
+[gd_scene load_steps=10 format=3 uid="uid://bgp7ukyuf5mtq"]
+
+[ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_hexpc"]
+[ext_resource type="Script" path="res://entities/enemies/enemy_2d.gd" id="2_u2e1t"]
+[ext_resource type="PackedScene" uid="uid://jlhatc0x6ggi" path="res://entities/move_area_collision_shape_2d.tscn" id="3_sagqs"]
+[ext_resource type="Texture2D" uid="uid://dvrf4i7iugy1t" path="res://entities/enemies/assets/slime.png" id="4_325t7"]
+[ext_resource type="Shader" path="res://entities/enemies/assets/outline.gdshader" id="4_bds58"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_41o1v"]
+shader = ExtResource("4_bds58")
+shader_parameter/line_colour = Color(0, 0, 0, 1)
+shader_parameter/line_thickness = 2
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jwe6l"]
+atlas = ExtResource("4_325t7")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g7iru"]
+atlas = ExtResource("4_325t7")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ujq0w"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jwe6l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g7iru")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Enemy2D" instance=ExtResource("1_hexpc")]
+script = ExtResource("2_u2e1t")
+
+[node name="CanvasGroup" type="CanvasGroup" parent="." index="0"]
+material = SubResource("ShaderMaterial_41o1v")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup" index="0"]
+modulate = Color(0.545098, 0.780392, 0.74902, 1)
+sprite_frames = SubResource("SpriteFrames_ujq0w")
+autoplay = "default"
+
+[node name="Areas2D" parent="." index="1"]
+top_level = true
+
+[node name="DetectArea2D" parent="Areas2D" index="0" groups=["enemy"]]
+collision_layer = 2
+collision_mask = 7
+
+[node name="MoveArea2D" parent="Areas2D" index="1" groups=["enemy"]]
+
+[node name="MoveAreaCollisionShape2D" parent="Areas2D/MoveArea2D" index="0" instance=ExtResource("3_sagqs")]
+position = Vector2(0, -20)
+
+[node name="MoveAreaCollisionShape2D2" parent="Areas2D/MoveArea2D" index="1" instance=ExtResource("3_sagqs")]
+position = Vector2(30, 0)
+
+[node name="MoveAreaCollisionShape2D3" parent="Areas2D/MoveArea2D" index="2" instance=ExtResource("3_sagqs")]
+position = Vector2(-30, 0)
+
+[node name="MoveAreaCollisionShape2D4" parent="Areas2D/MoveArea2D" index="3" instance=ExtResource("3_sagqs")]
+position = Vector2(0, 20)

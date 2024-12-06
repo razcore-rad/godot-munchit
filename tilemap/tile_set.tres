@@ -1,6 +1,6 @@
 [gd_resource type="TileSet" load_steps=5 format=3 uid="uid://bcvsbmqg1ktol"]
 
-[ext_resource type="Texture2D" uid="uid://dkgew6iv3er5j" path="res://tilemap/tile_set.svg" id="1_7h6qm"]
+[ext_resource type="Texture2D" uid="uid://cr6fcs8x7v22" path="res://tilemap/tile_set.png" id="1_jja4r"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_f0boa"]
 tile_data = PackedInt32Array(0, 65536, 0, 1, 65536, 0)
@@ -9,7 +9,7 @@ tile_data = PackedInt32Array(0, 65536, 0, 1, 65536, 0)
 tile_data = PackedInt32Array(0, 0, 1, 1, 0, 1, 131073, 0, 1)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wcoyh"]
-texture = ExtResource("1_7h6qm")
+texture = ExtResource("1_jja4r")
 texture_region_size = Vector2i(30, 20)
 0:0/0 = 0
 1:0/0 = 0

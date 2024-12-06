@@ -7,7 +7,8 @@ const TileMapLayerPackedScene := preload("res://tilemap/tile_map_layer.tscn")
 
 const ENEMY_SPAN := Vector2i(3, 7)
 const ENEMY_FILE_PATHS: Array[String] = [
-	"res://entities/enemy_2d_a.tscn", "res://entities/enemy_2d_b.tscn"
+	"res://entities/enemies/enemy_2d_a.tscn",
+	"res://entities/enemies/enemy_2d_b.tscn",
 ]
 
 var _sector_size: Vector2i = Vector2i.ZERO
@@ -87,6 +88,7 @@ func _add_enemy(enemy_position: Vector2, file_path := "") -> void:
 	var enemy: Enemy2D = load(file_path).instantiate()
 	enemy.position = enemy_position
 	enemies.add_child(enemy)
+	enemy.died.connect(player.eat_enemy)
 	Blackboard.enemies[enemy.position] = null
 
 
