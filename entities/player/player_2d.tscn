@@ -1,20 +1,24 @@
-[gd_scene load_steps=10 format=3 uid="uid://c2mhgypppwjb3"]
+[gd_scene load_steps=12 format=3 uid="uid://c2mhgypppwjb3"]
 
 [ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_e3jcg"]
 [ext_resource type="Script" path="res://entities/player/player_2d.gd" id="2_d65nd"]
 [ext_resource type="Shader" path="res://entities/player/assets/alphaballs_viewport.gdshader" id="3_aymf0"]
 [ext_resource type="PackedScene" uid="uid://jlhatc0x6ggi" path="res://entities/move_area_collision_shape_2d.tscn" id="3_d7pfd"]
 [ext_resource type="Shader" path="res://entities/player/assets/fuzzyball.gdshader" id="4_lnv7a"]
+[ext_resource type="Shader" path="res://entities/outline.gdshader" id="4_m6qov"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pvjqh"]
 size = Vector2(25, 15)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f64dn"]
+shader = ExtResource("4_m6qov")
+shader_parameter/line_colour = Color(0, 0, 0, 1)
+shader_parameter/line_thickness = 2
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5pdhx"]
 shader = ExtResource("3_aymf0")
 shader_parameter/threshold = 0.05
-shader_parameter/ring = 0.3
 shader_parameter/color = Color(0.870588, 0.545098, 0.435294, 1)
-shader_parameter/outline = Color(0, 0, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4co2k"]
 shader = ExtResource("4_lnv7a")
@@ -141,7 +145,10 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(1, 0.411765, 0.411765, 0.392157)
 
-[node name="SkinSubViewportContainer" type="SubViewportContainer" parent="." index="1"]
+[node name="CanvasGroup" type="CanvasGroup" parent="." index="1"]
+material = SubResource("ShaderMaterial_f64dn")
+
+[node name="SkinSubViewportContainer" type="SubViewportContainer" parent="CanvasGroup" index="0"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_5pdhx")
 custom_minimum_size = Vector2(200, 200)
@@ -159,11 +166,11 @@ grow_vertical = 2
 mouse_filter = 2
 stretch = true
 
-[node name="Eyes2D" type="Node2D" parent="." index="2"]
+[node name="Eyes2D" type="Node2D" parent="CanvasGroup" index="1"]
 unique_name_in_owner = true
 position = Vector2(0, -5)
 
-[node name="LeftEyeColorRect" type="ColorRect" parent="Eyes2D" index="0"]
+[node name="LeftEyeColorRect" type="ColorRect" parent="CanvasGroup/Eyes2D" index="0"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_4co2k")
 custom_minimum_size = Vector2(8, 8)
@@ -181,7 +188,7 @@ grow_vertical = 2
 pivot_offset = Vector2(4, 4)
 mouse_filter = 2
 
-[node name="InnerColorRect" type="ColorRect" parent="Eyes2D/LeftEyeColorRect" index="0"]
+[node name="InnerColorRect" type="ColorRect" parent="CanvasGroup/Eyes2D/LeftEyeColorRect" index="0"]
 material = SubResource("ShaderMaterial_7ixgf")
 custom_minimum_size = Vector2(4, 4)
 layout_mode = 1
@@ -198,7 +205,7 @@ grow_vertical = 2
 pivot_offset = Vector2(2, 2)
 mouse_filter = 2
 
-[node name="RightEyeColorRect" type="ColorRect" parent="Eyes2D" index="1"]
+[node name="RightEyeColorRect" type="ColorRect" parent="CanvasGroup/Eyes2D" index="1"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_4co2k")
 custom_minimum_size = Vector2(8, 8)
@@ -216,7 +223,7 @@ grow_vertical = 2
 pivot_offset = Vector2(4, 4)
 mouse_filter = 2
 
-[node name="InnerColorRect" type="ColorRect" parent="Eyes2D/RightEyeColorRect" index="0"]
+[node name="InnerColorRect" type="ColorRect" parent="CanvasGroup/Eyes2D/RightEyeColorRect" index="0"]
 material = SubResource("ShaderMaterial_7ixgf")
 custom_minimum_size = Vector2(4, 4)
 layout_mode = 1

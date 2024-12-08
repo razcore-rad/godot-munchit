@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://entities/enemies/enemy_2d.gd" id="2_u2e1t"]
 [ext_resource type="PackedScene" uid="uid://jlhatc0x6ggi" path="res://entities/move_area_collision_shape_2d.tscn" id="3_sagqs"]
 [ext_resource type="Texture2D" uid="uid://dvrf4i7iugy1t" path="res://entities/enemies/assets/slime.png" id="4_325t7"]
-[ext_resource type="Shader" path="res://entities/enemies/assets/outline.gdshader" id="4_bds58"]
+[ext_resource type="Shader" path="res://entities/outline.gdshader" id="4_bds58"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_41o1v"]
 shader = ExtResource("4_bds58")

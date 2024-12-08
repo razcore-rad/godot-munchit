@@ -3,7 +3,7 @@
 [ext_resource type="Shader" path="res://entities/player/assets/fuzzyball.gdshader" id="1_0ti4d"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qkmuc"]
-radius = 5.0
+radius = 3.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8wdxy"]
 shader = ExtResource("1_0ti4d")
@@ -23,16 +23,17 @@ shape = SubResource("CircleShape2D_qkmuc")
 
 [node name="ColorRect" type="ColorRect" parent="RigidBody2D"]
 material = SubResource("ShaderMaterial_8wdxy")
-custom_minimum_size = Vector2(15, 15)
+custom_minimum_size = Vector2(10, 10)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -7.5
-offset_top = -7.5
-offset_right = 7.5
-offset_bottom = 7.5
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(5, 5)
 mouse_filter = 2

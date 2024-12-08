@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_4025a"]
 [ext_resource type="Script" path="res://entities/enemies/enemy_2d.gd" id="2_4eds2"]
 [ext_resource type="PackedScene" uid="uid://jlhatc0x6ggi" path="res://entities/move_area_collision_shape_2d.tscn" id="3_7c7ox"]
-[ext_resource type="Shader" path="res://entities/enemies/assets/outline.gdshader" id="3_x7m1m"]
+[ext_resource type="Shader" path="res://entities/outline.gdshader" id="3_x7m1m"]
 [ext_resource type="Texture2D" uid="uid://bcnyk3csvrqyg" path="res://entities/enemies/assets/big_slime.png" id="4_whdkn"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_74c5x"]
