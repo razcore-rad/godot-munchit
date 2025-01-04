@@ -18,6 +18,7 @@ func _ready() -> void:
 
 func _on_detect_area_area_entered(area: Area2D) -> void:
 	if area.is_in_group("player"):
+		Blackboard.enemies.erase(position)
 		queue_free()
 		if not _is_my_turn:
 			died.emit(move_area.duplicate())
@@ -64,12 +65,13 @@ func _move() -> void:
 	)
 
 	for target_position: Vector2 in target_positions:
+		target_position = to_global(target_position)
 		Blackboard.enemies.erase(position)
 		Blackboard.enemies[target_position] = null
 
 		var tween := create_tween()
 		areas.position = to_global(target_position).snapped(Blackboard.half_tile_size)
-		var tweener := tween.tween_property(self, "position", target_position, 0.1).as_relative()
+		var tweener := tween.tween_property(self, "position", target_position, 0.1)
 		if is_random:
 			tweener.from(position.snapped(Blackboard.half_tile_size))
 		break
