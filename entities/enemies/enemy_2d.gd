@@ -1,27 +1,15 @@
 class_name Enemy2D extends Entity2D
 
-signal died(move_area: Area2D)
-
 const MOVE_RANDOM_CHANCE := 0.2
 
 
 func _ready() -> void:
-	detect_area.connect("area_entered", _on_detect_area_area_entered)
 	detect_area.connect("mouse_entered", _on_detect_area_mouse.bind(true))
 	detect_area.connect("mouse_exited", _on_detect_area_mouse.bind(false))
 
-	areas.position = position
 	move_area.visible = false
 
 	_toggle_area_shapes(move_area, {is_disabled = true})
-
-
-func _on_detect_area_area_entered(area: Area2D) -> void:
-	if area.is_in_group("player"):
-		Blackboard.enemies.erase(position)
-		queue_free()
-		if not _is_my_turn:
-			died.emit(move_area.duplicate())
 
 
 func _on_detect_area_mouse(has_entered: bool) -> void:
@@ -30,12 +18,11 @@ func _on_detect_area_mouse(has_entered: bool) -> void:
 
 func _get_sorted_move_choices(to: Vector2) -> Array[Vector2]:
 	var result: Array[Vector2] = []
-	var direction := to - position
 	var move_choices := move_area.get_children().map(
 		func(cs: CollisionShape2D) -> Dictionary:
-			return {cs = cs, angle = abs(direction.angle_to(cs.position))}
+			return {cs = cs, distance = to.distance_to(cs.global_position)}
 	)
-	move_choices.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a.angle < b.angle)
+	move_choices.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a.distance < b.distance)
 	result.assign(
 		move_choices
 			.filter(func(d: Dictionary) -> bool: return not Blackboard.is_tile_map_layer_obstacle(d.cs.global_position))
@@ -67,15 +54,20 @@ func _move() -> void:
 	for target_position: Vector2 in target_positions:
 		target_position = to_global(target_position)
 		Blackboard.enemies.erase(position)
-		Blackboard.enemies[target_position] = null
+		Blackboard.enemies[target_position] = self
 
 		var tween := create_tween()
-		areas.position = to_global(target_position).snapped(Blackboard.half_tile_size)
+		tween.finished.connect(_detect_player.bind(target_position))
 		var tweener := tween.tween_property(self, "position", target_position, 0.1)
 		if is_random:
 			tweener.from(position.snapped(Blackboard.half_tile_size))
 		break
 	await skip_process_frames()
+
+
+func _detect_player(target_position: Vector2) -> void:
+	if target_position.is_equal_approx(Blackboard.player.position):
+		Blackboard.player.queue_free()
 
 
 func start_turn() -> void:

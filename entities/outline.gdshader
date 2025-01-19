@@ -1,6 +1,7 @@
 shader_type canvas_item;
+render_mode light_only;
 
-uniform vec3 line_colour: source_color = vec3(1.0);
+uniform vec3 line_color: source_color = vec3(1.0);
 uniform int line_thickness: hint_range(0, 10) = 1;
 uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
 
@@ -12,7 +13,7 @@ void fragment() {
 			line_alpha += texture(screen_texture, SCREEN_UV + vec2(i, j)).a;
 		}
 	}
-	vec4 colour = texture(screen_texture, SCREEN_UV);
-	vec4 outline = vec4(line_colour, min(line_alpha, 1.0));
-	COLOR = mix(outline, colour, colour.a);
+	vec4 color = texture(screen_texture, SCREEN_UV);
+	vec4 outline = vec4(line_color, min(line_alpha, 1.0));
+	COLOR = mix(outline, color, color.a);
 }

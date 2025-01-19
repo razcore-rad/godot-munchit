@@ -88,8 +88,7 @@ func _add_enemy(enemy_position: Vector2, file_path := "") -> void:
 	var enemy: Enemy2D = load(file_path).instantiate()
 	enemy.position = enemy_position
 	enemies.add_child(enemy)
-	enemy.died.connect(player.eat_enemy)
-	Blackboard.enemies[enemy.position] = null
+	Blackboard.enemies[enemy.position] = enemy
 
 
 func _generate_enemies(tile_map_layer: TileMapLayer) -> void:

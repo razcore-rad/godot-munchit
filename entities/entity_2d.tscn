@@ -1,12 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://b252do5nimfkg"]
+[gd_scene load_steps=5 format=3 uid="uid://b252do5nimfkg"]
 
-[ext_resource type="Script" path="res://entities/entity_2d.gd" id="1_mwb1m"]
+[ext_resource type="Script" uid="uid://bjxtrb37d1f6j" path="res://entities/entity_2d.gd" id="1_mwb1m"]
+[ext_resource type="Shader" uid="uid://b4hq4b5ou6b8j" path="res://entities/outline.gdshader" id="2_i4s38"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kp8qh"]
+shader = ExtResource("2_i4s38")
+shader_parameter/line_color = Color(0, 0, 0, 1)
+shader_parameter/line_thickness = 2
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5mqu2"]
 size = Vector2(25, 15)
 
 [node name="Entity2D" type="Node2D"]
 script = ExtResource("1_mwb1m")
+
+[node name="CanvasGroup" type="CanvasGroup" parent="."]
+material = SubResource("ShaderMaterial_kp8qh")
 
 [node name="Areas2D" type="Node2D" parent="."]
 unique_name_in_owner = true

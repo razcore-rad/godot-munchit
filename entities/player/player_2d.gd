@@ -12,7 +12,6 @@ var skin_sub_viewport: SkinSubViewport = null
 
 
 func _ready() -> void:
-	detect_area.connect("area_entered", _on_detect_area_area_entered)
 	detect_area.connect("input_event", _on_detect_area_input_event)
 	_connect_move_area()
 
@@ -39,13 +38,6 @@ func _on_detect_area_input_event(_viewport: Node, event: InputEvent, _shape_idx:
 	if event.is_action_pressed("left_click"):
 		turn_finished.emit()
 
-
-func _on_detect_area_area_entered(area: Area2D) -> void:
-	if not _is_my_turn and area.is_in_group("enemy"):
-		skin_sub_viewport.remove_blob()
-
-
-
 func _on_move_area_body_shape_entered(
 	_body_rid: RID, _body: Node2D, _body_shape_index: int, local_shape_index: int
 ) -> void:
@@ -61,15 +53,25 @@ func _on_move_area_input_event(_viewport: Node, event: InputEvent, shape_index: 
 			tween.tween_property(node, "position:y", JUMP_HEIGHT, DURATION).as_relative()
 
 		var collision_shape: CollisionShape2D = move_area.shape_owner_get_owner(shape_index)
+		var target_position := collision_shape.global_position
 		var tween := create_tween()
-		tween.tween_property(self, "position", collision_shape.position, 2.0 * DURATION).as_relative()
+		tween.tween_property(self, "position", target_position, 2.0 * DURATION)
 		await tween.finished
+		_detect_enemy(target_position)
 		turn_finished.emit()
 
 
 func _connect_move_area() -> void:
 	move_area.connect("body_shape_entered", _on_move_area_body_shape_entered)
 	move_area.connect("input_event", _on_move_area_input_event)
+
+
+func _detect_enemy(target_position: Vector2) -> void:
+	if Blackboard.enemies.has(target_position):
+		var enemy := Blackboard.enemies[target_position]
+		Blackboard.enemies.erase(target_position)
+		eat_enemy(enemy.move_area.duplicate())
+		enemy.queue_free()
 
 
 func eat_enemy(new_move_area: Area2D) -> void:

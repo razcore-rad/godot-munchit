@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bskvs3ko2utnn"]
 
-[ext_resource type="Script" path="res://main.gd" id="1_aaq20"]
+[ext_resource type="Script" uid="uid://tcg6bs55hw1w" path="res://main.gd" id="1_aaq20"]
 [ext_resource type="PackedScene" uid="uid://c2mhgypppwjb3" path="res://entities/player/player_2d.tscn" id="4_p2fd5"]
 
 [sub_resource type="TileSet" id="TileSet_b0o41"]
@@ -24,5 +24,14 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 position = Vector2(465, 270)
 
-[node name="Camera2D" type="Camera2D" parent="Player2D"]
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player2D"]
+remote_path = NodePath("../../Camera2D")
+update_rotation = false
+update_scale = false
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(465, 270)
 position_smoothing_enabled = true
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.202093, 0.1702, 0.23, 1)

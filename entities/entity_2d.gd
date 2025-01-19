@@ -13,11 +13,12 @@ func _toggle_area_shapes(area: Area2D, info := {}) -> void:
 	for collision_shape: CollisionShape2D in area.get_children():
 		collision_shape.set_deferred(
 			"disabled",
-			info.is_disabled if "is_disabled" in info else not collision_shape.is_disabled
+			info.is_disabled if "is_disabled" in info else not collision_shape.disabled
 		)
+	await skip_process_frames(2)
 
 
-func skip_process_frames(n: int = 2) -> void:
+func skip_process_frames(n: int = 1) -> void:
 	for _i in range(n):
 		await get_tree().process_frame
 

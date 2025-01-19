@@ -1,15 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://5n0tfoc3ta3v"]
+[gd_scene load_steps=8 format=3 uid="uid://5n0tfoc3ta3v"]
 
 [ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_4025a"]
-[ext_resource type="Script" path="res://entities/enemies/enemy_2d.gd" id="2_4eds2"]
+[ext_resource type="Script" uid="uid://dj0iekh3p1x31" path="res://entities/enemies/enemy_2d.gd" id="2_4eds2"]
 [ext_resource type="PackedScene" uid="uid://jlhatc0x6ggi" path="res://entities/move_area_collision_shape_2d.tscn" id="3_7c7ox"]
-[ext_resource type="Shader" path="res://entities/outline.gdshader" id="3_x7m1m"]
 [ext_resource type="Texture2D" uid="uid://bcnyk3csvrqyg" path="res://entities/enemies/assets/big_slime.png" id="4_whdkn"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_74c5x"]
-shader = ExtResource("3_x7m1m")
-shader_parameter/line_colour = Color(0, 0, 0, 1)
-shader_parameter/line_thickness = 2
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bhabi"]
 atlas = ExtResource("4_whdkn")
@@ -36,18 +30,12 @@ animations = [{
 [node name="Enemy2DB" instance=ExtResource("1_4025a")]
 script = ExtResource("2_4eds2")
 
-[node name="CanvasGroup" type="CanvasGroup" parent="." index="0"]
-material = SubResource("ShaderMaterial_74c5x")
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup" index="0"]
 modulate = Color(0.341176, 0.588235, 0.631373, 1)
 sprite_frames = SubResource("SpriteFrames_ghlyc")
 autoplay = "default"
 frame = 1
 frame_progress = 0.270132
-
-[node name="Areas2D" parent="." index="1"]
-top_level = true
 
 [node name="DetectArea2D" parent="Areas2D" index="0" groups=["enemy"]]
 collision_layer = 2
