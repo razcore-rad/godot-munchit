@@ -47,3 +47,8 @@ left_click={
 2d_physics/layer_2="Enemies"
 2d_physics/layer_3="Obstacles"
 2d_physics/layer_9="Other"
+
+[rendering]
+
+environment/defaults/default_clear_color=Color(0.278431, 0.105882, 0.431373, 1)
+viewport/hdr_2d=true

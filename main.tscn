@@ -1,7 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://bskvs3ko2utnn"]
+[gd_scene load_steps=6 format=3 uid="uid://bskvs3ko2utnn"]
 
 [ext_resource type="Script" uid="uid://tcg6bs55hw1w" path="res://main.gd" id="1_aaq20"]
 [ext_resource type="PackedScene" uid="uid://c2mhgypppwjb3" path="res://entities/player/player_2d.tscn" id="4_p2fd5"]
+
+[sub_resource type="Shader" id="Shader_lquwl"]
+code = "shader_type canvas_item;
+render_mode light_only;
+
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
+
+void fragment() {
+	COLOR = texture(screen_texture, SCREEN_UV);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7mycd"]
+shader = SubResource("Shader_lquwl")
 
 [sub_resource type="TileSet" id="TileSet_b0o41"]
 tile_size = Vector2i(960, 540)
@@ -9,20 +23,23 @@ tile_size = Vector2i(960, 540)
 [node name="Main" type="Node"]
 script = ExtResource("1_aaq20")
 
-[node name="SectorTileMapLayer" type="TileMapLayer" parent="."]
+[node name="CanvasGroup" type="CanvasGroup" parent="."]
+material = SubResource("ShaderMaterial_7mycd")
+
+[node name="SectorTileMapLayer" type="TileMapLayer" parent="CanvasGroup"]
 unique_name_in_owner = true
 enabled = false
 tile_set = SubResource("TileSet_b0o41")
 
-[node name="TileMaps2D" type="Node2D" parent="."]
+[node name="Sectors2D" type="Node2D" parent="CanvasGroup"]
 unique_name_in_owner = true
 
-[node name="Enemies2D" type="Node2D" parent="."]
+[node name="Enemies2D" type="Node2D" parent="CanvasGroup"]
 unique_name_in_owner = true
 
 [node name="Player2D" parent="." instance=ExtResource("4_p2fd5")]
 unique_name_in_owner = true
-position = Vector2(465, 270)
+position = Vector2(465, 265)
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player2D"]
 remote_path = NodePath("../../Camera2D")
@@ -30,7 +47,7 @@ update_rotation = false
 update_scale = false
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(465, 270)
+position = Vector2(465, 265)
 position_smoothing_enabled = true
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]

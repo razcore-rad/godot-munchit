@@ -3,7 +3,7 @@ extends Node
 @export var start_seed := "world"
 @export var blue_noise_tile_size := Vector2i(8, 7)
 
-const TileMapLayerPackedScene := preload("res://tilemap/tile_map_layer.tscn")
+const Sector2DPackedScene := preload("res://tilemap/sector_2d.tscn")
 
 const ENEMY_SPAN := Vector2i(3, 7)
 const ENEMY_FILE_PATHS: Array[String] = [
@@ -21,7 +21,7 @@ var _sector_offset_span := range(-1, 2)
 @onready var player: Player2D = %Player2D
 
 @onready var sector_tile_map_layer: TileMapLayer = %SectorTileMapLayer
-@onready var tile_maps: Node2D = %TileMaps2D
+@onready var sectors: Node2D = %Sectors2D
 
 
 func _ready() -> void:
@@ -54,21 +54,21 @@ func _on_player_move_area_input_event(
 				Blackboard.sectors.erase(sector_offset)
 
 		for sector_offset: Vector2i in _get_neighbor_sector_coords(_sector_player_position):
-			var tile_map_layer := _generate_sector(sector_offset)
-			_generate_enemies(tile_map_layer)
+			var sector := _generate_sector(sector_offset)
+			_generate_enemies(sector)
 
 
-func _generate_sector(offset: Vector2i) -> TileMapLayer:
+func _generate_sector(offset: Vector2i) -> Sector2D:
 	if offset in Blackboard.sectors:
 		return null
 
 	_rng.seed = hash("%s_%d_%d" % [start_seed, offset.x, offset.y])
-	var tile_map_layer: TileMapLayer = TileMapLayerPackedScene.instantiate()
-	tile_maps.add_child(tile_map_layer)
-	Blackboard.sectors[offset] = tile_map_layer
+	var sector: Sector2D = Sector2DPackedScene.instantiate()
+	sectors.add_child(sector)
+	Blackboard.sectors[offset] = sector
 
-	tile_map_layer.position = _sector_size * offset
-	var tile_map_size := tile_map_layer.get_used_rect().size
+	sector.position = _sector_size * offset
+	var tile_map_size := sector.base_tile_map_layer.get_used_rect().size
 
 	for x: int in range(0, tile_map_size.x, blue_noise_tile_size.x):
 		for y: int in range(0, tile_map_size.y, blue_noise_tile_size.y):
@@ -78,8 +78,8 @@ func _generate_sector(offset: Vector2i) -> TileMapLayer:
 				x + _rng.randi_range(0, blue_noise_tile_size.x - pattern_tile_size.x - 1),
 				y + _rng.randi_range(0, blue_noise_tile_size.y - pattern_tile_size.y - 1),
 			)
-			tile_map_layer.set_pattern(blue_noise_tile_position, pattern)
-	return tile_map_layer
+			sector.top_tile_map_layer.set_pattern(blue_noise_tile_position, pattern)
+	return sector
 
 
 func _add_enemy(enemy_position: Vector2, file_path := "") -> void:
@@ -91,24 +91,24 @@ func _add_enemy(enemy_position: Vector2, file_path := "") -> void:
 	Blackboard.enemies[enemy.position] = enemy
 
 
-func _generate_enemies(tile_map_layer: TileMapLayer) -> void:
-	if tile_map_layer == null:
+func _generate_enemies(sector: Sector2D) -> void:
+	if sector == null:
 		return
 
-	var available_coords := tile_map_layer.get_used_cells()
+	var available_coords := sector.base_tile_map_layer.get_used_cells()
 	for index: int in range(Blackboard.TILE_SET.get_source_count()):
 		var tile_map_source: TileSetAtlasSource = Blackboard.TILE_SET.get_source(index)
 		var atlast_grid_size := tile_map_source.get_atlas_grid_size()
 		for atlas_x: int in range(atlast_grid_size.x):
 			for atlas_y: int in range(atlast_grid_size.y):
 				var atlas_coords := Vector2i(atlas_x, atlas_y)
-				if atlas_coords > Vector2i.ZERO:
-					for coord: Vector2i in tile_map_layer.get_used_cells_by_id(index, atlas_coords):
+				if atlas_coords.y > 0:
+					for coord: Vector2i in sector.top_tile_map_layer.get_used_cells_by_id(index, atlas_coords):
 						available_coords.erase(coord)
 
 	for _i: int in range(randi_range(ENEMY_SPAN.x, ENEMY_SPAN.y)):
 		var coord: Vector2i = available_coords.pick_random()
-		var enemy_position := tile_map_layer.to_global(tile_map_layer.map_to_local(coord))
+		var enemy_position := sector.top_tile_map_layer.to_global(sector.top_tile_map_layer.map_to_local(coord))
 		_add_enemy(enemy_position)
 		available_coords.erase(coord)
 
