@@ -4,6 +4,11 @@ const SkinSubViewportPackedScene: PackedScene = preload("skin_sub_viewport.tscn"
 
 const JUMP_HEIGHT := 15
 const DURATION := 0.3
+const MOVE_AREA_TEXTURE_RECT := Rect2(0.0, 40.0, 10.0, 10.0)
+const MOVE_AREA_COLORS: Dictionary[String, Color] = {
+	default = Palette.GREEN,
+	hover = Palette.LIGHT_GREEN,
+}
 
 var skin_sub_viewport: SkinSubViewport = null
 
@@ -12,6 +17,8 @@ var skin_sub_viewport: SkinSubViewport = null
 
 
 func _ready() -> void:
+	super()
+
 	detect_area.connect("input_event", _on_detect_area_input_event)
 	_connect_move_area()
 
@@ -38,6 +45,7 @@ func _on_detect_area_input_event(_viewport: Node, event: InputEvent, _shape_idx:
 	if event.is_action_pressed("left_click"):
 		turn_finished.emit()
 
+
 func _on_move_area_body_shape_entered(
 	_body_rid: RID, _body: Node2D, _body_shape_index: int, local_shape_index: int
 ) -> void:
@@ -46,13 +54,16 @@ func _on_move_area_body_shape_entered(
 
 
 func _on_move_area_input_event(_viewport: Node, event: InputEvent, shape_index: int) -> void:
+	var collision_shape: MoveAreaCollisionShape2D = move_area.shape_owner_get_owner(shape_index)
+	if event is InputEventMouse:
+		collision_shape.modulate = MOVE_AREA_COLORS.hover
+
 	if _is_my_turn and event.is_action_pressed("left_click"):
 		for node: Node2D in [skin_sub_viewport.blob_animatable_body, eyes]:
 			var tween := create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS).set_trans(Tween.TRANS_QUAD)
 			tween.tween_property(node, "position:y", -JUMP_HEIGHT, DURATION).as_relative()
 			tween.tween_property(node, "position:y", JUMP_HEIGHT, DURATION).as_relative()
 
-		var collision_shape: CollisionShape2D = move_area.shape_owner_get_owner(shape_index)
 		var target_position := collision_shape.global_position
 		var tween := create_tween()
 		tween.tween_property(self, "position", target_position, 2.0 * DURATION)
@@ -61,33 +72,39 @@ func _on_move_area_input_event(_viewport: Node, event: InputEvent, shape_index: 
 		turn_finished.emit()
 
 
+func _on_move_area_mouse_exited() -> void:
+	for collision_shape: MoveAreaCollisionShape2D in move_area.get_children():
+		collision_shape.modulate = MOVE_AREA_COLORS.default
+
+
 func _connect_move_area() -> void:
 	move_area.connect("body_shape_entered", _on_move_area_body_shape_entered)
 	move_area.connect("input_event", _on_move_area_input_event)
+	move_area.connect("mouse_exited", _on_move_area_mouse_exited)
 
 
 func _detect_enemy(target_position: Vector2) -> void:
 	if Blackboard.enemies.has(target_position):
 		var enemy := Blackboard.enemies[target_position]
 		Blackboard.enemies.erase(target_position)
-		eat_enemy(enemy.move_area.duplicate())
+		eat_enemy(enemy.move_area)
 		enemy.queue_free()
 
 
-func eat_enemy(new_move_area: Area2D) -> void:
+func eat_enemy(enemy_move_area: Area2D) -> void:
 	skin_sub_viewport.add_blob.call_deferred()
-	var collision_layer := move_area.collision_layer
-	var collision_mask := move_area.collision_mask
 
-	move_area.queue_free()
-	add_child.call_deferred(new_move_area)
-	move_area = new_move_area
+	var move_area_collision_shape_positions := move_area.get_children().map(func(cs: MoveAreaCollisionShape2D) -> Vector2: return cs.position)
+
+	for collision_shape: MoveAreaCollisionShape2D in enemy_move_area.get_children():
+		if not collision_shape.position in move_area_collision_shape_positions:
+			var new_move_area_collision_shape := MoveAreaCollisionShape2DPackedScene.instantiate()
+			move_area.add_child(new_move_area_collision_shape)
+			new_move_area_collision_shape.modulate = MOVE_AREA_COLORS.default
+			new_move_area_collision_shape.sprite.region_rect = MOVE_AREA_TEXTURE_RECT
+
 	move_area.visible = true
-
-	move_area.set_deferred("collision_layer", collision_layer)
-	move_area.set_deferred("collision_mask", collision_mask)
 	_toggle_area_shapes(move_area, {is_disabled = false})
-	_connect_move_area()
 
 
 func end_turn() -> void:

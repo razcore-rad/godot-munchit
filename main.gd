@@ -3,7 +3,7 @@ extends Node
 @export var start_seed := "world"
 @export var blue_noise_tile_size := Vector2i(8, 7)
 
-const Sector2DPackedScene := preload("res://tilemap/sector_2d.tscn")
+const Sector2DPackedScene := preload("sectors/sector_2d.tscn")
 
 const ENEMY_SPAN := Vector2i(3, 7)
 const ENEMY_FILE_PATHS: Array[String] = [

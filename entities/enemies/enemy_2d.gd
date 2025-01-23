@@ -1,18 +1,22 @@
 class_name Enemy2D extends Entity2D
 
+const MOVE_AREA_TEXTURE_RECT := Rect2(10.0, 40.0, 10.0, 10.0)
 const MOVE_RANDOM_CHANCE := 0.2
 
 
 func _ready() -> void:
-	detect_area.connect("mouse_entered", _on_detect_area_mouse.bind(true))
-	detect_area.connect("mouse_exited", _on_detect_area_mouse.bind(false))
+	super()
 
 	move_area.visible = false
+	for collision_shape: MoveAreaCollisionShape2D in move_area.get_children():
+		collision_shape.modulate = Palette.ORANGE
+		collision_shape.sprite.region_rect = MOVE_AREA_TEXTURE_RECT
 
 	_toggle_area_shapes(move_area, {is_disabled = true})
 
 
 func _on_detect_area_mouse(has_entered: bool) -> void:
+	super(has_entered)
 	move_area.visible = has_entered
 
 

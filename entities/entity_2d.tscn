@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://b252do5nimfkg"]
+[gd_scene load_steps=4 format=3 uid="uid://b252do5nimfkg"]
 
 [ext_resource type="Script" uid="uid://bjxtrb37d1f6j" path="res://entities/entity_2d.gd" id="1_mwb1m"]
+[ext_resource type="Texture2D" uid="uid://cr6fcs8x7v22" path="res://assets/atlas.png" id="2_i4s38"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5mqu2"]
 size = Vector2(25, 15)
@@ -16,7 +17,14 @@ unique_name_in_owner = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Areas2D/DetectArea2D"]
 shape = SubResource("RectangleShape2D_5mqu2")
-debug_color = Color(0.838982, 0.384625, 0, 0.42)
+
+[node name="DetectAreaSprite2D" type="Sprite2D" parent="Areas2D/DetectArea2D/CollisionShape2D"]
+unique_name_in_owner = true
+visible = false
+modulate = Color(0.921569, 0.839216, 0.580392, 1)
+texture = ExtResource("2_i4s38")
+region_enabled = true
+region_rect = Rect2(0, 40, 10, 10)
 
 [node name="MoveArea2D" type="Area2D" parent="Areas2D"]
 unique_name_in_owner = true

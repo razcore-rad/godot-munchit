@@ -1,6 +1,6 @@
 class_name Blackboard
 
-const TILE_SET := preload("res://tilemap/tile_set.tres")
+const TILE_SET := preload("sectors/tile_set.tres")
 const INVALID_ATLAS_COORD := -1 * Vector2i.ONE
 
 static var obstacles: Array[Vector2i] = []

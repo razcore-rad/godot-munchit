@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bskvs3ko2utnn"]
+[gd_scene load_steps=8 format=3 uid="uid://bskvs3ko2utnn"]
 
 [ext_resource type="Script" uid="uid://tcg6bs55hw1w" path="res://main.gd" id="1_aaq20"]
 [ext_resource type="PackedScene" uid="uid://c2mhgypppwjb3" path="res://entities/player/player_2d.tscn" id="4_p2fd5"]
@@ -20,6 +20,20 @@ shader = SubResource("Shader_lquwl")
 [sub_resource type="TileSet" id="TileSet_b0o41"]
 tile_size = Vector2i(960, 540)
 
+[sub_resource type="Gradient" id="Gradient_c5hwq"]
+interpolation_mode = 2
+interpolation_color_space = 2
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0xm2m"]
+gradient = SubResource("Gradient_c5hwq")
+width = 640
+height = 640
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.9, 0.1)
+metadata/_snap_count = 20
+
 [node name="Main" type="Node"]
 script = ExtResource("1_aaq20")
 
@@ -39,7 +53,7 @@ unique_name_in_owner = true
 
 [node name="Player2D" parent="." instance=ExtResource("4_p2fd5")]
 unique_name_in_owner = true
-position = Vector2(465, 265)
+position = Vector2(435, 70)
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player2D"]
 remote_path = NodePath("../../Camera2D")
@@ -47,8 +61,23 @@ update_rotation = false
 update_scale = false
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(465, 265)
+position = Vector2(435, 70)
 position_smoothing_enabled = true
+
+[node name="BasePointLight2D" type="PointLight2D" parent="Camera2D"]
+color = Color(0.9, 0.9, 0.9, 1)
+shadow_enabled = true
+shadow_color = Color(0, 0, 0, 1)
+shadow_filter = 1
+shadow_filter_smooth = 1.0
+texture = SubResource("GradientTexture2D_0xm2m")
+
+[node name="TopPointLight2D" type="PointLight2D" parent="Camera2D"]
+range_item_cull_mask = 2
+shadow_color = Color(0, 0, 0, 1)
+shadow_filter = 1
+shadow_filter_smooth = 1.0
+texture = SubResource("GradientTexture2D_0xm2m")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.202093, 0.1702, 0.23, 1)

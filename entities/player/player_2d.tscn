@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://c2mhgypppwjb3"]
+[gd_scene load_steps=11 format=3 uid="uid://c2mhgypppwjb3"]
 
 [ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_e3jcg"]
 [ext_resource type="Script" uid="uid://e18wuex060o6" path="res://entities/player/player_2d.gd" id="2_d65nd"]
@@ -6,9 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://jlhatc0x6ggi" path="res://entities/move_area_collision_shape_2d.tscn" id="3_d7pfd"]
 [ext_resource type="Shader" uid="uid://b4hq4b5ou6b8j" path="res://entities/outline_group.gdshader" id="4_c5hwq"]
 [ext_resource type="Shader" uid="uid://qkyq1k8xjn8l" path="res://entities/player/assets/fuzzyball.gdshader" id="4_lnv7a"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_pvjqh"]
-size = Vector2(25, 15)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u8ep7"]
 shader = ExtResource("4_c5hwq")
@@ -30,136 +27,10 @@ shader = ExtResource("4_lnv7a")
 shader_parameter/color = Color(0.278431, 0.105882, 0.431373, 1)
 shader_parameter/threshold = 0.00999998
 
-[sub_resource type="Gradient" id="Gradient_xqn8y"]
-interpolation_mode = 2
-interpolation_color_space = 2
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_c5hwq"]
-gradient = SubResource("Gradient_xqn8y")
-width = 640
-height = 640
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0.9, 0.1)
-metadata/_snap_count = 20
-
 [node name="Player2D" instance=ExtResource("1_e3jcg")]
 script = ExtResource("2_d65nd")
 
-[node name="DetectArea2D" parent="Areas2D" index="0" groups=["player"]]
-collision_mask = 6
-
-[node name="MoveArea2D" parent="Areas2D" index="1" groups=["player"]]
-collision_mask = 6
-
-[node name="MoveAreaCollisionShape2D" parent="Areas2D/MoveArea2D" index="0" instance=ExtResource("3_d7pfd")]
-position = Vector2(-30, -20)
-
-[node name="ColorRect" parent="Areas2D/MoveArea2D/MoveAreaCollisionShape2D" index="0"]
-color = Color(1, 0.41, 0.41, 0.392157)
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="1"]
-position = Vector2(0, -40)
-shape = SubResource("RectangleShape2D_pvjqh")
-
-[node name="ColorRect" type="ColorRect" parent="Areas2D/MoveArea2D/CollisionShape2D2" index="0"]
-custom_minimum_size = Vector2(25, 15)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -12.5
-offset_top = -7.5
-offset_right = 12.5
-offset_bottom = 7.5
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(1, 0.411765, 0.411765, 0.392157)
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="2"]
-position = Vector2(30, 0)
-shape = SubResource("RectangleShape2D_pvjqh")
-
-[node name="ColorRect" type="ColorRect" parent="Areas2D/MoveArea2D/CollisionShape2D3" index="0"]
-custom_minimum_size = Vector2(25, 15)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -12.5
-offset_top = -7.5
-offset_right = 12.5
-offset_bottom = 7.5
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(1, 0.411765, 0.411765, 0.392157)
-
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="3"]
-position = Vector2(30, 20)
-shape = SubResource("RectangleShape2D_pvjqh")
-
-[node name="ColorRect" type="ColorRect" parent="Areas2D/MoveArea2D/CollisionShape2D4" index="0"]
-custom_minimum_size = Vector2(25, 15)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -12.5
-offset_top = -7.5
-offset_right = 12.5
-offset_bottom = 7.5
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(1, 0.411765, 0.411765, 0.392157)
-
-[node name="CollisionShape2D5" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="4"]
-position = Vector2(0, 40)
-shape = SubResource("RectangleShape2D_pvjqh")
-
-[node name="ColorRect" type="ColorRect" parent="Areas2D/MoveArea2D/CollisionShape2D5" index="0"]
-custom_minimum_size = Vector2(25, 15)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -12.5
-offset_top = -7.5
-offset_right = 12.5
-offset_bottom = 7.5
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(1, 0.411765, 0.411765, 0.392157)
-
-[node name="CollisionShape2D6" type="CollisionShape2D" parent="Areas2D/MoveArea2D" index="5"]
-position = Vector2(-30, 20)
-shape = SubResource("RectangleShape2D_pvjqh")
-
-[node name="ColorRect" type="ColorRect" parent="Areas2D/MoveArea2D/CollisionShape2D6" index="0"]
-custom_minimum_size = Vector2(25, 15)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -12.5
-offset_top = -7.5
-offset_right = 12.5
-offset_bottom = 7.5
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(1, 0.411765, 0.411765, 0.392157)
-
-[node name="CanvasGroup" type="CanvasGroup" parent="." index="1"]
+[node name="CanvasGroup" type="CanvasGroup" parent="." index="0"]
 light_mask = 2
 material = SubResource("ShaderMaterial_u8ep7")
 
@@ -259,19 +130,32 @@ grow_vertical = 2
 pivot_offset = Vector2(2, 2)
 mouse_filter = 2
 
-[node name="BasePointLight2D" type="PointLight2D" parent="." index="2"]
-color = Color(0.9, 0.9, 0.9, 1)
-shadow_enabled = true
-shadow_color = Color(0, 0, 0, 1)
-shadow_filter = 1
-shadow_filter_smooth = 1.0
-texture = SubResource("GradientTexture2D_c5hwq")
+[node name="DetectArea2D" parent="Areas2D" index="0" groups=["player"]]
+collision_mask = 6
 
-[node name="TopPointLight2D" type="PointLight2D" parent="." index="3"]
-range_item_cull_mask = 2
-shadow_color = Color(0, 0, 0, 1)
-shadow_filter = 1
-shadow_filter_smooth = 1.0
-texture = SubResource("GradientTexture2D_c5hwq")
+[node name="MoveArea2D" parent="Areas2D" index="1" groups=["player"]]
+collision_mask = 6
 
-[editable path="Areas2D/MoveArea2D/MoveAreaCollisionShape2D"]
+[node name="MoveAreaCollisionShape2D" parent="Areas2D/MoveArea2D" index="0" instance=ExtResource("3_d7pfd")]
+modulate = Color(0.341176, 0.588235, 0.631373, 1)
+position = Vector2(-30, -20)
+
+[node name="MoveAreaCollisionShape2D2" parent="Areas2D/MoveArea2D" index="1" instance=ExtResource("3_d7pfd")]
+modulate = Color(0.341176, 0.588235, 0.631373, 1)
+position = Vector2(0, -40)
+
+[node name="MoveAreaCollisionShape2D3" parent="Areas2D/MoveArea2D" index="2" instance=ExtResource("3_d7pfd")]
+modulate = Color(0.341176, 0.588235, 0.631373, 1)
+position = Vector2(30, 0)
+
+[node name="MoveAreaCollisionShape2D4" parent="Areas2D/MoveArea2D" index="3" instance=ExtResource("3_d7pfd")]
+modulate = Color(0.341176, 0.588235, 0.631373, 1)
+position = Vector2(30, 20)
+
+[node name="MoveAreaCollisionShape2D5" parent="Areas2D/MoveArea2D" index="4" instance=ExtResource("3_d7pfd")]
+modulate = Color(0.341176, 0.588235, 0.631373, 1)
+position = Vector2(0, 40)
+
+[node name="MoveAreaCollisionShape2D6" parent="Areas2D/MoveArea2D" index="5" instance=ExtResource("3_d7pfd")]
+modulate = Color(0.341176, 0.588235, 0.631373, 1)
+position = Vector2(-30, 20)
