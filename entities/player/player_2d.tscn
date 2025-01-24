@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c2mhgypppwjb3"]
+[gd_scene load_steps=16 format=3 uid="uid://c2mhgypppwjb3"]
 
 [ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_e3jcg"]
 [ext_resource type="Script" uid="uid://e18wuex060o6" path="res://entities/player/player_2d.gd" id="2_d65nd"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://jlhatc0x6ggi" path="res://entities/move_area_collision_shape_2d.tscn" id="3_d7pfd"]
 [ext_resource type="Shader" uid="uid://b4hq4b5ou6b8j" path="res://entities/outline_group.gdshader" id="4_c5hwq"]
 [ext_resource type="Shader" uid="uid://qkyq1k8xjn8l" path="res://entities/player/assets/fuzzyball.gdshader" id="4_lnv7a"]
+[ext_resource type="Texture2D" uid="uid://yt1x0vavnoiq" path="res://entities/player/assets/mouth_eat.png" id="6_u8ep7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u8ep7"]
 shader = ExtResource("4_c5hwq")
@@ -26,6 +27,38 @@ shader_parameter/threshold = 0.00999998
 shader = ExtResource("4_lnv7a")
 shader_parameter/color = Color(0.278431, 0.105882, 0.431373, 1)
 shader_parameter/threshold = 0.00999998
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_chs0w"]
+atlas = ExtResource("6_u8ep7")
+region = Rect2(0, 0, 13, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_is22s"]
+atlas = ExtResource("6_u8ep7")
+region = Rect2(13, 0, 13, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qalwy"]
+atlas = ExtResource("6_u8ep7")
+region = Rect2(26, 0, 13, 12)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ijjdv"]
+animations = [{
+"frames": [{
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_chs0w")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_is22s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qalwy")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Player2D" instance=ExtResource("1_e3jcg")]
 script = ExtResource("2_d65nd")
@@ -52,11 +85,14 @@ grow_vertical = 2
 mouse_filter = 2
 stretch = true
 
-[node name="Eyes2D" type="Node2D" parent="CanvasGroup" index="1"]
+[node name="Extra2D" type="Node2D" parent="CanvasGroup" index="1"]
 unique_name_in_owner = true
 position = Vector2(0, -5)
 
-[node name="LeftEyeColorRect" type="ColorRect" parent="CanvasGroup/Eyes2D" index="0"]
+[node name="Eyes2D" type="Node2D" parent="CanvasGroup/Extra2D" index="0"]
+unique_name_in_owner = true
+
+[node name="LeftEyeColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D" index="0"]
 unique_name_in_owner = true
 light_mask = 2
 material = SubResource("ShaderMaterial_4co2k")
@@ -75,7 +111,7 @@ grow_vertical = 2
 pivot_offset = Vector2(4, 4)
 mouse_filter = 2
 
-[node name="InnerColorRect" type="ColorRect" parent="CanvasGroup/Eyes2D/LeftEyeColorRect" index="0"]
+[node name="InnerColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D/LeftEyeColorRect" index="0"]
 light_mask = 2
 material = SubResource("ShaderMaterial_7ixgf")
 custom_minimum_size = Vector2(4, 4)
@@ -93,7 +129,7 @@ grow_vertical = 2
 pivot_offset = Vector2(2, 2)
 mouse_filter = 2
 
-[node name="RightEyeColorRect" type="ColorRect" parent="CanvasGroup/Eyes2D" index="1"]
+[node name="RightEyeColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D" index="1"]
 unique_name_in_owner = true
 light_mask = 2
 material = SubResource("ShaderMaterial_4co2k")
@@ -112,7 +148,7 @@ grow_vertical = 2
 pivot_offset = Vector2(4, 4)
 mouse_filter = 2
 
-[node name="InnerColorRect" type="ColorRect" parent="CanvasGroup/Eyes2D/RightEyeColorRect" index="0"]
+[node name="InnerColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D/RightEyeColorRect" index="0"]
 light_mask = 2
 material = SubResource("ShaderMaterial_7ixgf")
 custom_minimum_size = Vector2(4, 4)
@@ -129,6 +165,13 @@ grow_horizontal = 0
 grow_vertical = 2
 pivot_offset = Vector2(2, 2)
 mouse_filter = 2
+
+[node name="MouthAnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup/Extra2D" index="1"]
+unique_name_in_owner = true
+sprite_frames = SubResource("SpriteFrames_ijjdv")
+frame = 3
+frame_progress = 1.0
+offset = Vector2(2, 4)
 
 [node name="DetectArea2D" parent="Areas2D" index="0" groups=["player"]]
 collision_mask = 6

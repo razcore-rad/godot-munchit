@@ -10,10 +10,14 @@ const MOVE_AREA_COLORS: Dictionary[String, Color] = {
 	hover = Palette.LIGHT_GREEN,
 }
 
+var _move_tween: Tween = create_tween()
+
 var skin_sub_viewport: SkinSubViewport = null
 
 @onready var skin_sub_viewport_container: SubViewportContainer = %SkinSubViewportContainer
+@onready var extra: Node2D = %Extra2D
 @onready var eyes: Node2D = %Eyes2D
+@onready var mouth_animated_sprite: AnimatedSprite2D = %MouthAnimatedSprite2D
 
 
 func _ready() -> void:
@@ -22,6 +26,7 @@ func _ready() -> void:
 	detect_area.connect("input_event", _on_detect_area_input_event)
 	_connect_move_area()
 
+	_move_tween.stop()
 	skin_sub_viewport = SkinSubViewportPackedScene.instantiate()
 	skin_sub_viewport.world_2d = World2D.new()
 	skin_sub_viewport_container.add_child(skin_sub_viewport)
@@ -58,16 +63,16 @@ func _on_move_area_input_event(_viewport: Node, event: InputEvent, shape_index: 
 	if event is InputEventMouse:
 		collision_shape.modulate = MOVE_AREA_COLORS.hover
 
-	if _is_my_turn and event.is_action_pressed("left_click"):
-		for node: Node2D in [skin_sub_viewport.blob_animatable_body, eyes]:
+	if not _move_tween.is_running() and event.is_action_pressed("left_click"):
+		for node: Node2D in [skin_sub_viewport.blob_animatable_body, extra]:
 			var tween := create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS).set_trans(Tween.TRANS_QUAD)
 			tween.tween_property(node, "position:y", -JUMP_HEIGHT, DURATION).as_relative()
 			tween.tween_property(node, "position:y", JUMP_HEIGHT, DURATION).as_relative()
 
 		var target_position := collision_shape.global_position
-		var tween := create_tween()
-		tween.tween_property(self, "position", target_position, 2.0 * DURATION)
-		await tween.finished
+		_move_tween = create_tween()
+		_move_tween.tween_property(self, "position", target_position, 2.0 * DURATION)
+		await _move_tween.finished
 		_detect_enemy(target_position)
 		turn_finished.emit()
 
@@ -104,6 +109,7 @@ func _eat_enemy(enemy_move_area: Area2D) -> void:
 
 	move_area.visible = true
 	_toggle_area_shapes(move_area, {is_disabled = false})
+	mouth_animated_sprite.play()
 
 
 func end_turn() -> void:
