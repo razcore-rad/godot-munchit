@@ -1,6 +1,6 @@
 class_name Enemy2D extends Entity2D
 
-const MOVE_AREA_TEXTURE_RECT := Rect2(10.0, 40.0, 10.0, 10.0)
+const MOVE_AREA_TEXTURE_RECT := Rect2(30.0, 40.0, 28.0, 18.0)
 const MOVE_RANDOM_CHANCE := 0.2
 
 

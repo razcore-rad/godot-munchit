@@ -4,7 +4,7 @@ const SkinSubViewportPackedScene: PackedScene = preload("skin_sub_viewport.tscn"
 
 const JUMP_HEIGHT := 15
 const DURATION := 0.3
-const MOVE_AREA_TEXTURE_RECT := Rect2(0.0, 40.0, 10.0, 10.0)
+const MOVE_AREA_TEXTURE_RECT := Rect2(0.0, 40.0, 30.0, 20.0)
 const MOVE_AREA_COLORS: Dictionary[String, Color] = {
 	default = Palette.GREEN,
 	hover = Palette.LIGHT_GREEN,
@@ -87,19 +87,18 @@ func _detect_enemy(target_position: Vector2) -> void:
 	if Blackboard.enemies.has(target_position):
 		var enemy := Blackboard.enemies[target_position]
 		Blackboard.enemies.erase(target_position)
-		eat_enemy(enemy.move_area)
+		_eat_enemy(enemy.move_area)
 		enemy.queue_free()
 
 
-func eat_enemy(enemy_move_area: Area2D) -> void:
+func _eat_enemy(enemy_move_area: Area2D) -> void:
 	skin_sub_viewport.add_blob.call_deferred()
-
 	var move_area_collision_shape_positions := move_area.get_children().map(func(cs: MoveAreaCollisionShape2D) -> Vector2: return cs.position)
-
 	for collision_shape: MoveAreaCollisionShape2D in enemy_move_area.get_children():
 		if not collision_shape.position in move_area_collision_shape_positions:
 			var new_move_area_collision_shape := MoveAreaCollisionShape2DPackedScene.instantiate()
 			move_area.add_child(new_move_area_collision_shape)
+			new_move_area_collision_shape.position = collision_shape.position
 			new_move_area_collision_shape.modulate = MOVE_AREA_COLORS.default
 			new_move_area_collision_shape.sprite.region_rect = MOVE_AREA_TEXTURE_RECT
 

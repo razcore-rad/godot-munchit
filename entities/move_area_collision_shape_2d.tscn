@@ -14,4 +14,4 @@ script = ExtResource("1_r81jl")
 unique_name_in_owner = true
 texture = ExtResource("1_pyo8n")
 region_enabled = true
-region_rect = Rect2(0, 40, 10, 10)
+region_rect = Rect2(0, 40, 30, 20)

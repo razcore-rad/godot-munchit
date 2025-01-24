@@ -15,7 +15,11 @@ static var player: Player2D = null
 static func _static_init() -> void:
 	for index: int in range(TILE_SET.get_source_count()):
 		var source: TileSetAtlasSource = TILE_SET.get_source(index)
-		obstacles.assign(range(source.get_tiles_count()).map(func(i: int) -> Vector2i: return source.get_tile_id(i)).slice(2))
+		for i in source.get_tiles_count():
+			var atlas_coords := source.get_tile_id(i)
+			var tile_data := source.get_tile_data(atlas_coords, 0)
+			if tile_data.get_occluder(0) != null:
+				obstacles.push_back(atlas_coords)
 
 
 static func get_sector(at: Vector2) -> Sector2D:
@@ -30,6 +34,7 @@ static func get_sector_local_to_map(at: Vector2) -> Vector2i:
 
 static func get_sector_atlas_coords(at: Vector2) -> Vector2i:
 	var sector := get_sector(at)
+	at = sector.to_local(at)
 	return INVALID_ATLAS_COORD if sector == null else sector.top_tile_map_layer.get_cell_atlas_coords(sector.top_tile_map_layer.local_to_map(at))
 
 
