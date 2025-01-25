@@ -22,14 +22,18 @@ texture = ExtResource("1_abesd")
 texture_region_size = Vector2i(30, 20)
 0:1/0 = 0
 0:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_abesd")
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-15, -10, 15, -10, 15, 10, -15, 10)
 1:1/0 = 0
 1:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_40n37")
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-15, -10, 15, -10, 15, 10, -15, 10)
 0:0/0 = 0
 1:0/0 = 0
 
 [resource]
 tile_size = Vector2i(30, 20)
 occlusion_layer_0/light_mask = 1
+physics_layer_0/collision_layer = 4
+physics_layer_0/collision_mask = 0
 sources/0 = SubResource("TileSetAtlasSource_wcoyh")
 pattern_0 = SubResource("TileMapPattern_c04dw")
 pattern_1 = SubResource("TileMapPattern_qevqs")

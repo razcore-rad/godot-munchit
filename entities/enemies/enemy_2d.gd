@@ -70,12 +70,23 @@ func _move() -> void:
 
 
 func _detect_player(target_position: Vector2) -> void:
-	if target_position.is_equal_approx(Blackboard.player.position):
-		Blackboard.player.queue_free()
+	if Blackboard.is_valid(Blackboard.player) and target_position.is_equal_approx(Blackboard.player.position):
+		_eat_player()
+
+
+func _eat_player() -> void:
+	Blackboard.player.skin_sub_viewport.remove_blob.call_deferred()
+	var player_move_area_collision_shape_positions: Dictionary[Vector2, MoveAreaCollisionShape2D] = {}
+	for collision_shape: MoveAreaCollisionShape2D in Blackboard.player.move_area.get_children():
+		player_move_area_collision_shape_positions[collision_shape.position] = collision_shape
+
+	for collision_shape: MoveAreaCollisionShape2D in move_area.get_children():
+		if player_move_area_collision_shape_positions.has(collision_shape.position):
+			player_move_area_collision_shape_positions[collision_shape.position].queue_free()
+	queue_free()
 
 
 func start_turn() -> void:
-	super()
 	if Blackboard.is_valid(Blackboard.player):
 		await _move()
 	turn_finished.emit()

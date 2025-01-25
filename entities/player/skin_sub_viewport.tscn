@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://c01nkmxfnpxwj"]
 
-[ext_resource type="Shader" path="res://entities/player/assets/fuzzyball.gdshader" id="1_e8w13"]
-[ext_resource type="Script" path="res://entities/player/skin_sub_viewport.gd" id="1_vc8yq"]
+[ext_resource type="Shader" uid="uid://qkyq1k8xjn8l" path="res://entities/player/assets/fuzzyball.gdshader" id="1_e8w13"]
+[ext_resource type="Script" uid="uid://botmbtcxavacg" path="res://entities/player/skin_sub_viewport.gd" id="1_vc8yq"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ow6ih"]
 radius = 5.0

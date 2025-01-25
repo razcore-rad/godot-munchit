@@ -4,11 +4,12 @@ extends Node
 @export var blue_noise_tile_size := Vector2i(8, 7)
 
 const Sector2DPackedScene := preload("sectors/sector_2d.tscn")
+const BlobTextureRectPackedScene := preload("ui/blob_texture_rect.tscn")
 
-const ENEMY_SPAN := Vector2i(3, 7)
+const ENEMY_SPAN := Vector2i(9, 13)
 const ENEMY_FILE_PATHS: Array[String] = [
-	"res://entities/enemies/enemy_2d_a.tscn",
-	"res://entities/enemies/enemy_2d_b.tscn",
+	"entities/enemies/enemy_2d_a.tscn",
+	"entities/enemies/enemy_2d_b.tscn",
 ]
 
 var _sector_size: Vector2i = Vector2i.ZERO
@@ -23,6 +24,9 @@ var _sector_offset_span := range(-1, 2)
 @onready var sector_tile_map_layer: TileMapLayer = %SectorTileMapLayer
 @onready var sectors: Node2D = %Sectors2D
 
+@onready var blobs_h_box_container: HBoxContainer = %BlobsHBoxContainer
+@onready var turn_label: Label = %TurnLabel
+
 
 func _ready() -> void:
 	_sector_size = sector_tile_map_layer.tile_set.tile_size
@@ -30,7 +34,11 @@ func _ready() -> void:
 		_obstacle_patterns.push_back(Blackboard.TILE_SET.get_pattern(index))
 
 	seed(hash(start_seed))
-	player.move_area.connect("input_event", _on_player_move_area_input_event)
+	player.move_area.input_event.connect(_on_player_move_area_input_event)
+	player.skin_sub_viewport.blob_added.connect(_on_player_skin_sub_viewport_blob.bind(true))
+	player.skin_sub_viewport.blob_removed.connect(_on_player_skin_sub_viewport_blob.bind(false))
+	for _i in range(10):
+		player.skin_sub_viewport.add_blob()
 
 	Blackboard.sector_tile_map_layer = sector_tile_map_layer
 	Blackboard.player = player
@@ -56,6 +64,13 @@ func _on_player_move_area_input_event(
 		for sector_offset: Vector2i in _get_neighbor_sector_coords(_sector_player_position):
 			var sector := _generate_sector(sector_offset)
 			_generate_enemies(sector)
+
+
+func _on_player_skin_sub_viewport_blob(_blob_count: int, is_added: bool) -> void:
+	if is_added:
+		blobs_h_box_container.add_child(BlobTextureRectPackedScene.instantiate())
+	else:
+		blobs_h_box_container.get_children().back().queue_free()
 
 
 func _generate_sector(offset: Vector2i) -> Sector2D:
@@ -96,6 +111,9 @@ func _generate_enemies(sector: Sector2D) -> void:
 		return
 
 	var available_coords := sector.base_tile_map_layer.get_used_cells()
+	for obstacle_coord: Vector2i in sector.top_tile_map_layer.get_used_cells():
+		available_coords.erase(obstacle_coord)
+
 	for index: int in range(Blackboard.TILE_SET.get_source_count()):
 		var tile_map_source: TileSetAtlasSource = Blackboard.TILE_SET.get_source(index)
 		var atlast_grid_size := tile_map_source.get_atlas_grid_size()
@@ -122,7 +140,7 @@ func _get_neighbor_sector_coords(relative_to := Vector2i.ZERO) -> Array[Vector2i
 
 
 func _get_entities() -> Array[Entity2D]:
-	const DISTANCE_SQUARED_CHECK := 200 ** 2
+	const DISTANCE_SQUARED_CHECK := 400 ** 2
 	var result: Array[Entity2D] = []
 	if Blackboard.is_valid(player):
 		result.push_back(player)
@@ -134,7 +152,9 @@ func _get_entities() -> Array[Entity2D]:
 
 
 func _start_turn_based_loop() -> void:
+	turn_label.visible = true
 	while true:
+		turn_label.text = str(turn_label.text.to_int() + 1)
 		var entities := _get_entities()
 		if entities.is_empty():
 			break

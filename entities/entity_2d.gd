@@ -4,8 +4,6 @@ signal turn_finished
 
 const MoveAreaCollisionShape2DPackedScene := preload("move_area_collision_shape_2d.tscn")
 
-var _is_my_turn := false
-
 @onready var areas: Node2D = %Areas2D
 @onready var detect_area: Area2D = %DetectArea2D
 @onready var detect_area_sprite: Sprite2D = %DetectAreaSprite2D
@@ -13,8 +11,8 @@ var _is_my_turn := false
 
 
 func _ready() -> void:
-	detect_area.connect("mouse_entered", _on_detect_area_mouse.bind(true))
-	detect_area.connect("mouse_exited", _on_detect_area_mouse.bind(false))
+	detect_area.mouse_entered.connect(_on_detect_area_mouse.bind(true))
+	detect_area.mouse_exited.connect(_on_detect_area_mouse.bind(false))
 
 
 func _on_detect_area_mouse(has_entered: bool) -> void:
@@ -36,8 +34,8 @@ func skip_process_frames(n: int = 1) -> void:
 
 
 func start_turn() -> void:
-	_is_my_turn = true
+	pass
 
 
 func end_turn() -> void:
-	_is_my_turn = false
+	pass

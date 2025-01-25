@@ -64,7 +64,6 @@ animations = [{
 script = ExtResource("2_d65nd")
 
 [node name="CanvasGroup" type="CanvasGroup" parent="." index="0"]
-light_mask = 2
 material = SubResource("ShaderMaterial_u8ep7")
 
 [node name="SkinSubViewportContainer" type="SubViewportContainer" parent="CanvasGroup" index="0"]
@@ -90,10 +89,8 @@ unique_name_in_owner = true
 position = Vector2(0, -5)
 
 [node name="Eyes2D" type="Node2D" parent="CanvasGroup/Extra2D" index="0"]
-unique_name_in_owner = true
 
 [node name="LeftEyeColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D" index="0"]
-unique_name_in_owner = true
 light_mask = 2
 material = SubResource("ShaderMaterial_4co2k")
 custom_minimum_size = Vector2(8, 8)
@@ -111,7 +108,8 @@ grow_vertical = 2
 pivot_offset = Vector2(4, 4)
 mouse_filter = 2
 
-[node name="InnerColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D/LeftEyeColorRect" index="0"]
+[node name="LeftInnerColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D/LeftEyeColorRect" index="0"]
+unique_name_in_owner = true
 light_mask = 2
 material = SubResource("ShaderMaterial_7ixgf")
 custom_minimum_size = Vector2(4, 4)
@@ -126,11 +124,10 @@ offset_top = -2.0
 offset_bottom = 2.0
 grow_horizontal = 0
 grow_vertical = 2
-pivot_offset = Vector2(2, 2)
+pivot_offset = Vector2(0, 2)
 mouse_filter = 2
 
 [node name="RightEyeColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D" index="1"]
-unique_name_in_owner = true
 light_mask = 2
 material = SubResource("ShaderMaterial_4co2k")
 custom_minimum_size = Vector2(8, 8)
@@ -148,7 +145,8 @@ grow_vertical = 2
 pivot_offset = Vector2(4, 4)
 mouse_filter = 2
 
-[node name="InnerColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D/RightEyeColorRect" index="0"]
+[node name="RightInnerColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D/RightEyeColorRect" index="0"]
+unique_name_in_owner = true
 light_mask = 2
 material = SubResource("ShaderMaterial_7ixgf")
 custom_minimum_size = Vector2(4, 4)
@@ -163,7 +161,7 @@ offset_top = -2.0
 offset_bottom = 2.0
 grow_horizontal = 0
 grow_vertical = 2
-pivot_offset = Vector2(2, 2)
+pivot_offset = Vector2(0, 2)
 mouse_filter = 2
 
 [node name="MouthAnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup/Extra2D" index="1"]
@@ -177,28 +175,36 @@ offset = Vector2(2, 4)
 collision_mask = 6
 
 [node name="MoveArea2D" parent="Areas2D" index="1" groups=["player"]]
-collision_mask = 2
+collision_mask = 6
 
 [node name="MoveAreaCollisionShape2D" parent="Areas2D/MoveArea2D" index="0" instance=ExtResource("3_d7pfd")]
 modulate = Color(0.341176, 0.588235, 0.631373, 1)
-position = Vector2(-30, -20)
+position = Vector2(30, 0)
 
 [node name="MoveAreaCollisionShape2D2" parent="Areas2D/MoveArea2D" index="1" instance=ExtResource("3_d7pfd")]
 modulate = Color(0.341176, 0.588235, 0.631373, 1)
-position = Vector2(0, -40)
+position = Vector2(60, 0)
 
 [node name="MoveAreaCollisionShape2D3" parent="Areas2D/MoveArea2D" index="2" instance=ExtResource("3_d7pfd")]
 modulate = Color(0.341176, 0.588235, 0.631373, 1)
-position = Vector2(30, 0)
+position = Vector2(0, -20)
 
 [node name="MoveAreaCollisionShape2D4" parent="Areas2D/MoveArea2D" index="3" instance=ExtResource("3_d7pfd")]
 modulate = Color(0.341176, 0.588235, 0.631373, 1)
-position = Vector2(30, 20)
+position = Vector2(0, -40)
 
 [node name="MoveAreaCollisionShape2D5" parent="Areas2D/MoveArea2D" index="4" instance=ExtResource("3_d7pfd")]
 modulate = Color(0.341176, 0.588235, 0.631373, 1)
-position = Vector2(0, 40)
+position = Vector2(-30, 0)
 
 [node name="MoveAreaCollisionShape2D6" parent="Areas2D/MoveArea2D" index="5" instance=ExtResource("3_d7pfd")]
 modulate = Color(0.341176, 0.588235, 0.631373, 1)
-position = Vector2(-30, 20)
+position = Vector2(-60, 0)
+
+[node name="MoveAreaCollisionShape2D7" parent="Areas2D/MoveArea2D" index="6" instance=ExtResource("3_d7pfd")]
+modulate = Color(0.341176, 0.588235, 0.631373, 1)
+position = Vector2(0, 20)
+
+[node name="MoveAreaCollisionShape2D8" parent="Areas2D/MoveArea2D" index="7" instance=ExtResource("3_d7pfd")]
+modulate = Color(0.341176, 0.588235, 0.631373, 1)
+position = Vector2(0, 40)
