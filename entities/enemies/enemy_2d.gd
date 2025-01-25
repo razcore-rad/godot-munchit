@@ -83,6 +83,9 @@ func _eat_player() -> void:
 	for collision_shape: MoveAreaCollisionShape2D in move_area.get_children():
 		if player_move_area_collision_shape_positions.has(collision_shape.position):
 			player_move_area_collision_shape_positions[collision_shape.position].queue_free()
+
+	if Blackboard.enemies.has(position):
+		Blackboard.enemies.erase(position)
 	queue_free()
 
 

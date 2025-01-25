@@ -52,7 +52,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_qalwy")
 }, {
-"duration": 1.0,
+"duration": 0.01,
 "texture": null
 }],
 "loop": false,

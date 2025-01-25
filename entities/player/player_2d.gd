@@ -31,6 +31,9 @@ func _ready() -> void:
 	skin_sub_viewport_container.add_child(skin_sub_viewport)
 	skin_sub_viewport.blob_removed.connect(_on_skin_sub_viewport_blob_removed)
 
+	for collision_shape:MoveAreaCollisionShape2D in move_area.get_children():
+		collision_shape.sprite.light_mask = 1 << 1
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -106,6 +109,7 @@ func _eat_enemy(enemy_move_area: Area2D) -> void:
 			new_move_area_collision_shape.position = collision_shape.position
 			new_move_area_collision_shape.modulate = MOVE_AREA_COLORS.default
 			new_move_area_collision_shape.sprite.region_rect = MOVE_AREA_TEXTURE_RECT
+			new_move_area_collision_shape.sprite.light_mask = 1 << 1
 
 	move_area.visible = true
 	_toggle_area_shapes(move_area, {is_disabled = false})
