@@ -3,10 +3,10 @@
 [ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_e3jcg"]
 [ext_resource type="Script" uid="uid://e18wuex060o6" path="res://entities/player/player_2d.gd" id="2_d65nd"]
 [ext_resource type="Shader" uid="uid://g2ldtuiprtl3" path="res://entities/player/assets/alphaballs_viewport.gdshader" id="3_aymf0"]
-[ext_resource type="PackedScene" uid="uid://jlhatc0x6ggi" path="res://entities/move_area_collision_shape_2d.tscn" id="3_d7pfd"]
 [ext_resource type="Shader" uid="uid://b4hq4b5ou6b8j" path="res://entities/outline_group.gdshader" id="4_c5hwq"]
 [ext_resource type="Shader" uid="uid://qkyq1k8xjn8l" path="res://entities/player/assets/fuzzyball.gdshader" id="4_lnv7a"]
 [ext_resource type="Texture2D" uid="uid://yt1x0vavnoiq" path="res://entities/player/assets/mouth_eat.png" id="6_u8ep7"]
+[ext_resource type="PackedScene" uid="uid://bq0o8fkg4y0tr" path="res://entities/move_areas/move_area_2d_3.tscn" id="7_u8ep7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u8ep7"]
 shader = ExtResource("4_c5hwq")
@@ -62,6 +62,7 @@ animations = [{
 
 [node name="Player2D" instance=ExtResource("1_e3jcg")]
 script = ExtResource("2_d65nd")
+MoveArea2DPackedScene = ExtResource("7_u8ep7")
 
 [node name="CanvasGroup" type="CanvasGroup" parent="." index="0"]
 material = SubResource("ShaderMaterial_u8ep7")
@@ -173,38 +174,3 @@ offset = Vector2(2, 4)
 
 [node name="DetectArea2D" parent="Areas2D" index="0" groups=["player"]]
 collision_mask = 6
-
-[node name="MoveArea2D" parent="Areas2D" index="1" groups=["player"]]
-collision_mask = 6
-
-[node name="MoveAreaCollisionShape2D" parent="Areas2D/MoveArea2D" index="0" instance=ExtResource("3_d7pfd")]
-modulate = Color(0.341176, 0.588235, 0.631373, 1)
-position = Vector2(30, 0)
-
-[node name="MoveAreaCollisionShape2D2" parent="Areas2D/MoveArea2D" index="1" instance=ExtResource("3_d7pfd")]
-modulate = Color(0.341176, 0.588235, 0.631373, 1)
-position = Vector2(60, 0)
-
-[node name="MoveAreaCollisionShape2D3" parent="Areas2D/MoveArea2D" index="2" instance=ExtResource("3_d7pfd")]
-modulate = Color(0.341176, 0.588235, 0.631373, 1)
-position = Vector2(0, -20)
-
-[node name="MoveAreaCollisionShape2D4" parent="Areas2D/MoveArea2D" index="3" instance=ExtResource("3_d7pfd")]
-modulate = Color(0.341176, 0.588235, 0.631373, 1)
-position = Vector2(0, -40)
-
-[node name="MoveAreaCollisionShape2D5" parent="Areas2D/MoveArea2D" index="4" instance=ExtResource("3_d7pfd")]
-modulate = Color(0.341176, 0.588235, 0.631373, 1)
-position = Vector2(-30, 0)
-
-[node name="MoveAreaCollisionShape2D6" parent="Areas2D/MoveArea2D" index="5" instance=ExtResource("3_d7pfd")]
-modulate = Color(0.341176, 0.588235, 0.631373, 1)
-position = Vector2(-60, 0)
-
-[node name="MoveAreaCollisionShape2D7" parent="Areas2D/MoveArea2D" index="6" instance=ExtResource("3_d7pfd")]
-modulate = Color(0.341176, 0.588235, 0.631373, 1)
-position = Vector2(0, 20)
-
-[node name="MoveAreaCollisionShape2D8" parent="Areas2D/MoveArea2D" index="7" instance=ExtResource("3_d7pfd")]
-modulate = Color(0.341176, 0.588235, 0.631373, 1)
-position = Vector2(0, 40)

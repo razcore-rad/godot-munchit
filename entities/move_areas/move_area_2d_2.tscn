@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://dkshugwglusb6"]
+
+[ext_resource type="PackedScene" uid="uid://jlhatc0x6ggi" path="res://entities/move_area_collision_shape_2d.tscn" id="1_2k6ww"]
+
+[node name="MoveArea2D" type="Area2D"]
+collision_layer = 256
+collision_mask = 7
+monitorable = false
+
+[node name="MoveAreaCollisionShape2D" parent="." instance=ExtResource("1_2k6ww")]
+position = Vector2(0, -40)
+
+[node name="MoveAreaCollisionShape2D2" parent="." instance=ExtResource("1_2k6ww")]
+position = Vector2(30, 20)
+
+[node name="MoveAreaCollisionShape2D3" parent="." instance=ExtResource("1_2k6ww")]
+position = Vector2(-30, 20)

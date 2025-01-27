@@ -22,17 +22,14 @@ var skin_sub_viewport: SkinSubViewport = null
 
 func _ready() -> void:
 	super()
-	detect_area.input_event.connect(_on_detect_area_input_event)
-	_connect_move_area()
 
 	_move_tween.stop()
+	detect_area.input_event.connect(_on_detect_area_input_event)
+
 	skin_sub_viewport = SkinSubViewportPackedScene.instantiate()
 	skin_sub_viewport.world_2d = World2D.new()
 	skin_sub_viewport_container.add_child(skin_sub_viewport)
 	skin_sub_viewport.blob_removed.connect(_on_skin_sub_viewport_blob_removed)
-
-	for collision_shape:MoveAreaCollisionShape2D in move_area.get_children():
-		collision_shape.sprite.light_mask = 1 << 1
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -87,6 +84,15 @@ func _connect_move_area() -> void:
 	move_area.body_shape_entered.connect(_on_move_area_body_shape_entered)
 	move_area.input_event.connect(_on_move_area_input_event)
 	move_area.mouse_exited.connect(_on_move_area_mouse_exited)
+
+
+func _setup_move_area() -> void:
+	super()
+	_connect_move_area()
+	for collision_shape:MoveAreaCollisionShape2D in move_area.get_children():
+		collision_shape.modulate = MOVE_AREA_COLORS.default
+		collision_shape.sprite.region_rect = MOVE_AREA_TEXTURE_RECT
+		collision_shape.sprite.light_mask = 1 << 1
 
 
 func _detect_enemy(target_position: Vector2) -> void:

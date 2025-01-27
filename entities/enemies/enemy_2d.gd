@@ -4,20 +4,18 @@ const MOVE_AREA_TEXTURE_RECT := Rect2(30.0, 40.0, 28.0, 18.0)
 const MOVE_RANDOM_CHANCE := 0.2
 
 
-func _ready() -> void:
-	super()
+func _on_detect_area_mouse(has_entered: bool) -> void:
+	super(has_entered)
+	move_area.visible = has_entered
 
+
+func _setup_move_area() -> void:
+	super()
 	move_area.visible = false
 	for collision_shape: MoveAreaCollisionShape2D in move_area.get_children():
 		collision_shape.modulate = Palette.ORANGE
 		collision_shape.sprite.region_rect = MOVE_AREA_TEXTURE_RECT
-
 	_toggle_area_shapes(move_area, {is_disabled = true})
-
-
-func _on_detect_area_mouse(has_entered: bool) -> void:
-	super(has_entered)
-	move_area.visible = has_entered
 
 
 func _get_sorted_move_choices(to: Vector2) -> Array[Vector2]:
@@ -66,7 +64,7 @@ func _move() -> void:
 		if is_random:
 			tweener.from(position.snapped(Blackboard.half_tile_size))
 		break
-	await skip_process_frames()
+	await _skip_process_frames()
 
 
 func _detect_player(target_position: Vector2) -> void:
