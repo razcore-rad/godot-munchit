@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://bgp7ukyuf5mtq"]
+[gd_scene load_steps=10 format=3 uid="uid://bgp7ukyuf5mtq"]
 
 [ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_hexpc"]
 [ext_resource type="Script" uid="uid://dj0iekh3p1x31" path="res://entities/enemies/enemy_2d.gd" id="2_u2e1t"]
 [ext_resource type="Shader" uid="uid://nu0e1o8wd5d4" path="res://entities/outline.gdshader" id="3_scny1"]
 [ext_resource type="Texture2D" uid="uid://dvrf4i7iugy1t" path="res://entities/enemies/assets/slime.png" id="4_325t7"]
+[ext_resource type="PackedScene" uid="uid://6owe3mp3oab0" path="res://entities/enemies/move_areas/move_area_2d_1.tscn" id="5_scny1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fdirg"]
 shader = ExtResource("3_scny1")
@@ -37,7 +38,6 @@ script = ExtResource("2_u2e1t")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="0"]
 modulate = Color(0.341176, 0.588235, 0.631373, 1)
-light_mask = 3
 material = SubResource("ShaderMaterial_fdirg")
 sprite_frames = SubResource("SpriteFrames_ujq0w")
 autoplay = "default"
@@ -45,3 +45,6 @@ autoplay = "default"
 [node name="DetectArea2D" parent="Areas2D" index="0" groups=["enemy"]]
 collision_layer = 2
 collision_mask = 7
+
+[node name="MoveArea2D" parent="Areas2D" index="1" instance=ExtResource("5_scny1")]
+unique_name_in_owner = true

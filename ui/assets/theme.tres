@@ -1,0 +1,59 @@
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://cwgp6l14spm0o"]
+
+[ext_resource type="FontFile" uid="uid://cj145c2w1pefh" path="res://ui/assets/kobold_gold.otf" id="1_rqugq"]
+[ext_resource type="FontFile" uid="uid://cgpwtp5yju37y" path="res://ui/assets/softball_gold.otf" id="2_jf26r"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jf26r"]
+bg_color = Color(0.921569, 0.839216, 0.580392, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6lx7k"]
+bg_color = Color(0.870588, 0.545098, 0.435294, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7any1"]
+bg_color = Color(0.870588, 0.545098, 0.435294, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3fgq6"]
+content_margin_left = 0.0
+content_margin_top = 2.0
+content_margin_right = 0.0
+content_margin_bottom = 2.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6lx7k"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iqtc0"]
+content_margin_left = 10.0
+content_margin_right = 10.0
+bg_color = Color(0.278431, 0.105882, 0.431373, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jf26r"]
+
+[resource]
+default_font = ExtResource("2_jf26r")
+default_font_size = 32
+HScrollBar/styles/grabber = SubResource("StyleBoxFlat_jf26r")
+HScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_6lx7k")
+HScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_7any1")
+HScrollBar/styles/scroll = SubResource("StyleBoxFlat_3fgq6")
+SeedLabel/base_type = &"Label"
+SeedLabel/colors/font_color = Color(0.921569, 0.839216, 0.580392, 1)
+SeedTextEdit/base_type = &"TextEdit"
+SeedTextEdit/colors/caret_color = Color(0.921569, 0.839216, 0.580392, 1)
+SeedTextEdit/colors/font_color = Color(0.921569, 0.839216, 0.580392, 1)
+SeedTextEdit/colors/font_placeholder_color = Color(0.921569, 0.839216, 0.580392, 0.501961)
+SeedTextEdit/styles/focus = SubResource("StyleBoxEmpty_6lx7k")
+SeedTextEdit/styles/normal = SubResource("StyleBoxFlat_iqtc0")
+StartButton/base_type = &"Button"
+StartButton/colors/font_color = Color(0.341176, 0.588235, 0.631373, 1)
+StartButton/colors/font_focus_color = Color(0.341176, 0.588235, 0.631373, 1)
+StartButton/colors/font_hover_color = Color(0.870588, 0.545098, 0.435294, 1)
+StartButton/colors/font_pressed_color = Color(0.870588, 0.545098, 0.435294, 1)
+StartButton/styles/focus = SubResource("StyleBoxEmpty_jf26r")
+TurnLabel/base_type = &"Label"
+TurnLabel/colors/font_color = Color(0.921569, 0.839216, 0.580392, 1)
+TurnLabel/font_sizes/font_size = 48
+TurnLabel/fonts/font = ExtResource("1_rqugq")

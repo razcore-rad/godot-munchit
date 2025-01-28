@@ -2,6 +2,7 @@ class_name Player2D extends Entity2D
 
 const SkinSubViewportPackedScene: PackedScene = preload("skin_sub_viewport.tscn")
 
+const MOVE_AREAS_FOLDER := "move_areas"
 const JUMP_HEIGHT := 15
 const DURATION := 0.3
 const MOVE_AREA_TEXTURE_RECT := Rect2(0.0, 40.0, 30.0, 20.0)
@@ -13,6 +14,7 @@ const MOVE_AREA_COLORS: Dictionary[String, Color] = {
 var _move_tween: Tween = create_tween()
 
 var skin_sub_viewport: SkinSubViewport = null
+var move_area: Area2D = null
 
 @onready var skin_sub_viewport_container: SubViewportContainer = %SkinSubViewportContainer
 @onready var extra: Node2D = %Extra2D
@@ -22,7 +24,6 @@ var skin_sub_viewport: SkinSubViewport = null
 
 func _ready() -> void:
 	super()
-
 	_move_tween.stop()
 	detect_area.input_event.connect(_on_detect_area_input_event)
 
@@ -86,19 +87,10 @@ func _connect_move_area() -> void:
 	move_area.mouse_exited.connect(_on_move_area_mouse_exited)
 
 
-func _setup_move_area() -> void:
-	super()
-	_connect_move_area()
-	for collision_shape:MoveAreaCollisionShape2D in move_area.get_children():
-		collision_shape.modulate = MOVE_AREA_COLORS.default
-		collision_shape.sprite.region_rect = MOVE_AREA_TEXTURE_RECT
-		collision_shape.sprite.light_mask = 1 << 1
-
-
 func _detect_enemy(target_position: Vector2) -> void:
-	if Blackboard.enemies.has(target_position):
-		var enemy := Blackboard.enemies[target_position]
-		Blackboard.enemies.erase(target_position)
+	if Blackboard.enemies_map.has(target_position):
+		var enemy := Blackboard.enemies_map[target_position]
+		Blackboard.enemies_map.erase(target_position)
 		_eat_enemy(enemy.move_area)
 		enemy.queue_free()
 	else:
@@ -115,11 +107,20 @@ func _eat_enemy(enemy_move_area: Area2D) -> void:
 			new_move_area_collision_shape.position = collision_shape.position
 			new_move_area_collision_shape.modulate = MOVE_AREA_COLORS.default
 			new_move_area_collision_shape.sprite.region_rect = MOVE_AREA_TEXTURE_RECT
-			new_move_area_collision_shape.sprite.light_mask = 1 << 1
 
 	move_area.visible = true
 	_toggle_area_shapes(move_area, {is_disabled = false})
 	mouth_animated_sprite.play()
+
+
+func setup_move_area(new_move_area: Area2D) -> void:
+	move_area = new_move_area
+	move_area.get_parent().remove_child(move_area)
+	areas.add_child(move_area)
+	move_area.position = Vector2.ZERO
+	for collision_shape:MoveAreaCollisionShape2D in move_area.get_children():
+		collision_shape.modulate = MOVE_AREA_COLORS.default
+	_connect_move_area()
 
 
 func end_turn() -> void:

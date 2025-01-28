@@ -3,19 +3,21 @@ class_name Enemy2D extends Entity2D
 const MOVE_AREA_TEXTURE_RECT := Rect2(30.0, 40.0, 28.0, 18.0)
 const MOVE_RANDOM_CHANCE := 0.2
 
-
-func _on_detect_area_mouse(has_entered: bool) -> void:
-	super(has_entered)
-	move_area.visible = has_entered
+@onready var move_area: Area2D = %MoveArea2D
 
 
-func _setup_move_area() -> void:
+func _ready() -> void:
 	super()
 	move_area.visible = false
 	for collision_shape: MoveAreaCollisionShape2D in move_area.get_children():
 		collision_shape.modulate = Palette.ORANGE
 		collision_shape.sprite.region_rect = MOVE_AREA_TEXTURE_RECT
 	_toggle_area_shapes(move_area, {is_disabled = true})
+
+
+func _on_detect_area_mouse(has_entered: bool) -> void:
+	super(has_entered)
+	move_area.visible = has_entered
 
 
 func _get_sorted_move_choices(to: Vector2) -> Array[Vector2]:
@@ -55,8 +57,8 @@ func _move() -> void:
 
 	for target_position: Vector2 in target_positions:
 		target_position = to_global(target_position)
-		Blackboard.enemies.erase(position)
-		Blackboard.enemies[target_position] = self
+		Blackboard.enemies_map.erase(position)
+		Blackboard.enemies_map[target_position] = self
 
 		var tween := create_tween()
 		tween.finished.connect(_detect_player.bind(target_position))
@@ -82,8 +84,8 @@ func _eat_player() -> void:
 		if player_move_area_collision_shape_positions.has(collision_shape.position):
 			player_move_area_collision_shape_positions[collision_shape.position].queue_free()
 
-	if Blackboard.enemies.has(position):
-		Blackboard.enemies.erase(position)
+	if Blackboard.enemies_map.has(position):
+		Blackboard.enemies_map.erase(position)
 	queue_free()
 
 

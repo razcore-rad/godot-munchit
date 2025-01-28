@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_4025a"]
 [ext_resource type="Script" uid="uid://dj0iekh3p1x31" path="res://entities/enemies/enemy_2d.gd" id="2_4eds2"]
 [ext_resource type="Shader" uid="uid://nu0e1o8wd5d4" path="res://entities/outline.gdshader" id="3_563na"]
-[ext_resource type="PackedScene" uid="uid://dkshugwglusb6" path="res://entities/move_areas/move_area_2d_2.tscn" id="3_yf2pk"]
+[ext_resource type="PackedScene" uid="uid://dkshugwglusb6" path="res://entities/enemies/move_areas/move_area_2d_2.tscn" id="3_yf2pk"]
 [ext_resource type="Texture2D" uid="uid://bcnyk3csvrqyg" path="res://entities/enemies/assets/big_slime.png" id="4_whdkn"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yf2pk"]
@@ -35,11 +35,9 @@ animations = [{
 
 [node name="Enemy2DB" instance=ExtResource("1_4025a")]
 script = ExtResource("2_4eds2")
-MoveArea2DPackedScene = ExtResource("3_yf2pk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="0"]
 modulate = Color(0.545098, 0.780392, 0.74902, 1)
-light_mask = 3
 material = SubResource("ShaderMaterial_yf2pk")
 sprite_frames = SubResource("SpriteFrames_ghlyc")
 autoplay = "default"
@@ -49,3 +47,6 @@ frame_progress = 0.270132
 [node name="DetectArea2D" parent="Areas2D" index="0" groups=["enemy"]]
 collision_layer = 2
 collision_mask = 7
+
+[node name="MoveArea2D" parent="Areas2D" index="1" instance=ExtResource("3_yf2pk")]
+unique_name_in_owner = true

@@ -4,10 +4,6 @@ signal turn_finished
 
 const MoveAreaCollisionShape2DPackedScene := preload("move_area_collision_shape_2d.tscn")
 
-@export var MoveArea2DPackedScene := preload("move_areas/move_area_2d_1.tscn")
-
-var move_area: Area2D = null
-
 @onready var areas: Node2D = %Areas2D
 @onready var detect_area: Area2D = %DetectArea2D
 @onready var detect_area_sprite: Sprite2D = %DetectAreaSprite2D
@@ -16,7 +12,6 @@ var move_area: Area2D = null
 func _ready() -> void:
 	detect_area.mouse_entered.connect(_on_detect_area_mouse.bind(true))
 	detect_area.mouse_exited.connect(_on_detect_area_mouse.bind(false))
-	_setup_move_area()
 
 
 func _on_detect_area_mouse(has_entered: bool) -> void:
@@ -35,12 +30,6 @@ func _toggle_area_shapes(area: Area2D, info := {}) -> void:
 func _skip_process_frames(n: int = 1) -> void:
 	for _i in range(n):
 		await get_tree().process_frame
-
-
-func _setup_move_area() -> void:
-	move_area = MoveArea2DPackedScene.instantiate()
-	areas.add_child(move_area)
-	move_area.owner = self
 
 
 func start_turn() -> void:

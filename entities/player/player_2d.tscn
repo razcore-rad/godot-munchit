@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://c2mhgypppwjb3"]
+[gd_scene load_steps=15 format=3 uid="uid://c2mhgypppwjb3"]
 
 [ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_e3jcg"]
 [ext_resource type="Script" uid="uid://e18wuex060o6" path="res://entities/player/player_2d.gd" id="2_d65nd"]
@@ -6,7 +6,6 @@
 [ext_resource type="Shader" uid="uid://b4hq4b5ou6b8j" path="res://entities/outline_group.gdshader" id="4_c5hwq"]
 [ext_resource type="Shader" uid="uid://qkyq1k8xjn8l" path="res://entities/player/assets/fuzzyball.gdshader" id="4_lnv7a"]
 [ext_resource type="Texture2D" uid="uid://yt1x0vavnoiq" path="res://entities/player/assets/mouth_eat.png" id="6_u8ep7"]
-[ext_resource type="PackedScene" uid="uid://bq0o8fkg4y0tr" path="res://entities/move_areas/move_area_2d_3.tscn" id="7_u8ep7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u8ep7"]
 shader = ExtResource("4_c5hwq")
@@ -62,7 +61,6 @@ animations = [{
 
 [node name="Player2D" instance=ExtResource("1_e3jcg")]
 script = ExtResource("2_d65nd")
-MoveArea2DPackedScene = ExtResource("7_u8ep7")
 
 [node name="CanvasGroup" type="CanvasGroup" parent="." index="0"]
 material = SubResource("ShaderMaterial_u8ep7")
@@ -92,7 +90,6 @@ position = Vector2(0, -5)
 [node name="Eyes2D" type="Node2D" parent="CanvasGroup/Extra2D" index="0"]
 
 [node name="LeftEyeColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D" index="0"]
-light_mask = 2
 material = SubResource("ShaderMaterial_4co2k")
 custom_minimum_size = Vector2(8, 8)
 anchors_preset = 8
@@ -111,7 +108,6 @@ mouse_filter = 2
 
 [node name="LeftInnerColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D/LeftEyeColorRect" index="0"]
 unique_name_in_owner = true
-light_mask = 2
 material = SubResource("ShaderMaterial_7ixgf")
 custom_minimum_size = Vector2(4, 4)
 layout_mode = 1
@@ -129,7 +125,6 @@ pivot_offset = Vector2(0, 2)
 mouse_filter = 2
 
 [node name="RightEyeColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D" index="1"]
-light_mask = 2
 material = SubResource("ShaderMaterial_4co2k")
 custom_minimum_size = Vector2(8, 8)
 anchors_preset = 8
@@ -148,7 +143,6 @@ mouse_filter = 2
 
 [node name="RightInnerColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D/RightEyeColorRect" index="0"]
 unique_name_in_owner = true
-light_mask = 2
 material = SubResource("ShaderMaterial_7ixgf")
 custom_minimum_size = Vector2(4, 4)
 layout_mode = 1

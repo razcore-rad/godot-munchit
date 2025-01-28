@@ -1,33 +1,29 @@
-[gd_scene load_steps=11 format=3 uid="uid://bskvs3ko2utnn"]
+[gd_scene load_steps=20 format=3 uid="uid://bskvs3ko2utnn"]
 
 [ext_resource type="Script" uid="uid://tcg6bs55hw1w" path="res://main.gd" id="1_aaq20"]
-[ext_resource type="Theme" uid="uid://cwgp6l14spm0o" path="res://ui/theme.tres" id="3_h2yge"]
+[ext_resource type="Shader" uid="uid://cowsy25kxhkiw" path="res://assets/light_only_group.gdshader" id="2_efxa6"]
+[ext_resource type="Theme" uid="uid://cwgp6l14spm0o" path="res://ui/assets/theme.tres" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://dvmchvuxtfmmw" path="res://ui/pick_control.gd" id="4_efxa6"]
 [ext_resource type="PackedScene" uid="uid://c2mhgypppwjb3" path="res://entities/player/player_2d.tscn" id="4_p2fd5"]
+[ext_resource type="Shader" uid="uid://nu0e1o8wd5d4" path="res://entities/outline.gdshader" id="6_kek77"]
+[ext_resource type="Texture2D" uid="uid://dwb67e36aikmi" path="res://ui/assets/pick_texture_button/pick_texture_button_nornal.png" id="7_4c57u"]
+[ext_resource type="Texture2D" uid="uid://ldn0aescwsku" path="res://ui/assets/pick_texture_button/pick_texture_button_pressed.png" id="8_4c57u"]
+[ext_resource type="Texture2D" uid="uid://drwxxjtt4sm0i" path="res://ui/assets/pick_texture_button/pick_texture_button_hover.png" id="9_dg77c"]
+[ext_resource type="Script" uid="uid://dpch7hvosvql3" path="res://ui/seed_text_edit.gd" id="11_efxa6"]
 
-[sub_resource type="Shader" id="Shader_lquwl"]
-code = "shader_type canvas_item;
-render_mode light_only;
-
-uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
-
-void fragment() {
-	COLOR = texture(screen_texture, SCREEN_UV);
-}
-"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7mycd"]
-shader = SubResource("Shader_lquwl")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dg77c"]
+shader = ExtResource("2_efxa6")
 
 [sub_resource type="TileSet" id="TileSet_b0o41"]
 tile_size = Vector2i(960, 540)
 
-[sub_resource type="Gradient" id="Gradient_c5hwq"]
+[sub_resource type="Gradient" id="Gradient_efxa6"]
 interpolation_mode = 2
 interpolation_color_space = 2
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+colors = PackedColorArray(0.823529, 0.823529, 0.823529, 1, 0.823529, 0.823529, 0.823529, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_0xm2m"]
-gradient = SubResource("Gradient_c5hwq")
+gradient = SubResource("Gradient_efxa6")
 width = 1024
 height = 1024
 fill = 1
@@ -47,11 +43,26 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 0.1)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ycdy4"]
+shader = ExtResource("6_kek77")
+shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
+shader_parameter/line_thickness = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4c57u"]
+shader = ExtResource("6_kek77")
+shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
+shader_parameter/line_thickness = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_efxa6"]
+shader = ExtResource("6_kek77")
+shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
+shader_parameter/line_thickness = 2
+
 [node name="Main" type="Node"]
 script = ExtResource("1_aaq20")
 
 [node name="CanvasGroup" type="CanvasGroup" parent="."]
-material = SubResource("ShaderMaterial_7mycd")
+material = SubResource("ShaderMaterial_dg77c")
 
 [node name="SectorTileMapLayer" type="TileMapLayer" parent="CanvasGroup"]
 unique_name_in_owner = true
@@ -66,7 +77,7 @@ unique_name_in_owner = true
 
 [node name="Player2D" parent="." instance=ExtResource("4_p2fd5")]
 unique_name_in_owner = true
-position = Vector2(435, 70)
+position = Vector2(15, 10)
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player2D"]
 remote_path = NodePath("../../Camera2D")
@@ -74,11 +85,10 @@ update_rotation = false
 update_scale = false
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(435, 70)
+position = Vector2(15, 10)
 position_smoothing_enabled = true
 
 [node name="BasePointLight2D" type="PointLight2D" parent="Camera2D"]
-color = Color(0.821856, 0.821855, 0.821855, 1)
 shadow_enabled = true
 shadow_color = Color(0, 0, 0, 1)
 shadow_filter = 1
@@ -86,7 +96,7 @@ shadow_filter_smooth = 1.0
 texture = SubResource("GradientTexture2D_0xm2m")
 
 [node name="TopPointLight2D" type="PointLight2D" parent="Camera2D"]
-color = Color(0.821856, 0.821855, 0.821855, 1)
+energy = 0.3
 range_item_cull_mask = 2
 shadow_color = Color(0, 0, 0, 1)
 shadow_filter = 1
@@ -98,48 +108,9 @@ color = Color(0.0785603, 0.0617619, 0.0932407, 1)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="SelectorHBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -105.0
-offset_top = -70.0
-offset_right = 105.0
-offset_bottom = 70.0
-grow_horizontal = 2
-grow_vertical = 2
-alignment = 1
-
-[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer/SelectorHBoxContainer"]
-layout_mode = 2
-
-[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SelectorHBoxContainer/SubViewportContainer"]
-disable_3d = true
-handle_input_locally = false
-size = Vector2i(210, 140)
-render_target_update_mode = 0
-
-[node name="SubViewportContainer2" type="SubViewportContainer" parent="CanvasLayer/SelectorHBoxContainer"]
-layout_mode = 2
-
-[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SelectorHBoxContainer/SubViewportContainer2"]
-handle_input_locally = false
-size = Vector2i(210, 140)
-render_target_update_mode = 0
-
-[node name="SubViewportContainer3" type="SubViewportContainer" parent="CanvasLayer/SelectorHBoxContainer"]
-layout_mode = 2
-
-[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SelectorHBoxContainer/SubViewportContainer3"]
-handle_input_locally = false
-size = Vector2i(210, 140)
-render_target_update_mode = 0
-
 [node name="BlobsHBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
 unique_name_in_owner = true
+visible = false
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 50.0
@@ -162,3 +133,136 @@ theme = ExtResource("3_h2yge")
 theme_type_variation = &"TurnLabel"
 text = "0"
 horizontal_alignment = 2
+
+[node name="PickControl" type="Control" parent="CanvasLayer"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_efxa6")
+
+[node name="Control" type="Control" parent="CanvasLayer/PickControl"]
+clip_contents = true
+custom_minimum_size = Vector2(630, 140)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -315.0
+offset_top = -70.0
+offset_right = 315.0
+offset_bottom = 70.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="CanvasLayer/PickControl/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AreasControl" type="Control" parent="CanvasLayer/PickControl/Control/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LeftTextureButton" type="TextureButton" parent="CanvasLayer/PickControl"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_ycdy4")
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 90.0
+offset_top = -20.0
+offset_right = 30.0
+offset_bottom = 20.0
+grow_vertical = 2
+texture_normal = ExtResource("7_4c57u")
+texture_pressed = ExtResource("8_4c57u")
+texture_hover = ExtResource("9_dg77c")
+
+[node name="RightTextureButton" type="TextureButton" parent="CanvasLayer/PickControl"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_ycdy4")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = -20.0
+offset_right = -90.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+texture_normal = ExtResource("7_4c57u")
+texture_pressed = ExtResource("8_4c57u")
+texture_hover = ExtResource("9_dg77c")
+flip_h = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = 158.0
+offset_right = 120.0
+offset_bottom = 242.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_h2yge")
+
+[node name="StartButton" type="Button" parent="CanvasLayer/VBoxContainer"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_4c57u")
+layout_mode = 2
+theme_type_variation = &"StartButton"
+text = "Start"
+flat = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SeedLabel" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer"]
+material = SubResource("ShaderMaterial_efxa6")
+layout_mode = 2
+theme_type_variation = &"SeedLabel"
+text = "Seed:"
+
+[node name="SeedTextEdit" type="TextEdit" parent="CanvasLayer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 40)
+layout_mode = 2
+theme_type_variation = &"SeedTextEdit"
+placeholder_text = "world"
+context_menu_enabled = false
+emoji_menu_enabled = false
+shortcut_keys_enabled = false
+selecting_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
+empty_selection_clipboard_enabled = false
+scroll_fit_content_height = true
+caret_multiple = false
+script = ExtResource("11_efxa6")
