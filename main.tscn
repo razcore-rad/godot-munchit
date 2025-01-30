@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bskvs3ko2utnn"]
+[gd_scene load_steps=21 format=3 uid="uid://bskvs3ko2utnn"]
 
 [ext_resource type="Script" uid="uid://tcg6bs55hw1w" path="res://main.gd" id="1_aaq20"]
 [ext_resource type="Shader" uid="uid://cowsy25kxhkiw" path="res://assets/light_only_group.gdshader" id="2_efxa6"]
@@ -48,6 +48,11 @@ shader = ExtResource("6_kek77")
 shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
 shader_parameter/line_thickness = 2
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w48qg"]
+shader = ExtResource("6_kek77")
+shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
+shader_parameter/line_thickness = 2
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4c57u"]
 shader = ExtResource("6_kek77")
 shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
@@ -89,11 +94,14 @@ position = Vector2(15, 10)
 position_smoothing_enabled = true
 
 [node name="BasePointLight2D" type="PointLight2D" parent="Camera2D"]
+unique_name_in_owner = true
+energy = 0.6
 shadow_enabled = true
 shadow_color = Color(0, 0, 0, 1)
 shadow_filter = 1
 shadow_filter_smooth = 1.0
 texture = SubResource("GradientTexture2D_0xm2m")
+texture_scale = 0.6
 
 [node name="TopPointLight2D" type="PointLight2D" parent="Camera2D"]
 energy = 0.3
@@ -142,6 +150,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("4_efxa6")
 
 [node name="Control" type="Control" parent="CanvasLayer/PickControl"]
@@ -159,6 +168,7 @@ offset_right = 315.0
 offset_bottom = 70.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="Control" type="Control" parent="CanvasLayer/PickControl/Control"]
 layout_mode = 1
@@ -169,6 +179,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="AreasControl" type="Control" parent="CanvasLayer/PickControl/Control/Control"]
 unique_name_in_owner = true
@@ -180,6 +191,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="LeftTextureButton" type="TextureButton" parent="CanvasLayer/PickControl"]
 unique_name_in_owner = true
@@ -224,13 +236,26 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -120.0
-offset_top = 158.0
-offset_right = 120.0
-offset_bottom = 242.0
+offset_left = -156.0
+offset_top = -112.0
+offset_right = 156.0
+offset_bottom = 112.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme = ExtResource("3_h2yge")
+
+[node name="TitleLabel" type="Label" parent="CanvasLayer/VBoxContainer"]
+material = SubResource("ShaderMaterial_w48qg")
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+text = "MunchIt"
+horizontal_alignment = 1
+
+[node name="MenuHSeparator" type="HSeparator" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"MenuHSeparator"
 
 [node name="StartButton" type="Button" parent="CanvasLayer/VBoxContainer"]
 unique_name_in_owner = true
@@ -242,6 +267,7 @@ flat = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="SeedLabel" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer"]
 material = SubResource("ShaderMaterial_efxa6")

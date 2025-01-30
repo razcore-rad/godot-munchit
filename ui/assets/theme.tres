@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=10 format=3 uid="uid://cwgp6l14spm0o"]
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://cwgp6l14spm0o"]
 
 [ext_resource type="FontFile" uid="uid://cj145c2w1pefh" path="res://ui/assets/kobold_gold.otf" id="1_rqugq"]
 [ext_resource type="FontFile" uid="uid://cgpwtp5yju37y" path="res://ui/assets/softball_gold.otf" id="2_jf26r"]
@@ -18,6 +18,8 @@ content_margin_top = 2.0
 content_margin_right = 0.0
 content_margin_bottom = 2.0
 bg_color = Color(0.1, 0.1, 0.1, 0.6)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_34r1t"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6lx7k"]
 
@@ -39,6 +41,9 @@ HScrollBar/styles/grabber = SubResource("StyleBoxFlat_jf26r")
 HScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_6lx7k")
 HScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_7any1")
 HScrollBar/styles/scroll = SubResource("StyleBoxFlat_3fgq6")
+MenuHSeparator/base_type = &"HSeparator"
+MenuHSeparator/constants/separation = 200
+MenuHSeparator/styles/separator = SubResource("StyleBoxEmpty_34r1t")
 SeedLabel/base_type = &"Label"
 SeedLabel/colors/font_color = Color(0.921569, 0.839216, 0.580392, 1)
 SeedTextEdit/base_type = &"TextEdit"
@@ -53,6 +58,9 @@ StartButton/colors/font_focus_color = Color(0.341176, 0.588235, 0.631373, 1)
 StartButton/colors/font_hover_color = Color(0.870588, 0.545098, 0.435294, 1)
 StartButton/colors/font_pressed_color = Color(0.870588, 0.545098, 0.435294, 1)
 StartButton/styles/focus = SubResource("StyleBoxEmpty_jf26r")
+TitleLabel/base_type = &"Label"
+TitleLabel/colors/font_color = Color(0.870588, 0.545098, 0.435294, 1)
+TitleLabel/font_sizes/font_size = 72
 TurnLabel/base_type = &"Label"
 TurnLabel/colors/font_color = Color(0.921569, 0.839216, 0.580392, 1)
 TurnLabel/font_sizes/font_size = 48

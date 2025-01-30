@@ -16,6 +16,7 @@ var _move_tween: Tween = create_tween()
 var skin_sub_viewport: SkinSubViewport = null
 var move_area: Area2D = null
 
+@onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var skin_sub_viewport_container: SubViewportContainer = %SkinSubViewportContainer
 @onready var extra: Node2D = %Extra2D
 @onready var mouth_animated_sprite: AnimatedSprite2D = %MouthAnimatedSprite2D
@@ -88,7 +89,7 @@ func _connect_move_area() -> void:
 
 
 func _detect_enemy(target_position: Vector2) -> void:
-	if Blackboard.enemies_map.has(target_position):
+	if target_position in Blackboard.enemies_map:
 		var enemy := Blackboard.enemies_map[target_position]
 		Blackboard.enemies_map.erase(target_position)
 		_eat_enemy(enemy.move_area)
@@ -101,7 +102,7 @@ func _eat_enemy(enemy_move_area: Area2D) -> void:
 	skin_sub_viewport.add_blob.call_deferred()
 	var move_area_collision_shape_positions := move_area.get_children().map(func(cs: MoveAreaCollisionShape2D) -> Vector2: return cs.position)
 	for collision_shape: MoveAreaCollisionShape2D in enemy_move_area.get_children():
-		if not collision_shape.position in move_area_collision_shape_positions:
+		if collision_shape.position not in move_area_collision_shape_positions:
 			var new_move_area_collision_shape := MoveAreaCollisionShape2DPackedScene.instantiate()
 			move_area.add_child(new_move_area_collision_shape)
 			new_move_area_collision_shape.position = collision_shape.position
@@ -110,6 +111,7 @@ func _eat_enemy(enemy_move_area: Area2D) -> void:
 
 	move_area.visible = true
 	_toggle_area_shapes(move_area, {is_disabled = false})
+	animation_player.play("eat_crumbs")
 	mouth_animated_sprite.play()
 
 
@@ -125,3 +127,13 @@ func setup_move_area(new_move_area: Area2D) -> void:
 
 func end_turn() -> void:
 	_toggle_area_shapes(move_area, {is_disabled = false})
+	const DISTANCE_SQUARED_CHECK := 2
+	var _sector_player_position := Blackboard.sector_tile_map_layer.local_to_map(position)
+	for sector_offset: Vector2i in Blackboard.sectors_map:
+		if _sector_player_position.distance_squared_to(sector_offset) > DISTANCE_SQUARED_CHECK:
+			Blackboard.sectors_map[sector_offset].queue_free()
+			Blackboard.sectors_map.erase(sector_offset)
+
+	for sector_offset: Vector2i in Blackboard.get_neighbor_sector_coords(_sector_player_position):
+		var sector := Blackboard.generate_sector(sector_offset)
+		Blackboard.generate_enemies(sector)

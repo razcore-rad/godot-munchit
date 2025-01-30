@@ -1,6 +1,5 @@
 class_name Enemy2D extends Entity2D
 
-const MOVE_AREA_TEXTURE_RECT := Rect2(30.0, 40.0, 28.0, 18.0)
 const MOVE_RANDOM_CHANCE := 0.2
 
 @onready var move_area: Area2D = %MoveArea2D
@@ -9,9 +8,6 @@ const MOVE_RANDOM_CHANCE := 0.2
 func _ready() -> void:
 	super()
 	move_area.visible = false
-	for collision_shape: MoveAreaCollisionShape2D in move_area.get_children():
-		collision_shape.modulate = Palette.ORANGE
-		collision_shape.sprite.region_rect = MOVE_AREA_TEXTURE_RECT
 	_toggle_area_shapes(move_area, {is_disabled = true})
 
 
@@ -81,10 +77,10 @@ func _eat_player() -> void:
 		player_move_area_collision_shape_positions[collision_shape.position] = collision_shape
 
 	for collision_shape: MoveAreaCollisionShape2D in move_area.get_children():
-		if player_move_area_collision_shape_positions.has(collision_shape.position):
+		if collision_shape.position in player_move_area_collision_shape_positions:
 			player_move_area_collision_shape_positions[collision_shape.position].queue_free()
 
-	if Blackboard.enemies_map.has(position):
+	if position in Blackboard.enemies_map:
 		Blackboard.enemies_map.erase(position)
 	queue_free()
 

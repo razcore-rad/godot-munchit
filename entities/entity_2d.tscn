@@ -24,4 +24,4 @@ visible = false
 modulate = Color(0.921569, 0.839216, 0.580392, 1)
 texture = ExtResource("2_i4s38")
 region_enabled = true
-region_rect = Rect2(0, 60, 10, 10)
+region_rect = Rect2(10, 65, 10, 10)

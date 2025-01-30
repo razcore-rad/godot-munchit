@@ -75,17 +75,18 @@ static func is_valid(v: Variant) -> bool:
 	return is_instance_valid(v) and not v.is_queued_for_deletion()
 
 
-static func generate() -> void:
+static func generate(relative_to: Vector2i, do_generate_enemies := true) -> void:
 	seed(hash(seed_text_edit.get_seed_text()))
 	for sector_x: int in _sector_offset_span:
 		for sector_y: int in _sector_offset_span:
-			var tile_map_layer := generate_sector(Vector2i(sector_x, sector_y))
-			generate_enemies(tile_map_layer)
+			var tile_map_layer := generate_sector(relative_to + Vector2i(sector_x, sector_y))
+			if do_generate_enemies:
+				generate_enemies(tile_map_layer)
 
 
 static func generate_sector(offset: Vector2i) -> Sector2D:
 	if offset in sectors_map:
-		return null
+		return sectors_map[offset]
 
 	var sector: Sector2D = Sector2DPackedScene.instantiate()
 	sectors.add_child(sector)
@@ -136,7 +137,10 @@ static func get_neighbor_sector_coords(relative_to := Vector2i.ZERO) -> Array[Ve
 	var result: Array[Vector2i] = []
 	for x in _sector_offset_span:
 		for y in _sector_offset_span:
-			result.push_back(relative_to + Vector2i(x, y))
+			var xy := Vector2i(x, y)
+			if xy == Vector2i.ZERO:
+				continue
+			result.push_back(relative_to + xy)
 	return result
 
 
