@@ -16,6 +16,7 @@ var _move_tween: Tween = create_tween()
 var skin_sub_viewport: SkinSubViewport = null
 var move_area: Area2D = null
 
+@onready var spawn_tile_map_layer: TileMapLayer = %SpawnTileMapLayer
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var skin_sub_viewport_container: SubViewportContainer = %SkinSubViewportContainer
 @onready var extra: Node2D = %Extra2D
@@ -133,7 +134,4 @@ func end_turn() -> void:
 		if _sector_player_position.distance_squared_to(sector_offset) > DISTANCE_SQUARED_CHECK:
 			Blackboard.sectors_map[sector_offset].queue_free()
 			Blackboard.sectors_map.erase(sector_offset)
-
-	for sector_offset: Vector2i in Blackboard.get_neighbor_sector_coords(_sector_player_position):
-		var sector := Blackboard.generate_sector(sector_offset)
-		Blackboard.generate_enemies(sector)
+	Blackboard.spawn_enemies(spawn_tile_map_layer)

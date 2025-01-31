@@ -51,26 +51,28 @@ func _move() -> void:
 		else _get_sorted_move_choices(Blackboard.player.position)
 	)
 
+	var original_position := position
 	for target_position: Vector2 in target_positions:
 		target_position = to_global(target_position)
 		Blackboard.enemies_map.erase(position)
 		Blackboard.enemies_map[target_position] = self
 
 		var tween := create_tween()
-		tween.finished.connect(_detect_player.bind(target_position))
-		var tweener := tween.tween_property(self, "position", target_position, 0.1)
+		var tweener := tween.tween_property(self, "position", target_position, 0.05)
 		if is_random:
 			tweener.from(position.snapped(Blackboard.half_tile_size))
+		await _detect_player(tween, original_position, target_position)
 		break
 	await _skip_process_frames()
 
 
-func _detect_player(target_position: Vector2) -> void:
+func _detect_player(tween: Tween, original_position: Vector2, target_position: Vector2) -> void:
 	if Blackboard.is_valid(Blackboard.player) and target_position.is_equal_approx(Blackboard.player.position):
-		_eat_player()
+		await tween.finished
+		await _eat_player(original_position, target_position)
 
 
-func _eat_player() -> void:
+func _eat_player(original_position: Vector2, target_position: Vector2) -> void:
 	Blackboard.player.skin_sub_viewport.remove_blob.call_deferred()
 	var player_move_area_collision_shape_positions: Dictionary[Vector2, MoveAreaCollisionShape2D] = {}
 	for collision_shape: MoveAreaCollisionShape2D in Blackboard.player.move_area.get_children():
@@ -80,9 +82,12 @@ func _eat_player() -> void:
 		if collision_shape.position in player_move_area_collision_shape_positions:
 			player_move_area_collision_shape_positions[collision_shape.position].queue_free()
 
-	if position in Blackboard.enemies_map:
-		Blackboard.enemies_map.erase(position)
-	queue_free()
+	var tween := create_tween()
+	tween.tween_property(self, "position", original_position, 0.1)
+	await tween.finished
+
+	Blackboard.enemies_map.erase(target_position)
+	Blackboard.enemies_map[original_position] = self
 
 
 func start_turn() -> void:

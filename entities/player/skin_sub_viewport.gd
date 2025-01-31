@@ -5,13 +5,15 @@ signal blob_removed(blob_count: int)
 
 const BlobPinJoint2DPackedScene: PackedScene = preload("blob_pin_joint_2d.tscn")
 
+const MAX_BLOBS := 5
+
 @onready var blobs: Node2D = %Blobs2D
 @onready var blob_animatable_body: AnimatableBody2D = %BlobAnimatableBody2D
 
 
 func add_blob() -> void:
 	var blob_count := blobs.get_child_count() - 1
-	if blob_count >= 3:
+	if blob_count >= MAX_BLOBS:
 		return
 
 	var blob_pin_joint: PinJoint2D = BlobPinJoint2DPackedScene.instantiate()

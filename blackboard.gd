@@ -3,9 +3,9 @@ class_name Blackboard
 const Sector2DPackedScene := preload("sectors/sector_2d.tscn")
 
 const TILE_SET := preload("sectors/tile_set.tres")
-const INVALID_ATLAS_COORD := -1 * Vector2i.ONE
 
-const ENEMY_SPAN := Vector2i(9, 13)
+const MAX_ENEMIES := 300
+const ENEMY_SPAN := Vector2i(MAX_ENEMIES - 20, MAX_ENEMIES)
 const ENEMY_FILE_PATHS: Array[String] = [
 	"entities/enemies/enemy_2d_a.tscn",
 	"entities/enemies/enemy_2d_b.tscn",
@@ -55,20 +55,9 @@ static func get_sector(at: Vector2) -> Sector2D:
 	return sectors_map.get(coord)
 
 
-static func get_sector_local_to_map(at: Vector2) -> Vector2i:
-	var sector := get_sector(at)
-	return INVALID_ATLAS_COORD if sector == null else sector.top_tile_map_layer.local_to_map(at)
-
-
-static func get_sector_atlas_coords(at: Vector2) -> Vector2i:
-	var sector := get_sector(at)
-	at = sector.to_local(at)
-	return INVALID_ATLAS_COORD if sector == null else sector.top_tile_map_layer.get_cell_atlas_coords(sector.top_tile_map_layer.local_to_map(at))
-
-
 static func is_sector_obstacle(at: Vector2) -> bool:
-	var coords := get_sector_atlas_coords(at)
-	return coords in obstacles or at in enemies_map
+	var sector := get_sector(at)
+	return sector == null or sector.top_tile_map_layer.local_to_map(sector.to_local(at)) in sector.top_tile_map_layer.get_used_cells() or at in enemies_map
 
 
 static func is_valid(v: Variant) -> bool:
@@ -116,21 +105,23 @@ static func generate_enemies(sector: Sector2D) -> void:
 	for obstacle_coord: Vector2i in sector.top_tile_map_layer.get_used_cells():
 		available_coords.erase(obstacle_coord)
 
-	for index: int in range(TILE_SET.get_source_count()):
-		var tile_map_source: TileSetAtlasSource = TILE_SET.get_source(index)
-		var atlast_grid_size := tile_map_source.get_atlas_grid_size()
-		for atlas_x: int in range(atlast_grid_size.x):
-			for atlas_y: int in range(atlast_grid_size.y):
-				var atlas_coords := Vector2i(atlas_x, atlas_y)
-				if atlas_coords.y > 0:
-					for coord: Vector2i in sector.top_tile_map_layer.get_used_cells_by_id(index, atlas_coords):
-						available_coords.erase(coord)
-
-	for _i: int in range(randi_range(ENEMY_SPAN.x, ENEMY_SPAN.y)):
+	@warning_ignore("integer_division")
+	for _i: int in range(randi_range(ENEMY_SPAN.x, ENEMY_SPAN.y) / sectors_map.size()):
 		var coord: Vector2i = available_coords.pick_random()
 		var enemy_position := sector.top_tile_map_layer.to_global(sector.top_tile_map_layer.map_to_local(coord))
 		_add_enemy(enemy_position)
 		available_coords.erase(coord)
+
+
+static func spawn_enemies(spawn_tile_map_layer: TileMapLayer) -> void:
+	var available_positions: Array[Vector2i] = spawn_tile_map_layer.get_used_cells().reduce(func(acc: Dictionary[Vector2i, Variant], v: Vector2i) -> Dictionary[Vector2i, Variant]:
+		v = spawn_tile_map_layer.to_global(spawn_tile_map_layer.map_to_local(v))
+		return acc.merged({v: null}) if not Blackboard.is_sector_obstacle(v) else acc , {} as Dictionary[Vector2i, Variant]).keys()
+
+	for _i: int in range(enemies_map.size(), MAX_ENEMIES):
+		var enemy_position: Vector2i = available_positions.pick_random()
+		_add_enemy(enemy_position)
+		available_positions.erase(enemy_position)
 
 
 static func get_neighbor_sector_coords(relative_to := Vector2i.ZERO) -> Array[Vector2i]:
