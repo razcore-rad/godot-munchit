@@ -5,6 +5,7 @@ const BlobTextureRectPackedScene := preload("ui/blob_texture_rect.tscn")
 const DEFAULT_SEED_TEXT := "world"
 
 @onready var enemies: Node2D = %Enemies2D
+@onready var stinger_enemies: Node2D = %StingerEnemies2D
 @onready var sector_tile_map_layer: TileMapLayer = %SectorTileMapLayer
 @onready var sectors: Node2D = %Sectors2D
 @onready var player: Player2D = %Player2D
@@ -22,7 +23,7 @@ func _ready() -> void:
 	start_button.pressed.connect(_on_start_button_pressed)
 	player.skin_sub_viewport.blob_added.connect(_on_player_skin_sub_viewport_blob.bind(true))
 	player.skin_sub_viewport.blob_removed.connect(_on_player_skin_sub_viewport_blob.bind(false))
-	for _i in range(10):
+	for _i in player.skin_sub_viewport.MAX_BLOBS:
 		player.skin_sub_viewport.add_blob()
 
 	seed_text_edit.placeholder_text = DEFAULT_SEED_TEXT
@@ -30,13 +31,18 @@ func _ready() -> void:
 	Blackboard.sector_tile_map_layer = sector_tile_map_layer
 	Blackboard.sectors = sectors
 	Blackboard.enemies = enemies
+	Blackboard.stinger_enemies = stinger_enemies
 	Blackboard.player = player
-	Blackboard.seed_text_edit = seed_text_edit
-	Blackboard.generate(sector_tile_map_layer.local_to_map(player.position), false)
+	Blackboard.turn_label = turn_label
+
+	Blackboard.seed_text = seed_text_edit.get_seed_text()
+	seed(hash(Blackboard.seed_text))
+
+	Blackboard.generate()
 
 
 func _on_start_button_pressed() -> void:
-	Blackboard.generate(sector_tile_map_layer.local_to_map(player.position))
+	Blackboard.generate(true)
 	_start_turn_based_loop()
 
 	var tween := create_tween().set_parallel()
@@ -60,7 +66,7 @@ func _on_player_skin_sub_viewport_blob(_blob_count: int, is_added: bool) -> void
 func _start_turn_based_loop() -> void:
 	player.setup_move_area(pick_control.get_move_area())
 	while true:
-		turn_label.text = str(turn_label.text.to_int() + 1)
+		Blackboard.increment_turn()
 		var entities := Blackboard.get_entities()
 		if entities.is_empty():
 			break

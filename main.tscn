@@ -80,6 +80,9 @@ unique_name_in_owner = true
 [node name="Enemies2D" type="Node2D" parent="CanvasGroup"]
 unique_name_in_owner = true
 
+[node name="StingerEnemies2D" type="Node2D" parent="CanvasGroup"]
+unique_name_in_owner = true
+
 [node name="Player2D" parent="." instance=ExtResource("4_p2fd5")]
 unique_name_in_owner = true
 position = Vector2(15, 10)

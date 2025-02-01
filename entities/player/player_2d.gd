@@ -22,6 +22,7 @@ var move_area: Area2D = null
 @onready var extra: Node2D = %Extra2D
 @onready var mouth_animated_sprite: AnimatedSprite2D = %MouthAnimatedSprite2D
 @onready var inner_eyes: Array[ColorRect] = [%LeftInnerColorRect, %RightInnerColorRect]
+@onready var ray_cast: RayCast2D = %RayCast2D
 
 
 func _ready() -> void:
@@ -126,8 +127,15 @@ func setup_move_area(new_move_area: Area2D) -> void:
 	_connect_move_area()
 
 
-func end_turn() -> void:
+func start_turn() -> void:
+	areas.visible = true
 	_toggle_area_shapes(move_area, {is_disabled = false})
+
+
+func end_turn() -> void:
+	areas.visible = false
+	_toggle_area_shapes(move_area, {is_disabled = true})
+
 	const DISTANCE_SQUARED_CHECK := 2
 	var _sector_player_position := Blackboard.sector_tile_map_layer.local_to_map(position)
 	for sector_offset: Vector2i in Blackboard.sectors_map:
@@ -135,3 +143,5 @@ func end_turn() -> void:
 			Blackboard.sectors_map[sector_offset].queue_free()
 			Blackboard.sectors_map.erase(sector_offset)
 	Blackboard.spawn_enemies(spawn_tile_map_layer)
+	Blackboard.spawn_stinger_enemies()
+	Blackboard.generate()

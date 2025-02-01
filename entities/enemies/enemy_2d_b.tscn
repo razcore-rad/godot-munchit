@@ -36,17 +36,18 @@ animations = [{
 [node name="Enemy2DB" instance=ExtResource("1_4025a")]
 script = ExtResource("2_4eds2")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="0"]
-modulate = Color(0.545098, 0.780392, 0.74902, 1)
-material = SubResource("ShaderMaterial_yf2pk")
-sprite_frames = SubResource("SpriteFrames_ghlyc")
-autoplay = "default"
-frame = 1
-frame_progress = 0.270132
-
 [node name="DetectArea2D" parent="Areas2D" index="0" groups=["enemy"]]
 collision_layer = 2
 collision_mask = 7
 
 [node name="MoveArea2D" parent="Areas2D" index="1" instance=ExtResource("3_yf2pk")]
 unique_name_in_owner = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="1"]
+modulate = Color(0.545098, 0.780392, 0.74902, 1)
+material = SubResource("ShaderMaterial_yf2pk")
+position = Vector2(0, -5)
+sprite_frames = SubResource("SpriteFrames_ghlyc")
+autoplay = "default"
+frame = 1
+frame_progress = 0.270132

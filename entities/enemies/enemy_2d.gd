@@ -25,7 +25,7 @@ func _get_sorted_move_choices(to: Vector2) -> Array[Vector2]:
 	move_choices.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a.distance < b.distance)
 	result.assign(
 		move_choices
-			.filter(func(d: Dictionary) -> bool: return not Blackboard.is_sector_obstacle(d.cs.global_position))
+			.filter(func(d: Dictionary) -> bool: return not Blackboard.is_obstacle(d.cs.global_position))
 			.map(func(d: Dictionary) -> Vector2: return d.cs.position)
 	)
 	return result
@@ -37,7 +37,7 @@ func _get_random_move_choices() -> Array[Vector2]:
 	move_choices.shuffle()
 	result.assign(
 		move_choices
-			.filter(func(cs: CollisionShape2D) -> bool: return not Blackboard.is_sector_obstacle(cs.global_position))
+			.filter(func(cs: CollisionShape2D) -> bool: return not Blackboard.is_obstacle(cs.global_position))
 			.map(func(cs: CollisionShape2D) -> Vector2: return cs.position)
 	)
 	return result

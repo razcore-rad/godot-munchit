@@ -5,7 +5,7 @@ signal blob_removed(blob_count: int)
 
 const BlobPinJoint2DPackedScene: PackedScene = preload("blob_pin_joint_2d.tscn")
 
-const MAX_BLOBS := 5
+const MAX_BLOBS := 4
 
 @onready var blobs: Node2D = %Blobs2D
 @onready var blob_animatable_body: AnimatableBody2D = %BlobAnimatableBody2D

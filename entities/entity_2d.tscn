@@ -14,6 +14,7 @@ unique_name_in_owner = true
 
 [node name="DetectArea2D" type="Area2D" parent="Areas2D"]
 unique_name_in_owner = true
+z_index = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Areas2D/DetectArea2D"]
 shape = SubResource("RectangleShape2D_5mqu2")
@@ -21,7 +22,7 @@ shape = SubResource("RectangleShape2D_5mqu2")
 [node name="DetectAreaSprite2D" type="Sprite2D" parent="Areas2D/DetectArea2D/CollisionShape2D"]
 unique_name_in_owner = true
 visible = false
-modulate = Color(0.921569, 0.839216, 0.580392, 1)
+modulate = Color(0.870588, 0.545098, 0.435294, 1)
 texture = ExtResource("2_i4s38")
 region_enabled = true
 region_rect = Rect2(10, 65, 10, 10)

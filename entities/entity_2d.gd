@@ -1,5 +1,6 @@
 class_name Entity2D extends Node2D
 
+@warning_ignore("unused_signal")
 signal turn_finished
 
 const MoveAreaCollisionShape2DPackedScene := preload("move_area_collision_shape_2d.tscn")
