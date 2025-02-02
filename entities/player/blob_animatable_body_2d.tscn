@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://cjqopqfubccdy"]
+
+[ext_resource type="Shader" uid="uid://qkyq1k8xjn8l" path="res://entities/player/assets/fuzzyball.gdshader" id="1_sg8sf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ow6ih"]
+radius = 5.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mrkyx"]
+shader = ExtResource("1_sg8sf")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/threshold = -1.0
+
+[node name="BlobAnimatableBody2D" type="AnimatableBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ow6ih")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_mrkyx")
+custom_minimum_size = Vector2(20, 20)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -7.5
+offset_top = -7.5
+offset_right = 7.5
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

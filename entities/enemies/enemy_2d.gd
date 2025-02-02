@@ -73,7 +73,7 @@ func _detect_player(tween: Tween, original_position: Vector2, target_position: V
 
 
 func _eat_player(original_position: Vector2, target_position: Vector2) -> void:
-	Blackboard.player.skin_sub_viewport.remove_blob.call_deferred()
+	Blackboard.player.skin_sub_viewport.remove_blob()
 	var player_move_area_collision_shape_positions: Dictionary[Vector2, MoveAreaCollisionShape2D] = {}
 	for collision_shape: MoveAreaCollisionShape2D in Blackboard.player.move_area.get_children():
 		player_move_area_collision_shape_positions[collision_shape.position] = collision_shape

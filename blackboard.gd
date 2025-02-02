@@ -25,6 +25,7 @@ static var sectors_map: Dictionary[Vector2i, Sector2D] = {}
 static var enemies_map: Dictionary[Vector2, Enemy2D] = {}
 static var half_tile_size := TILE_SET.tile_size / 2
 static var seed_text: String = ""
+static var point_count := 0
 
 static var sector_tile_map_layer: TileMapLayer = null
 static var sectors: Node2D = null
@@ -77,6 +78,7 @@ static func is_valid(v: Variant) -> bool:
 
 
 static func generate(do_generate_enemies := false) -> void:
+	seed(hash(Blackboard.seed_text))
 	var relative_to: Vector2i = sector_tile_map_layer.local_to_map(player.position)
 	for sector_x: int in _sector_offset_span:
 		for sector_y: int in _sector_offset_span:
@@ -174,7 +176,7 @@ static func get_neighbor_sector_coords(relative_to := Vector2i.ZERO) -> Array[Ve
 
 
 static func get_entities() -> Array[Entity2D]:
-	const DISTANCE_SQUARED_CHECK := 360 ** 2
+	const DISTANCE_SQUARED_CHECK := 400 ** 2
 	var result: Array[Entity2D] = []
 	if is_valid(player):
 		result.push_back(player)

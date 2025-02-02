@@ -13,12 +13,11 @@ const MOVE_AREA_COLORS: Dictionary[String, Color] = {
 
 var _move_tween: Tween = create_tween()
 
-var skin_sub_viewport: SkinSubViewport = null
-var move_area: Area2D = null
+var move_area: MoveArea2D = null
 
 @onready var spawn_tile_map_layer: TileMapLayer = %SpawnTileMapLayer
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
-@onready var skin_sub_viewport_container: SubViewportContainer = %SkinSubViewportContainer
+@onready var skin_sub_viewport: SkinSubViewport = %SkinSubViewport
 @onready var extra: Node2D = %Extra2D
 @onready var mouth_animated_sprite: AnimatedSprite2D = %MouthAnimatedSprite2D
 @onready var inner_eyes: Array[ColorRect] = [%LeftInnerColorRect, %RightInnerColorRect]
@@ -30,10 +29,10 @@ func _ready() -> void:
 	_move_tween.stop()
 	detect_area.input_event.connect(_on_detect_area_input_event)
 
-	skin_sub_viewport = SkinSubViewportPackedScene.instantiate()
+	await owner.ready
 	skin_sub_viewport.world_2d = World2D.new()
-	skin_sub_viewport_container.add_child(skin_sub_viewport)
-	skin_sub_viewport.blob_removed.connect(_on_skin_sub_viewport_blob_removed)
+	skin_sub_viewport.add_blob()
+
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -45,6 +44,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _on_detect_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event.is_action_pressed("left_click"):
+		skin_sub_viewport.remove_blob()
 		turn_finished.emit()
 
 
@@ -61,7 +61,7 @@ func _on_move_area_input_event(_viewport: Node, event: InputEvent, shape_index: 
 		collision_shape.modulate = MOVE_AREA_COLORS.hover
 
 	if not _move_tween.is_running() and event.is_action_pressed("left_click"):
-		for node: Node2D in [skin_sub_viewport.blob_animatable_body, extra]:
+		for node: Node2D in [skin_sub_viewport.get_child(0), extra]:
 			var tween := create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS).set_trans(Tween.TRANS_QUAD)
 			tween.tween_property(node, "position:y", -JUMP_HEIGHT, DURATION).as_relative()
 			tween.tween_property(node, "position:y", JUMP_HEIGHT, DURATION).as_relative()
@@ -79,11 +79,6 @@ func _on_move_area_mouse_exited() -> void:
 		collision_shape.modulate = MOVE_AREA_COLORS.default
 
 
-func _on_skin_sub_viewport_blob_removed(blob_count: int) -> void:
-	if blob_count < 1:
-		queue_free()
-
-
 func _connect_move_area() -> void:
 	move_area.body_shape_entered.connect(_on_move_area_body_shape_entered)
 	move_area.input_event.connect(_on_move_area_input_event)
@@ -97,11 +92,11 @@ func _detect_enemy(target_position: Vector2) -> void:
 		_eat_enemy(enemy.move_area)
 		enemy.queue_free()
 	else:
-		skin_sub_viewport.remove_blob.call_deferred()
+		skin_sub_viewport.remove_blob()
 
 
 func _eat_enemy(enemy_move_area: Area2D) -> void:
-	skin_sub_viewport.add_blob.call_deferred()
+	skin_sub_viewport.add_blob()
 	var move_area_collision_shape_positions := move_area.get_children().map(func(cs: MoveAreaCollisionShape2D) -> Vector2: return cs.position)
 	for collision_shape: MoveAreaCollisionShape2D in enemy_move_area.get_children():
 		if collision_shape.position not in move_area_collision_shape_positions:
@@ -117,7 +112,7 @@ func _eat_enemy(enemy_move_area: Area2D) -> void:
 	mouth_animated_sprite.play()
 
 
-func setup_move_area(new_move_area: Area2D) -> void:
+func setup_move_area(new_move_area: MoveArea2D) -> void:
 	move_area = new_move_area
 	move_area.get_parent().remove_child(move_area)
 	areas.add_child(move_area)
@@ -125,6 +120,10 @@ func setup_move_area(new_move_area: Area2D) -> void:
 	for collision_shape:MoveAreaCollisionShape2D in move_area.get_children():
 		collision_shape.modulate = MOVE_AREA_COLORS.default
 	_connect_move_area()
+
+
+func is_dead() -> bool:
+	return skin_sub_viewport.blob_count < 1
 
 
 func start_turn() -> void:

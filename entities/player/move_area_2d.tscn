@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1yda2watt4w6"]
+
+[ext_resource type="Script" uid="uid://bcjlm6qt4tkhs" path="res://entities/player/move_area_2d.gd" id="1_uxuoo"]
+
+[node name="MoveArea2D" type="Area2D"]
+collision_layer = 256
+collision_mask = 7
+monitorable = false
+script = ExtResource("1_uxuoo")

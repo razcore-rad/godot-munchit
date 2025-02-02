@@ -34,7 +34,7 @@ func _on_animated_sprite_animation_finished() -> void:
 	dissolve_gpu_particles.emitting = true
 
 	await get_tree().create_timer(dissolve_gpu_particles.lifetime).timeout
-	Blackboard.player.skin_sub_viewport.remove_blob.call_deferred()
+	Blackboard.player.skin_sub_viewport.remove_blob()
 	queue_free()
 
 

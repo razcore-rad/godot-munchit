@@ -1,20 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://b8u2dxpre7fvk"]
+[gd_scene load_steps=3 format=3 uid="uid://b8u2dxpre7fvk"]
 
+[ext_resource type="PackedScene" uid="uid://c1yda2watt4w6" path="res://entities/player/move_area_2d.tscn" id="1_lou3h"]
 [ext_resource type="PackedScene" uid="uid://jlhatc0x6ggi" path="res://entities/move_area_collision_shape_2d.tscn" id="1_sthbo"]
 
-[node name="MoveArea2D" type="Area2D"]
-collision_layer = 256
-collision_mask = 7
-monitorable = false
+[node name="MoveArea2D" instance=ExtResource("1_lou3h")]
+cost = 12
 
-[node name="MoveAreaCollisionShape2D" parent="." instance=ExtResource("1_sthbo")]
+[node name="MoveAreaCollisionShape2D" parent="." index="0" instance=ExtResource("1_sthbo")]
 position = Vector2(60, 0)
 
-[node name="MoveAreaCollisionShape2D2" parent="." instance=ExtResource("1_sthbo")]
+[node name="MoveAreaCollisionShape2D2" parent="." index="1" instance=ExtResource("1_sthbo")]
 position = Vector2(0, -40)
 
-[node name="MoveAreaCollisionShape2D3" parent="." instance=ExtResource("1_sthbo")]
+[node name="MoveAreaCollisionShape2D3" parent="." index="2" instance=ExtResource("1_sthbo")]
 position = Vector2(-60, 0)
 
-[node name="MoveAreaCollisionShape2D4" parent="." instance=ExtResource("1_sthbo")]
+[node name="MoveAreaCollisionShape2D4" parent="." index="3" instance=ExtResource("1_sthbo")]
 position = Vector2(0, 40)

@@ -1,0 +1,99 @@
+[gd_scene load_steps=8 format=3 uid="uid://bd0q1y40jpa33"]
+
+[ext_resource type="Shader" uid="uid://nu0e1o8wd5d4" path="res://entities/outline.gdshader" id="1_1hrg6"]
+[ext_resource type="Theme" uid="uid://cwgp6l14spm0o" path="res://ui/assets/theme.tres" id="1_y5iia"]
+[ext_resource type="Script" uid="uid://blrodi2euypwq" path="res://ui/main_v_box_container.gd" id="2_g3hv7"]
+[ext_resource type="Script" uid="uid://dpch7hvosvql3" path="res://ui/seed_text_edit.gd" id="2_y5iia"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w48qg"]
+shader = ExtResource("1_1hrg6")
+shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
+shader_parameter/line_thickness = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4c57u"]
+shader = ExtResource("1_1hrg6")
+shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
+shader_parameter/line_thickness = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_efxa6"]
+shader = ExtResource("1_1hrg6")
+shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
+shader_parameter/line_thickness = 2
+
+[node name="MainVBoxContainer" type="VBoxContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -167.0
+offset_top = -250.0
+offset_right = 167.0
+offset_bottom = 210.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_y5iia")
+script = ExtResource("2_g3hv7")
+
+[node name="TitleLabel" type="Label" parent="."]
+material = SubResource("ShaderMaterial_w48qg")
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+text = "MunchIt"
+horizontal_alignment = 1
+
+[node name="MenuHSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"MenuHSeparator"
+
+[node name="StartButton" type="Button" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_4c57u")
+layout_mode = 2
+text = "Start"
+flat = true
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 2
+columns = 2
+
+[node name="SeedLabel" type="Label" parent="GridContainer"]
+material = SubResource("ShaderMaterial_efxa6")
+layout_mode = 2
+text = "Seed:"
+
+[node name="SeedTextEdit" type="TextEdit" parent="GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 40)
+layout_mode = 2
+theme_type_variation = &"SeedTextEdit"
+placeholder_text = "world"
+context_menu_enabled = false
+emoji_menu_enabled = false
+shortcut_keys_enabled = false
+selecting_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
+empty_selection_clipboard_enabled = false
+scroll_fit_content_height = true
+caret_multiple = false
+script = ExtResource("2_y5iia")
+
+[node name="Label" type="Label" parent="GridContainer"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_efxa6")
+layout_mode = 2
+theme_type_variation = &"PointsLabel"
+text = "Points:"
+horizontal_alignment = 2
+
+[node name="PointsLabel" type="Label" parent="GridContainer"]
+unique_name_in_owner = true
+modulate = Color(0.870588, 0.545098, 0.435294, 1)
+material = SubResource("ShaderMaterial_efxa6")
+layout_mode = 2
+theme_type_variation = &"NumberLabel"
+text = "0"
