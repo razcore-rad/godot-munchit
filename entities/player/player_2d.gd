@@ -114,7 +114,6 @@ func _eat_enemy(enemy_move_area: Area2D) -> void:
 
 func setup_move_area(new_move_area: MoveArea2D) -> void:
 	move_area = new_move_area
-	move_area.get_parent().remove_child(move_area)
 	areas.add_child(move_area)
 	move_area.position = Vector2.ZERO
 	for collision_shape:MoveAreaCollisionShape2D in move_area.get_children():

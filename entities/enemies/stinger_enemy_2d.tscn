@@ -131,7 +131,6 @@ process_material = SubResource("ParticleProcessMaterial_ppxln")
 
 [node name="Eyes2D" type="Node2D" parent="." index="3"]
 unique_name_in_owner = true
-visible = false
 
 [node name="LeftColorRect" type="ColorRect" parent="Eyes2D" index="0"]
 material = SubResource("CanvasItemMaterial_keaa7")

@@ -89,7 +89,6 @@ static func generate(do_generate_enemies := false) -> void:
 		spawn_stinger_enemies()
 
 
-
 static func generate_sector(offset: Vector2i) -> Sector2D:
 	if offset in sectors_map:
 		return sectors_map[offset]

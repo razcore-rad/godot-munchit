@@ -29,5 +29,7 @@ func add_blob() -> void:
 
 func remove_blob() -> void:
 	blob_count = blobs.get_child_count() - 1
+	if blob_count < 0:
+		return
 	blobs.get_children().back().queue_free()
 	blob_removed.emit(blob_count)
