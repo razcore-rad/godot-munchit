@@ -20,6 +20,8 @@ var offscreen_position: Vector2 = Vector2.RIGHT * ProjectSettings.get_setting("d
 @onready var turn_label: Label = %TurnLabel
 
 @onready var player_start_position := player.position
+@onready var base_point_light_start_enerty := base_point_light.energy
+@onready var base_point_light_start_texture_scale := base_point_light.texture_scale
 
 
 func _ready() -> void:
@@ -89,9 +91,11 @@ func _end() -> void:
 		if Blackboard.is_valid(entity):
 			entity.queue_free()
 
+	menu_control.start_button.disabled = true
 	var turn_count := turn_label.text.to_int()
 	var main_tween := create_tween().set_trans(Tween.TRANS_SINE)
 	main_tween.tween_property(base_point_light, "energy", 0.0, 2.0)
+	main_tween.parallel().tween_property(base_point_light, "texture_scale", base_point_light_start_texture_scale, 2.0)
 	main_tween.tween_method(func(x: int) -> void: turn_label.text = str(x), turn_count, 0, 1.0)
 
 	var turn_label_modulate := turn_label.modulate
@@ -126,4 +130,7 @@ func _end() -> void:
 	player.skin_sub_viewport.add_blob()
 
 	main_tween = create_tween().set_trans(Tween.TRANS_SINE)
-	main_tween.tween_property(base_point_light, "energy", 0.6, 2.0)
+	main_tween.tween_property(base_point_light, "energy", base_point_light_start_enerty, 2.0)
+	main_tween.parallel().tween_property(base_point_light, "texture_scale", base_point_light_start_texture_scale, 2.0)
+	await main_tween.finished
+	menu_control.start_button.disabled = false
