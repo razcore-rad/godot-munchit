@@ -15,24 +15,26 @@ var _move_tween: Tween = create_tween()
 
 var move_area: MoveArea2D = null
 
-@onready var spawn_tile_map_layer: TileMapLayer = %SpawnTileMapLayer
-@onready var animation_player: AnimationPlayer = %AnimationPlayer
+@onready var mouth_animation_player: AnimationPlayer = %MouthAnimationPlayer
+@onready var eyes_animation_player: AnimationPlayer = %EyesAnimationPlayer
 @onready var skin_sub_viewport: SkinSubViewport = %SkinSubViewport
 @onready var extra: Node2D = %Extra2D
 @onready var mouth_animated_sprite: AnimatedSprite2D = %MouthAnimatedSprite2D
 @onready var inner_eyes: Array[ColorRect] = [%LeftInnerColorRect, %RightInnerColorRect]
 @onready var ray_cast: RayCast2D = %RayCast2D
+@onready var spawn_tile_map_layer: TileMapLayer = %SpawnTileMapLayer
 
 
 func _ready() -> void:
 	super()
 	_move_tween.stop()
 	detect_area.input_event.connect(_on_detect_area_input_event)
+	skin_sub_viewport.blob_added.connect(_on_skin_sub_viewport_blob.bind(true))
+	skin_sub_viewport.blob_removed.connect(_on_skin_sub_viewport_blob.bind(false))
 
 	await owner.ready
 	skin_sub_viewport.world_2d = World2D.new()
 	skin_sub_viewport.add_blob()
-
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -40,6 +42,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		var mouse_global_position := get_global_mouse_position()
 		for inner_eye: ColorRect in inner_eyes:
 			inner_eye.rotation = inner_eye.global_position.angle_to_point(mouse_global_position)
+
+
+func _on_skin_sub_viewport_blob(blob_count: int, is_added: bool) -> void:
+	visible = blob_count > 0
+	if not is_added:
+		eyes_animation_player.play("attacked")
 
 
 func _on_detect_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
@@ -108,7 +116,7 @@ func _eat_enemy(enemy_move_area: Area2D) -> void:
 
 	move_area.visible = true
 	_toggle_area_shapes(move_area, {is_disabled = false})
-	animation_player.play("eat_crumbs")
+	mouth_animation_player.play("eat_crumbs")
 	mouth_animated_sprite.play()
 
 

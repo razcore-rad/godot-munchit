@@ -24,7 +24,6 @@ var _move_area_index: int = -1:
 
 		var is_bought :=  move_area.cost == 0
 		var are_enough_points := Blackboard.point_count < move_area.cost
-
 		bought_label.visible = is_bought
 		buy_h_box_container.visible = not is_bought
 		buy_button.disabled = are_enough_points
@@ -67,10 +66,17 @@ func _on_texture_button(delta: int) -> void:
 func _on_buy_button_pressed() -> void:
 	var move_area := get_move_area()
 	if move_area.cost <= Blackboard.point_count:
+		bought_label.visible = true
+		buy_h_box_container.visible = false
+		start_button.disabled = true
+
 		var tween = create_tween().set_trans(Tween.TRANS_SINE)
 		tween.tween_method(func(x: int) -> void: points_label.text = str(x), Blackboard.point_count, Blackboard.point_count - move_area.cost, 1.0)
+		await tween.finished
+
 		move_area.cost = 0
 		cost_label.text = "0"
+		start_button.disabled = false
 
 
 func get_move_area(is_duplicate: bool = false) -> MoveArea2D:

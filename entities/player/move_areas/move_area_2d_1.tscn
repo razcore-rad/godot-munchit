@@ -5,29 +5,26 @@
 
 [node name="MoveArea2D" instance=ExtResource("1_hvxwn")]
 
-[node name="Button" parent="CostControl/HBoxContainer" index="2"]
-theme_type_variation = &""
-
-[node name="MoveAreaCollisionShape2D" parent="." index="1" instance=ExtResource("1_5r6bm")]
+[node name="MoveAreaCollisionShape2D" parent="." index="0" instance=ExtResource("1_5r6bm")]
 position = Vector2(30, 0)
 
-[node name="MoveAreaCollisionShape2D2" parent="." index="2" instance=ExtResource("1_5r6bm")]
+[node name="MoveAreaCollisionShape2D2" parent="." index="1" instance=ExtResource("1_5r6bm")]
 position = Vector2(60, 0)
 
-[node name="MoveAreaCollisionShape2D3" parent="." index="3" instance=ExtResource("1_5r6bm")]
+[node name="MoveAreaCollisionShape2D3" parent="." index="2" instance=ExtResource("1_5r6bm")]
 position = Vector2(0, -20)
 
-[node name="MoveAreaCollisionShape2D4" parent="." index="4" instance=ExtResource("1_5r6bm")]
+[node name="MoveAreaCollisionShape2D4" parent="." index="3" instance=ExtResource("1_5r6bm")]
 position = Vector2(0, -40)
 
-[node name="MoveAreaCollisionShape2D5" parent="." index="5" instance=ExtResource("1_5r6bm")]
+[node name="MoveAreaCollisionShape2D5" parent="." index="4" instance=ExtResource("1_5r6bm")]
 position = Vector2(-30, 0)
 
-[node name="MoveAreaCollisionShape2D6" parent="." index="6" instance=ExtResource("1_5r6bm")]
+[node name="MoveAreaCollisionShape2D6" parent="." index="5" instance=ExtResource("1_5r6bm")]
 position = Vector2(-60, 0)
 
-[node name="MoveAreaCollisionShape2D7" parent="." index="7" instance=ExtResource("1_5r6bm")]
+[node name="MoveAreaCollisionShape2D7" parent="." index="6" instance=ExtResource("1_5r6bm")]
 position = Vector2(0, 20)
 
-[node name="MoveAreaCollisionShape2D8" parent="." index="8" instance=ExtResource("1_5r6bm")]
+[node name="MoveAreaCollisionShape2D8" parent="." index="7" instance=ExtResource("1_5r6bm")]
 position = Vector2(0, 40)

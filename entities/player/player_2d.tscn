@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://c2mhgypppwjb3"]
+[gd_scene load_steps=27 format=4 uid="uid://c2mhgypppwjb3"]
 
 [ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_e3jcg"]
 [ext_resource type="Script" uid="uid://e18wuex060o6" path="res://entities/player/player_2d.gd" id="2_d65nd"]
@@ -28,6 +28,44 @@ shader_parameter/threshold = 0.00999998
 shader = ExtResource("4_lnv7a")
 shader_parameter/color = Color(0.278431, 0.105882, 0.431373, 1)
 shader_parameter/threshold = 0.00999998
+
+[sub_resource type="Animation" id="Animation_qalwy"]
+resource_name = "attacked"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Eyes2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.1001, 0.2),
+"transitions": PackedFloat32Array(1, 0.5, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 0.2), Vector2(1, 0.2), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ijjdv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Eyes2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2sf31"]
+_data = {
+&"RESET": SubResource("Animation_ijjdv"),
+&"attacked": SubResource("Animation_qalwy")
+}
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_chs0w"]
 atlas = ExtResource("6_u8ep7")
@@ -71,8 +109,7 @@ angle_max = 414.3
 initial_velocity_min = 2.27
 initial_velocity_max = 16.96
 gravity = Vector3(0, 98, 0)
-scale_min = 0.7
-scale_max = 1.3
+scale_max = 2.0
 scale_over_velocity_min = 40.12
 scale_over_velocity_max = 44.92
 color = Color(0.545098, 0.780392, 0.74902, 1)
@@ -240,6 +277,14 @@ grow_vertical = 2
 pivot_offset = Vector2(0, 2)
 mouse_filter = 2
 
+[node name="EyesAnimationPlayer" type="AnimationPlayer" parent="CanvasGroup/Extra2D/Eyes2D" index="2"]
+unique_name_in_owner = true
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_2sf31")
+}
+autoplay = "RESET"
+
 [node name="MouthAnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup/Extra2D" index="1"]
 unique_name_in_owner = true
 position = Vector2(2, 4)
@@ -249,12 +294,12 @@ frame = 3
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="CanvasGroup/Extra2D/MouthAnimatedSprite2D" index="0"]
 emitting = false
-lifetime = 0.3
+lifetime = 0.4
 explosiveness = 0.77
 randomness = 0.63
 process_material = SubResource("ParticleProcessMaterial_chs0w")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasGroup/Extra2D/MouthAnimatedSprite2D/GPUParticles2D" index="0"]
+[node name="MouthAnimationPlayer" type="AnimationPlayer" parent="CanvasGroup/Extra2D/MouthAnimatedSprite2D/GPUParticles2D" index="0"]
 unique_name_in_owner = true
 libraries = {
 &"": SubResource("AnimationLibrary_qalwy")

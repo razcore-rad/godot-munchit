@@ -16,6 +16,7 @@ var offscreen_position: Vector2 = Vector2.RIGHT * ProjectSettings.get_setting("d
 
 @onready var menu_control: MenuControl = %MenuControl
 @onready var blobs_h_box_container: HBoxContainer = %BlobsHBoxContainer
+@onready var turns_h_box_container: HBoxContainer = %TurnsHBoxContainer
 @onready var turn_label: Label = %TurnLabel
 
 @onready var player_start_position := player.position
@@ -46,7 +47,7 @@ func _on_menu_control_start_button_pressed() -> void:
 	tween.tween_property(base_point_light, "energy", 1.0, 1.0)
 	tween.tween_property(base_point_light, "texture_scale", 1.0, 1.0)
 
-	turn_label.visible = true
+	turns_h_box_container.visible = true
 	blobs_h_box_container.visible = true
 	menu_control.position = offscreen_position
 
@@ -65,7 +66,6 @@ func _start_turn_based_loop() -> void:
 		player.skin_sub_viewport.add_blob()
 
 	while true:
-		Blackboard.increment_turn()
 		for entity: Entity2D in Blackboard.get_entities():
 			if Blackboard.is_valid(entity):
 				entity.start_turn()
@@ -79,11 +79,12 @@ func _start_turn_based_loop() -> void:
 
 		if player.is_dead():
 			break
+
+		Blackboard.increment_turn()
 	_end()
 
 
 func _end() -> void:
-	player.visible = false
 	for entity: Entity2D in Blackboard.get_entities().slice(1):
 		if Blackboard.is_valid(entity):
 			entity.queue_free()
@@ -105,7 +106,7 @@ func _end() -> void:
 	Blackboard.generate()
 
 	menu_control.position = Vector2.ZERO
-	turn_label.visible = false
+	turns_h_box_container.visible = false
 	blobs_h_box_container.visible = false
 
 	main_tween = menu_control.points_label.create_tween().set_trans(Tween.TRANS_SINE)
@@ -123,7 +124,6 @@ func _end() -> void:
 
 	menu_control.points_label.modulate = menu_control_points_label_modulate
 	player.skin_sub_viewport.add_blob()
-	player.visible = true
 
 	main_tween = create_tween().set_trans(Tween.TRANS_SINE)
 	main_tween.tween_property(base_point_light, "energy", 0.6, 2.0)
