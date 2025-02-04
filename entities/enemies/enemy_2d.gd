@@ -3,6 +3,7 @@ class_name Enemy2D extends Entity2D
 const MOVE_RANDOM_CHANCE := 0.2
 
 @export var points := 1
+@export var start_at_turn := 0
 
 @onready var move_area: Area2D = %MoveArea2D
 

@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://bkjm8306qcug0"]
+
+[ext_resource type="PackedScene" uid="uid://c1yda2watt4w6" path="res://entities/player/move_area_2d.tscn" id="1_mr780"]
+[ext_resource type="PackedScene" uid="uid://jlhatc0x6ggi" path="res://entities/move_area_collision_shape_2d.tscn" id="2_5fyh6"]
+
+[node name="MoveArea2D" instance=ExtResource("1_mr780")]
+cost = 287
+
+[node name="MoveAreaCollisionShape2D" parent="." index="0" instance=ExtResource("2_5fyh6")]
+position = Vector2(60, 0)
+
+[node name="MoveAreaCollisionShape2D2" parent="." index="1" instance=ExtResource("2_5fyh6")]
+position = Vector2(60, -40)
+
+[node name="MoveAreaCollisionShape2D3" parent="." index="2" instance=ExtResource("2_5fyh6")]
+position = Vector2(0, -20)
+
+[node name="MoveAreaCollisionShape2D4" parent="." index="3" instance=ExtResource("2_5fyh6")]
+position = Vector2(-60, -40)
+
+[node name="MoveAreaCollisionShape2D5" parent="." index="4" instance=ExtResource("2_5fyh6")]
+position = Vector2(-60, 0)
+
+[node name="MoveAreaCollisionShape2D6" parent="." index="5" instance=ExtResource("2_5fyh6")]
+position = Vector2(-60, 40)
+
+[node name="MoveAreaCollisionShape2D7" parent="." index="6" instance=ExtResource("2_5fyh6")]
+position = Vector2(0, 20)
+
+[node name="MoveAreaCollisionShape2D8" parent="." index="7" instance=ExtResource("2_5fyh6")]
+position = Vector2(60, 40)

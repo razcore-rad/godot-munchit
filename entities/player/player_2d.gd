@@ -17,7 +17,7 @@ var _move_tween: Tween = create_tween()
 
 var move_area: MoveArea2D = null
 
-@onready var eat_animation_player: AnimationPlayer = %EatAnimationPlayer
+@onready var animation_player: AnimationPlayer = %AnimationPlayer
 @onready var eyes_animation_player: AnimationPlayer = %EyesAnimationPlayer
 @onready var skin_sub_viewport: SkinSubViewport = %SkinSubViewport
 @onready var extra: Node2D = %Extra2D
@@ -56,6 +56,8 @@ func _on_skin_sub_viewport_blob(blob_count: int, is_added: bool) -> void:
 func _on_detect_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event.is_action_pressed("left_click"):
 		Blackboard.point_count -= 1
+		points_label.text = str(-1)
+		animation_player.play("lose_points")
 		turn_finished.emit()
 
 
@@ -105,6 +107,8 @@ func _detect_enemy(target_position: Vector2) -> void:
 	else:
 		skin_sub_viewport.remove_blob()
 		Blackboard.point_count -= 1
+		points_label.text = str(-1)
+		animation_player.play("lose_points")
 
 
 func _eat_enemy(enemy_move_area: Area2D, enemy_points: int) -> void:
@@ -125,7 +129,7 @@ func _eat_enemy(enemy_move_area: Area2D, enemy_points: int) -> void:
 	_toggle_area_shapes(move_area, {is_disabled = false})
 
 	mouth_animated_sprite.play()
-	eat_animation_player.play("eat")
+	animation_player.play("eat")
 
 
 func setup_move_area(new_move_area: MoveArea2D) -> void:

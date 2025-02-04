@@ -4,10 +4,10 @@ const Sector2DPackedScene := preload("sectors/sector_2d.tscn")
 const StingerEnemy2DPackedScene := preload("entities/enemies/stinger_enemy_2d.tscn")
 
 const TILE_SET := preload("sectors/tile_set.tres")
-const ENEMY_FILE_PATHS: Array[String] = [
-	"entities/enemies/enemy_2d_a.tscn",
-	"entities/enemies/enemy_2d_b.tscn",
-]
+const ENEMY_FILE_PATHS: Dictionary[String, int] = {
+	"entities/enemies/enemy_2d_a.tscn": 0  ,
+	"entities/enemies/enemy_2d_b.tscn": 0,
+}
 
 const MAX_ENEMIES := 300
 const MAX_STINGER_ENEMIES := 4
@@ -53,9 +53,8 @@ static func _static_init() -> void:
 		_obstacle_patterns.push_back(TILE_SET.get_pattern(index))
 
 
-static func _add_enemy(enemy_position: Vector2, file_path := "") -> void:
-	if file_path.is_empty():
-		file_path = ENEMY_FILE_PATHS.pick_random()
+static func _add_enemy(enemy_position: Vector2) -> void:
+	var file_path: String = ENEMY_FILE_PATHS.keys().filter(func(s: String) -> bool: return ENEMY_FILE_PATHS[s] <= turn_count).pick_random()
 	var enemy: Enemy2D = load(file_path).instantiate()
 	enemy.position = enemy_position
 	enemies.add_child(enemy)

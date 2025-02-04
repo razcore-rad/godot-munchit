@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=4 uid="uid://c2mhgypppwjb3"]
+[gd_scene load_steps=29 format=4 uid="uid://c2mhgypppwjb3"]
 
 [ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_e3jcg"]
 [ext_resource type="Script" uid="uid://e18wuex060o6" path="res://entities/player/player_2d.gd" id="2_d65nd"]
@@ -57,7 +57,7 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.02, 0.2),
-"transitions": PackedFloat32Array(1, 1, 2),
+"transitions": PackedFloat32Array(1, 2, 1),
 "update": 0,
 "values": [Vector2(1, 1), Vector2(1, 0.2), Vector2(1, 1)]
 }
@@ -166,6 +166,18 @@ tracks/2/keys = {
 "update": 0,
 "values": [Vector2(0, 0)]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("%PointsLabel:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.870588, 0.545098, 0.435294, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_chs0w"]
 resource_name = "eat"
@@ -207,11 +219,65 @@ tracks/2/keys = {
 "update": 0,
 "values": [Vector2(1, 1), Vector2(1e-05, 1e-05)]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("%PointsLabel:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Color(0.870588, 0.545098, 0.435294, 1), Color(0.545098, 0.780392, 0.74902, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_2sf31"]
+resource_name = "lose_points"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("%Extra2D/../../PointsLabel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-19, -24), Vector2(-19, -48)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("%Extra2D/../../PointsLabel:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.05, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1e-05, 1e-05)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("%PointsLabel:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Color(0.870588, 0.545098, 0.435294, 1), Color(0.690196, 0.270588, 0.352941, 1)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qalwy"]
 _data = {
 &"RESET": SubResource("Animation_is22s"),
-&"eat": SubResource("Animation_chs0w")
+&"eat": SubResource("Animation_chs0w"),
+&"lose_points": SubResource("Animation_2sf31")
 }
 
 [node name="Player2D" instance=ExtResource("1_e3jcg")]
@@ -228,6 +294,7 @@ modulate = Color(0.341176, 0.588235, 0.631373, 1)
 
 [node name="PointsLabel" type="Label" parent="." index="1"]
 unique_name_in_owner = true
+modulate = Color(0.870588, 0.545098, 0.435294, 1)
 custom_minimum_size = Vector2(40, 0)
 anchors_preset = 8
 anchor_left = 0.5
@@ -243,7 +310,7 @@ grow_vertical = 2
 scale = Vector2(1e-05, 1e-05)
 pivot_offset = Vector2(19, 16)
 theme = ExtResource("9_is22s")
-theme_type_variation = &"PointsLabel"
+theme_type_variation = &"NumberLabel"
 text = "0"
 horizontal_alignment = 1
 
@@ -381,7 +448,7 @@ tile_set = SubResource("TileSet_ijjdv")
 unique_name_in_owner = true
 collision_mask = 4
 
-[node name="EatAnimationPlayer" type="AnimationPlayer" parent="." index="5"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="5"]
 unique_name_in_owner = true
 root_node = NodePath("../CanvasGroup/Extra2D/MouthAnimatedSprite2D/GPUParticles2D")
 libraries = {
