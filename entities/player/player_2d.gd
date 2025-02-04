@@ -26,6 +26,7 @@ var move_area: MoveArea2D = null
 @onready var ray_cast: RayCast2D = %RayCast2D
 @onready var spawn_tile_map_layer: TileMapLayer = %SpawnTileMapLayer
 @onready var points_label: Label = %PointsLabel
+@onready var gpu_particles: GPUParticles2D = %GPUParticles2D
 
 
 func _ready() -> void:
@@ -56,8 +57,6 @@ func _on_skin_sub_viewport_blob(blob_count: int, is_added: bool) -> void:
 func _on_detect_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event.is_action_pressed("left_click"):
 		Blackboard.point_count -= 1
-		points_label.text = str(-1)
-		animation_player.play("lose_points")
 		turn_finished.emit()
 
 
@@ -105,13 +104,12 @@ func _detect_enemy(target_position: Vector2) -> void:
 		_eat_enemy(enemy.move_area, enemy.points)
 		enemy.queue_free()
 	else:
-		skin_sub_viewport.remove_blob()
 		Blackboard.point_count -= 1
-		points_label.text = str(-1)
-		animation_player.play("lose_points")
+		skin_sub_viewport.remove_blob()
 
 
 func _eat_enemy(enemy_move_area: Area2D, enemy_points: int) -> void:
+	Blackboard.point_count += enemy_points
 	skin_sub_viewport.add_blob()
 	var move_area_collision_shape_positions := move_area.get_children().map(func(cs: MoveAreaCollisionShape2D) -> Vector2: return cs.position)
 	for collision_shape: MoveAreaCollisionShape2D in enemy_move_area.get_children():
@@ -122,14 +120,13 @@ func _eat_enemy(enemy_move_area: Area2D, enemy_points: int) -> void:
 			new_move_area_collision_shape.modulate = MOVE_AREA_COLORS.default
 			new_move_area_collision_shape.sprite.region_rect = MOVE_AREA_TEXTURE_RECT
 
-	Blackboard.point_count += enemy_points * roundi(Blackboard.progress_bar.ratio)
-	points_label.text = str(enemy_points)
-
 	move_area.visible = true
 	_toggle_area_shapes(move_area, {is_disabled = false})
 
 	mouth_animated_sprite.play()
 	animation_player.play("eat")
+	await animation_player.animation_finished
+	gpu_particles.emitting = false
 
 
 func setup_move_area(new_move_area: MoveArea2D) -> void:

@@ -1,7 +1,7 @@
 class_name MenuControl extends Control
 
 const PLAYER_MOVE_AREAS_PATH := "entities/player/move_areas"
-const STEP := 7
+const STEP := 8
 
 var _move_areas: Array[Area2D] = []
 var _move_area_index: int = -1:

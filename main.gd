@@ -84,6 +84,8 @@ func _on_player_skin_sub_viewport_blob(blob_count: int, is_added: bool) -> void:
 
 
 func _start_turn_based_loop() -> void:
+	Blackboard.spawn_stinger_enemies()
+
 	Blackboard.turn_count = 0
 	player.setup_move_area(menu_control.get_move_area(true))
 	for _i in player.skin_sub_viewport.MAX_BLOBS:
@@ -94,6 +96,8 @@ func _start_turn_based_loop() -> void:
 			if Blackboard.is_valid(entity):
 				entity.start_turn()
 				await entity.turn_finished
+
+				@warning_ignore("redundant_await")
 				await entity.end_turn()
 
 			if player.is_dead():

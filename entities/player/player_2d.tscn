@@ -431,6 +431,7 @@ autoplay = "default"
 frame = 3
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="CanvasGroup/Extra2D/MouthAnimatedSprite2D" index="0"]
+unique_name_in_owner = true
 emitting = false
 lifetime = 0.4
 explosiveness = 0.77

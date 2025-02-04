@@ -124,30 +124,31 @@ process_material = SubResource("ParticleProcessMaterial_ltgev")
 
 [node name="Eyes2D" type="Node2D" parent="." index="2"]
 unique_name_in_owner = true
+position = Vector2(5, -3)
 
 [node name="LeftColorRect" type="ColorRect" parent="Eyes2D" index="0"]
 material = SubResource("CanvasItemMaterial_o8vu6")
 custom_minimum_size = Vector2(2, 2)
-offset_left = -1.0
-offset_top = -5.0
-offset_right = 1.0
-offset_bottom = -3.0
+offset_left = -3.0
+offset_top = -1.0
+offset_right = -1.0
+offset_bottom = 1.0
 color = Color(0.690196, 0.270588, 0.352941, 1)
 
 [node name="RightColorRect" type="ColorRect" parent="Eyes2D" index="1"]
 material = SubResource("CanvasItemMaterial_cxko5")
 custom_minimum_size = Vector2(2, 2)
-offset_left = 4.0
-offset_top = -5.0
-offset_right = 6.0
-offset_bottom = -3.0
+offset_left = 1.0
+offset_top = -1.0
+offset_right = 3.0
+offset_bottom = 1.0
 color = Color(0.690196, 0.270588, 0.352941, 1)
+
+[node name="RayCast2D" type="RayCast2D" parent="Eyes2D" index="2"]
+unique_name_in_owner = true
+collision_mask = 5
+collide_with_areas = true
 
 [node name="Timer" type="Timer" parent="." index="3"]
 unique_name_in_owner = true
 one_shot = true
-
-[node name="RayCast2D" type="RayCast2D" parent="." index="4"]
-unique_name_in_owner = true
-collision_mask = 5
-collide_with_areas = true

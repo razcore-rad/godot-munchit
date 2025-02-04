@@ -1,6 +1,7 @@
 class_name StingerEnemy2D extends Entity2D
 
 const MAX_DISTANCE := 400.0 ** 2
+const POINTS := 3
 
 var _start_turn := Blackboard.turn_count
 var _life_turns := Blackboard.rng.randi_range(2, 4)
@@ -30,23 +31,30 @@ func _on_animated_sprite_animation_finished() -> void:
 	tween.tween_property(self, "position", Blackboard.player.position, 0.2)
 	await tween.finished
 
+	Blackboard.player.skin_sub_viewport.remove_blob()
+	Blackboard.point_count -= POINTS
+
 	skin.visible = false
 	fly_gpu_particles.emitting = false
 	dissolve_gpu_particles.emitting = true
 
 	await get_tree().create_timer(dissolve_gpu_particles.lifetime).timeout
-	Blackboard.player.skin_sub_viewport.remove_blob()
 	turn_finished.emit()
 	queue_free()
 
 
 func start_turn() -> void:
+	await _skip_process_frames()
 	if position.distance_squared_to(Blackboard.player.position) > MAX_DISTANCE or Blackboard.turn_count - _start_turn > _life_turns:
+		turn_finished.emit.call_deferred()
 		queue_free()
 		return
 
-	ray_cast.target_position = Blackboard.player.position - position
+	ray_cast.target_position = Blackboard.player.extra.global_position - eyes.global_position
 	ray_cast.force_raycast_update()
-	if ray_cast.get_collider().owner == Blackboard.player:
+	var ray_cast_collider := ray_cast.get_collider()
+	if ray_cast_collider != null and ray_cast_collider.owner == Blackboard.player:
 		animated_sprite.visible = true
 		animated_sprite.play()
+	else:
+		turn_finished.emit.call_deferred()

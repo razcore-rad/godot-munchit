@@ -28,8 +28,11 @@ static var seed_text: String = ""
 static var turn_count := 0
 static var point_count := 0:
 	set(new_point_count):
+		var delta := new_point_count - point_count
 		point_count = max(0, new_point_count)
 		points_label.text = str(point_count)
+		player.points_label.text = str(delta)
+		player.animation_player.play("eat" if delta > 0 else "lose_points")
 
 static var sector_tile_map_layer: TileMapLayer = null
 static var sectors: Node2D = null
