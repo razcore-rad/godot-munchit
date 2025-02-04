@@ -2,7 +2,7 @@ class_name StingerEnemy2D extends Entity2D
 
 const MAX_DISTANCE := 400.0 ** 2
 
-var _start_turn := Blackboard.get_turn()
+var _start_turn := Blackboard.turn_count
 var _life_turns := Blackboard.rng.randi_range(2, 4)
 
 @onready var ray_cast: RayCast2D = %RayCast2D
@@ -16,7 +16,7 @@ var _life_turns := Blackboard.rng.randi_range(2, 4)
 func _ready() -> void:
 	animated_sprite.animation_finished.connect(_on_animated_sprite_animation_finished)
 	while true:
-		await get_tree().create_timer(Blackboard.rng.randf_range(0.5, 4.0)).timeout
+		await get_tree().create_timer(Blackboard.rng.randf_range(0.5, 2.0)).timeout
 		eyes.visible = not eyes.visible
 
 
@@ -30,19 +30,18 @@ func _on_animated_sprite_animation_finished() -> void:
 	tween.tween_property(self, "position", Blackboard.player.position, 0.2)
 	await tween.finished
 
+	skin.visible = false
 	fly_gpu_particles.emitting = false
 	dissolve_gpu_particles.emitting = true
 
 	await get_tree().create_timer(dissolve_gpu_particles.lifetime).timeout
 	Blackboard.player.skin_sub_viewport.remove_blob()
+	turn_finished.emit()
 	queue_free()
 
 
 func start_turn() -> void:
-	await _skip_process_frames()
-	turn_finished.emit()
-
-	if position.distance_squared_to(Blackboard.player.position) > MAX_DISTANCE or Blackboard.get_turn() - _start_turn > _life_turns:
+	if position.distance_squared_to(Blackboard.player.position) > MAX_DISTANCE or Blackboard.turn_count - _start_turn > _life_turns:
 		queue_free()
 		return
 

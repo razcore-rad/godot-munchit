@@ -5,7 +5,7 @@
 [ext_resource type="Shader" uid="uid://nu0e1o8wd5d4" path="res://entities/outline.gdshader" id="3_lf8yw"]
 [ext_resource type="Texture2D" uid="uid://bn1m6grrdllnq" path="res://entities/enemies/assets/stinger.png" id="4_0ds0w"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mqpx5"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0ail3"]
 shader = ExtResource("3_lf8yw")
 shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
 shader_parameter/line_thickness = 2
@@ -26,7 +26,7 @@ region = Rect2(60, 0, 30, 30)
 atlas = ExtResource("4_0ds0w")
 region = Rect2(90, 0, 30, 30)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_4yiys"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_i3isv"]
 animations = [{
 "frames": [{
 "duration": 1.2,
@@ -46,15 +46,15 @@ animations = [{
 "speed": 3.0
 }]
 
-[sub_resource type="Curve" id="Curve_keaa7"]
+[sub_resource type="Curve" id="Curve_lf8yw"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.52851), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_ppxln"]
 width = 32
-curve = SubResource("Curve_keaa7")
+curve = SubResource("Curve_lf8yw")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mqpx5"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0ds0w"]
 particle_flag_disable_z = true
 emission_shape_scale = Vector3(2, 4, 1)
 emission_shape = 3
@@ -68,7 +68,7 @@ scale_min = 3.0
 scale_max = 5.0
 scale_curve = SubResource("CurveTexture_ppxln")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ppxln"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ltgev"]
 particle_flag_disable_z = true
 emission_shape_scale = Vector3(4, 4, 1)
 emission_shape = 3
@@ -81,59 +81,52 @@ scale_min = 3.0
 scale_max = 5.0
 scale_curve = SubResource("CurveTexture_ppxln")
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_keaa7"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_o8vu6"]
 light_mode = 1
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ppxln"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_cxko5"]
 light_mode = 1
 
-[node name="StingerEnemy2D" instance=ExtResource("1_0ail3")]
+[node name="StingerEntity2D" instance=ExtResource("1_0ail3")]
 script = ExtResource("2_i3isv")
 
-[node name="Timer" type="Timer" parent="." index="0"]
+[node name="Skin2D" type="Node2D" parent="." index="1"]
 unique_name_in_owner = true
-one_shot = true
-
-[node name="RayCast2D" type="RayCast2D" parent="." index="1"]
-unique_name_in_owner = true
-collision_mask = 5
-collide_with_areas = true
-
-[node name="Skin2D" type="Node2D" parent="." index="2"]
-unique_name_in_owner = true
-modulate = Color(0.321569, 0.294118, 0.701961, 1)
-position = Vector2(0, -4)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Skin2D" index="0"]
 unique_name_in_owner = true
 visible = false
-material = SubResource("ShaderMaterial_mqpx5")
-sprite_frames = SubResource("SpriteFrames_4yiys")
+modulate = Color(0.321569, 0.294118, 0.701961, 1)
+material = SubResource("ShaderMaterial_0ail3")
+position = Vector2(0, -5)
+sprite_frames = SubResource("SpriteFrames_i3isv")
 
 [node name="FlyGPUParticles2D" type="GPUParticles2D" parent="Skin2D" index="1"]
 unique_name_in_owner = true
+modulate = Color(0.321569, 0.294118, 0.701961, 1)
 emitting = false
 amount = 32
 speed_scale = 10.0
 explosiveness = 0.06
 randomness = 0.68
-process_material = SubResource("ParticleProcessMaterial_mqpx5")
+process_material = SubResource("ParticleProcessMaterial_0ds0w")
 
 [node name="DissolveGPUParticles2D" type="GPUParticles2D" parent="Skin2D" index="2"]
 unique_name_in_owner = true
+modulate = Color(0.321569, 0.294118, 0.701961, 1)
 emitting = false
 amount = 16
 lifetime = 0.3
 one_shot = true
 explosiveness = 0.26
 randomness = 0.68
-process_material = SubResource("ParticleProcessMaterial_ppxln")
+process_material = SubResource("ParticleProcessMaterial_ltgev")
 
-[node name="Eyes2D" type="Node2D" parent="." index="3"]
+[node name="Eyes2D" type="Node2D" parent="." index="2"]
 unique_name_in_owner = true
 
 [node name="LeftColorRect" type="ColorRect" parent="Eyes2D" index="0"]
-material = SubResource("CanvasItemMaterial_keaa7")
+material = SubResource("CanvasItemMaterial_o8vu6")
 custom_minimum_size = Vector2(2, 2)
 offset_left = -1.0
 offset_top = -5.0
@@ -142,10 +135,19 @@ offset_bottom = -3.0
 color = Color(0.690196, 0.270588, 0.352941, 1)
 
 [node name="RightColorRect" type="ColorRect" parent="Eyes2D" index="1"]
-material = SubResource("CanvasItemMaterial_ppxln")
+material = SubResource("CanvasItemMaterial_cxko5")
 custom_minimum_size = Vector2(2, 2)
 offset_left = 4.0
 offset_top = -5.0
 offset_right = 6.0
 offset_bottom = -3.0
 color = Color(0.690196, 0.270588, 0.352941, 1)
+
+[node name="Timer" type="Timer" parent="." index="3"]
+unique_name_in_owner = true
+one_shot = true
+
+[node name="RayCast2D" type="RayCast2D" parent="." index="4"]
+unique_name_in_owner = true
+collision_mask = 5
+collide_with_areas = true

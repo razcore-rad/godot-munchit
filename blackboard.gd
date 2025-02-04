@@ -25,14 +25,19 @@ static var sectors_map: Dictionary[Vector2i, Sector2D] = {}
 static var enemies_map: Dictionary[Vector2, Enemy2D] = {}
 static var half_tile_size := TILE_SET.tile_size / 2
 static var seed_text: String = ""
-static var point_count := 0
+static var turn_count := 0
+static var point_count := 0:
+	set(new_point_count):
+		point_count = max(0, new_point_count)
+		points_label.text = str(point_count)
 
 static var sector_tile_map_layer: TileMapLayer = null
 static var sectors: Node2D = null
 static var enemies: Node2D = null
 static var stinger_enemies: Node2D = null
 static var player: Player2D = null
-static var turn_label: Label = null
+static var points_label: Label = null
+static var progress_bar: ProgressBar = null
 
 
 static func _static_init() -> void:
@@ -142,7 +147,7 @@ static func spawn_enemies(spawn_tile_map_layer: TileMapLayer) -> void:
 
 static func spawn_stinger_enemies() -> void:
 	@warning_ignore("integer_division")
-	var max_stinger_enemies := mini(get_turn() / STINGER_ENEMIES_DIV, MAX_STINGER_ENEMIES)
+	var max_stinger_enemies := mini(turn_count / STINGER_ENEMIES_DIV, MAX_STINGER_ENEMIES)
 	var stinger_enemy_count := stinger_enemies.get_children().filter(func(s: StingerEnemy2D) -> void: return is_valid(s)).size()
 
 	for _i: int in range(stinger_enemy_count, max_stinger_enemies):
@@ -153,14 +158,6 @@ static func spawn_stinger_enemies() -> void:
 		var stinger_enemey_position := player.to_global(player.ray_cast.target_position)
 		if player.ray_cast.is_colliding() and not is_obstacle(stinger_enemey_position):
 			_add_stinger_enemey(stinger_enemey_position)
-
-
-static func increment_turn() -> void:
-	turn_label.text = str(turn_label.text.to_int() + 1)
-
-
-static func get_turn() -> int:
-	return turn_label.text.to_int()
 
 
 static func get_neighbor_sector_coords(relative_to := Vector2i.ZERO) -> Array[Vector2i]:
@@ -180,7 +177,7 @@ static func get_entities() -> Array[Entity2D]:
 	if is_valid(player):
 		result.push_back(player)
 		result.append_array(stinger_enemies.get_children())
-		result.append_array(enemies.get_children().filter(func(e: Enemy2D) -> bool:
+		result.append_array(enemies.get_children().filter(func(e: Entity2D) -> bool:
 			return e.position.distance_squared_to(player.position) < DISTANCE_SQUARED_CHECK
 		))
 	return result

@@ -1,6 +1,5 @@
-[gd_resource type="Theme" load_steps=12 format=3 uid="uid://cwgp6l14spm0o"]
+[gd_resource type="Theme" load_steps=13 format=3 uid="uid://cwgp6l14spm0o"]
 
-[ext_resource type="FontFile" uid="uid://cj145c2w1pefh" path="res://ui/assets/kobold_gold.otf" id="1_rqugq"]
 [ext_resource type="FontFile" uid="uid://cgpwtp5yju37y" path="res://ui/assets/softball_gold.otf" id="2_jf26r"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jf26r"]
@@ -25,6 +24,24 @@ bg_color = Color(0.1, 0.1, 0.1, 0.6)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0psm4"]
 content_margin_left = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_srjih"]
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.278431, 0.105882, 0.431373, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_34r1t"]
+bg_color = Color(0.545098, 0.780392, 0.74902, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 6
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6lx7k"]
 
@@ -58,6 +75,8 @@ NumberLabel/colors/font_color = Color(1, 1, 1, 1)
 NumberLabel/styles/normal = SubResource("StyleBoxEmpty_0psm4")
 PointsLabel/base_type = &"Label"
 PointsLabel/colors/font_color = Color(0.870588, 0.545098, 0.435294, 1)
+ProgressBar/styles/background = SubResource("StyleBoxFlat_srjih")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_34r1t")
 SeedTextEdit/base_type = &"TextEdit"
 SeedTextEdit/colors/caret_color = Color(0.921569, 0.839216, 0.580392, 1)
 SeedTextEdit/colors/font_color = Color(0.921569, 0.839216, 0.580392, 1)
@@ -67,7 +86,3 @@ SeedTextEdit/styles/normal = SubResource("StyleBoxFlat_iqtc0")
 TitleLabel/base_type = &"Label"
 TitleLabel/colors/font_color = Color(0.870588, 0.545098, 0.435294, 1)
 TitleLabel/font_sizes/font_size = 72
-TurnLabel/base_type = &"Label"
-TurnLabel/colors/font_color = Color(1, 1, 1, 1)
-TurnLabel/font_sizes/font_size = 48
-TurnLabel/fonts/font = ExtResource("1_rqugq")

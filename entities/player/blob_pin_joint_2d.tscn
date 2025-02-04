@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cjj0qbi4mcnmu"]
 
-[ext_resource type="Shader" path="res://entities/player/assets/fuzzyball.gdshader" id="1_0ti4d"]
+[ext_resource type="Shader" uid="uid://qkyq1k8xjn8l" path="res://entities/player/assets/fuzzyball.gdshader" id="1_0ti4d"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qkmuc"]
 radius = 3.0
@@ -11,10 +11,10 @@ shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/threshold = -1.0
 
 [node name="BlobPinJoint2D" type="PinJoint2D"]
-position = Vector2(-5, 0)
+position = Vector2(-5, -1)
 node_b = NodePath("RigidBody2D")
 disable_collision = false
-softness = 2.0
+softness = 0.5
 
 [node name="RigidBody2D" type="RigidBody2D" parent="."]
 

@@ -1,5 +1,7 @@
 class_name Player2D extends Entity2D
 
+signal turn_started
+
 const SkinSubViewportPackedScene: PackedScene = preload("skin_sub_viewport.tscn")
 
 const MOVE_AREAS_FOLDER := "move_areas"
@@ -15,7 +17,7 @@ var _move_tween: Tween = create_tween()
 
 var move_area: MoveArea2D = null
 
-@onready var mouth_animation_player: AnimationPlayer = %MouthAnimationPlayer
+@onready var eat_animation_player: AnimationPlayer = %EatAnimationPlayer
 @onready var eyes_animation_player: AnimationPlayer = %EyesAnimationPlayer
 @onready var skin_sub_viewport: SkinSubViewport = %SkinSubViewport
 @onready var extra: Node2D = %Extra2D
@@ -23,6 +25,7 @@ var move_area: MoveArea2D = null
 @onready var inner_eyes: Array[ColorRect] = [%LeftInnerColorRect, %RightInnerColorRect]
 @onready var ray_cast: RayCast2D = %RayCast2D
 @onready var spawn_tile_map_layer: TileMapLayer = %SpawnTileMapLayer
+@onready var points_label: Label = %PointsLabel
 
 
 func _ready() -> void:
@@ -52,7 +55,7 @@ func _on_skin_sub_viewport_blob(blob_count: int, is_added: bool) -> void:
 
 func _on_detect_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event.is_action_pressed("left_click"):
-		skin_sub_viewport.remove_blob()
+		Blackboard.point_count -= 1
 		turn_finished.emit()
 
 
@@ -97,13 +100,14 @@ func _detect_enemy(target_position: Vector2) -> void:
 	if target_position in Blackboard.enemies_map:
 		var enemy := Blackboard.enemies_map[target_position]
 		Blackboard.enemies_map.erase(target_position)
-		_eat_enemy(enemy.move_area)
+		_eat_enemy(enemy.move_area, enemy.points)
 		enemy.queue_free()
 	else:
 		skin_sub_viewport.remove_blob()
+		Blackboard.point_count -= 1
 
 
-func _eat_enemy(enemy_move_area: Area2D) -> void:
+func _eat_enemy(enemy_move_area: Area2D, enemy_points: int) -> void:
 	skin_sub_viewport.add_blob()
 	var move_area_collision_shape_positions := move_area.get_children().map(func(cs: MoveAreaCollisionShape2D) -> Vector2: return cs.position)
 	for collision_shape: MoveAreaCollisionShape2D in enemy_move_area.get_children():
@@ -114,10 +118,14 @@ func _eat_enemy(enemy_move_area: Area2D) -> void:
 			new_move_area_collision_shape.modulate = MOVE_AREA_COLORS.default
 			new_move_area_collision_shape.sprite.region_rect = MOVE_AREA_TEXTURE_RECT
 
+	Blackboard.point_count += enemy_points * roundi(Blackboard.progress_bar.ratio)
+	points_label.text = str(enemy_points)
+
 	move_area.visible = true
 	_toggle_area_shapes(move_area, {is_disabled = false})
-	mouth_animation_player.play("eat_crumbs")
+
 	mouth_animated_sprite.play()
+	eat_animation_player.play("eat")
 
 
 func setup_move_area(new_move_area: MoveArea2D) -> void:
@@ -135,13 +143,13 @@ func is_dead() -> bool:
 
 func start_turn() -> void:
 	areas.visible = true
+	turn_started.emit()
 	_toggle_area_shapes(move_area, {is_disabled = false})
 
 
 func end_turn() -> void:
 	areas.visible = false
 	_toggle_area_shapes(move_area, {is_disabled = true})
-
 	const DISTANCE_SQUARED_CHECK := 2
 	var _sector_player_position := Blackboard.sector_tile_map_layer.local_to_map(position)
 	for sector_offset: Vector2i in Blackboard.sectors_map:

@@ -1,15 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://5n0tfoc3ta3v"]
+[gd_scene load_steps=7 format=3 uid="uid://5n0tfoc3ta3v"]
 
-[ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_4025a"]
-[ext_resource type="Script" uid="uid://dj0iekh3p1x31" path="res://entities/enemies/enemy_2d.gd" id="2_4eds2"]
-[ext_resource type="Shader" uid="uid://nu0e1o8wd5d4" path="res://entities/outline.gdshader" id="3_563na"]
+[ext_resource type="PackedScene" uid="uid://cyg5mmbtdwxb8" path="res://entities/enemies/enemy_2d.tscn" id="1_vejp2"]
 [ext_resource type="PackedScene" uid="uid://dkshugwglusb6" path="res://entities/enemies/move_areas/move_area_2d_2.tscn" id="3_yf2pk"]
 [ext_resource type="Texture2D" uid="uid://bcnyk3csvrqyg" path="res://entities/enemies/assets/big_slime.png" id="4_whdkn"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yf2pk"]
-shader = ExtResource("3_563na")
-shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
-shader_parameter/line_thickness = 2
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bhabi"]
 atlas = ExtResource("4_whdkn")
@@ -19,7 +12,7 @@ region = Rect2(0, 0, 32, 32)
 atlas = ExtResource("4_whdkn")
 region = Rect2(32, 0, 32, 32)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_ghlyc"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_vejp2"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -33,21 +26,11 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Enemy2DB" instance=ExtResource("1_4025a")]
-script = ExtResource("2_4eds2")
-
-[node name="DetectArea2D" parent="Areas2D" index="0" groups=["enemy"]]
-collision_layer = 2
-collision_mask = 7
+[node name="Enemy2DB" instance=ExtResource("1_vejp2")]
 
 [node name="MoveArea2D" parent="Areas2D" index="1" instance=ExtResource("3_yf2pk")]
 unique_name_in_owner = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="1"]
+[node name="AnimatedSprite2D" parent="Skin2D" index="0"]
 modulate = Color(0.545098, 0.780392, 0.74902, 1)
-material = SubResource("ShaderMaterial_yf2pk")
-position = Vector2(0, -5)
-sprite_frames = SubResource("SpriteFrames_ghlyc")
-autoplay = "default"
-frame = 1
-frame_progress = 0.270132
+sprite_frames = SubResource("SpriteFrames_vejp2")

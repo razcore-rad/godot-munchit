@@ -2,6 +2,8 @@ class_name Enemy2D extends Entity2D
 
 const MOVE_RANDOM_CHANCE := 0.2
 
+@export var points := 1
+
 @onready var move_area: Area2D = %MoveArea2D
 
 
@@ -74,6 +76,7 @@ func _detect_player(tween: Tween, original_position: Vector2, target_position: V
 
 func _eat_player(original_position: Vector2, target_position: Vector2) -> void:
 	Blackboard.player.skin_sub_viewport.remove_blob()
+	Blackboard.point_count -= points
 	var player_move_area_collision_shape_positions: Dictionary[Vector2, MoveAreaCollisionShape2D] = {}
 	for collision_shape: MoveAreaCollisionShape2D in Blackboard.player.move_area.get_children():
 		player_move_area_collision_shape_positions[collision_shape.position] = collision_shape

@@ -38,7 +38,7 @@ var _move_area_index: int = -1:
 @onready var right_texture_button: TextureButton = %RightTextureButton
 @onready var start_button: Button = %StartButton
 @onready var seed_text_edit: TextEdit = %SeedTextEdit
-@onready var points_label: Label = %PointsLabel
+@onready var menu_points_label: Label = %MenuPointsLabel
 
 
 func _ready() -> void:
@@ -71,7 +71,7 @@ func _on_buy_button_pressed() -> void:
 		start_button.disabled = true
 
 		var tween = create_tween().set_trans(Tween.TRANS_SINE)
-		tween.tween_method(func(x: int) -> void: points_label.text = str(x), Blackboard.point_count, Blackboard.point_count - move_area.cost, 1.0)
+		tween.tween_method(func(x: int) -> void: menu_points_label.text = str(x), Blackboard.point_count, Blackboard.point_count - move_area.cost, 1.0)
 		await tween.finished
 
 		move_area.cost = 0
