@@ -6,6 +6,8 @@ const BlobTextureRectPackedScene := preload("ui/blob_texture_rect.tscn")
 const DEFAULT_SEED_TEXT := "world"
 
 var offscreen_position: Vector2 = Vector2.RIGHT * ProjectSettings.get_setting("display/window/size/viewport_width")
+var is_back_pressed := false
+var is_playing := false
 
 @onready var enemies: Node2D = %Enemies2D
 @onready var stinger_enemies: Node2D = %StingerEnemies2D
@@ -20,6 +22,7 @@ var offscreen_position: Vector2 = Vector2.RIGHT * ProjectSettings.get_setting("d
 @onready var progress_bar: ProgressBar = %ProgressBar
 @onready var points_label: Label = %PointsLabel
 @onready var menu_control: MenuControl = %MenuControl
+@onready var back_texture_button: TextureButton = %BackTextureButton
 
 @onready var player_start_position := player.position
 @onready var base_point_light_start_enerty := base_point_light.energy
@@ -30,6 +33,7 @@ var offscreen_position: Vector2 = Vector2.RIGHT * ProjectSettings.get_setting("d
 
 func _ready() -> void:
 	menu_control.start_button.pressed.connect(_on_menu_control_start_button_pressed)
+	back_texture_button.pressed.connect(_on_back_texture_rect_pressed)
 	player.turn_started.connect(_on_player_turn.bind(true))
 	player.turn_finished.connect(_on_player_turn.bind(false))
 	player.skin_sub_viewport.blob_added.connect(_on_player_skin_sub_viewport_blob.bind(true))
@@ -60,6 +64,16 @@ func _on_menu_control_start_button_pressed() -> void:
 	player_hud_control.visible = true
 
 
+func _on_back_texture_rect_pressed() -> void:
+	if not is_playing:
+		return
+
+	is_back_pressed = true
+	for entity: Entity2D in Blackboard.get_entities():
+		if Blackboard.is_valid(entity):
+			entity.turn_finished.emit()
+
+
 func _on_player_turn(has_started: bool) -> void:
 	progress_bar.visible = has_started
 	if has_started:
@@ -84,9 +98,10 @@ func _on_player_skin_sub_viewport_blob(blob_count: int, is_added: bool) -> void:
 
 
 func _start_turn_based_loop() -> void:
-	Blackboard.spawn_stinger_enemies()
+	is_playing = true
 
 	Blackboard.turn_count = 0
+	Blackboard.spawn_stinger_enemies()
 	player.setup_move_area(menu_control.get_move_area(true))
 	for _i in player.skin_sub_viewport.MAX_BLOBS:
 		player.skin_sub_viewport.add_blob()
@@ -100,10 +115,10 @@ func _start_turn_based_loop() -> void:
 				@warning_ignore("redundant_await")
 				await entity.end_turn()
 
-			if player.is_dead():
+			if is_back_pressed or player.is_dead():
 				break
 
-		if player.is_dead():
+		if is_back_pressed or player.is_dead():
 			break
 
 		Blackboard.turn_count += 1
@@ -111,45 +126,57 @@ func _start_turn_based_loop() -> void:
 
 
 func _end() -> void:
-	for entity: Entity2D in Blackboard.get_entities().slice(1):
-		if Blackboard.is_valid(entity):
+	is_playing = false
+
+	if is_back_pressed:
+		points_label.text = "0"
+
+	for entity: Entity2D in Blackboard.get_entities():
+		if entity != player and Blackboard.is_valid(entity):
 			entity.queue_free()
 
 	menu_control.start_button.disabled = true
-	var turn_count := points_label.text.to_int()
+	var point_count := points_label.text.to_int()
 	var main_tween := create_tween().set_trans(Tween.TRANS_SINE)
 	main_tween.tween_property(base_point_light, "energy", 0.0, 2.0)
 	main_tween.parallel().tween_property(base_point_light, "texture_scale", base_point_light_start_texture_scale, 2.0)
-	main_tween.tween_method(func(x: int) -> void: points_label.text = str(x), turn_count, 0, 1.0)
+	if point_count > 0:
+		main_tween.tween_method(func(x: int) -> void: points_label.text = str(x), point_count, 0, 1.0)
 
-	var turn_label_modulate := points_label.modulate
-	var blink_tween := create_tween().set_loops()
-	blink_tween.tween_property(points_label, "modulate", Palette.LIGHT_GREEN, 0.1)
-	blink_tween.tween_property(points_label, "modulate", turn_label_modulate, 0.05)
+	var points_label_modulate := points_label.modulate
+	var blink_tween: Tween = null
+	if point_count > 0:
+		blink_tween = create_tween().set_loops()
+		blink_tween.tween_property(points_label, "modulate", Palette.LIGHT_GREEN, 0.1)
+		blink_tween.tween_property(points_label, "modulate", points_label_modulate, 0.05)
+
 	await main_tween.finished
-	blink_tween.kill()
+	if blink_tween != null and point_count > 0:
+		blink_tween.kill()
 
-	points_label.modulate = turn_label_modulate
+	points_label.modulate = points_label_modulate
 	player.position = player_start_position
 	Blackboard.generate()
 
 	menu_control.position = Vector2.ZERO
 	player_hud_control.visible = false
 
-	main_tween = menu_control.menu_points_label.create_tween().set_trans(Tween.TRANS_SINE)
-	main_tween.tween_method(func(x: int) -> void: menu_control.menu_points_label.text = str(x), Blackboard.point_count, Blackboard.point_count + turn_count, 1.0)
-	Blackboard.point_count += turn_count
+	if point_count > 0:
+		main_tween = menu_control.menu_points_label.create_tween().set_trans(Tween.TRANS_SINE)
+		main_tween.tween_method(func(x: int) -> void: menu_control.menu_points_label.text = str(x), Blackboard.point_count, Blackboard.point_count + point_count, 1.0)
+	Blackboard.point_count += point_count
 	for _i in player.skin_sub_viewport.MAX_BLOBS:
 		player.skin_sub_viewport.add_blob()
 
-	var menu_control_points_label_modulate := menu_control.menu_points_label.modulate
-	blink_tween = create_tween().set_loops()
-	blink_tween.tween_property(menu_control.menu_points_label, "modulate", Palette.LIGHT_GREEN, 0.1)
-	blink_tween.tween_property(menu_control.menu_points_label, "modulate", menu_control_points_label_modulate, 0.05)
-	await main_tween.finished
-	blink_tween.kill()
+	if point_count > 0:
+		blink_tween = create_tween().set_loops()
+		var menu_control_points_label_modulate := menu_control.menu_points_label.modulate
+		blink_tween.tween_property(menu_control.menu_points_label, "modulate", Palette.LIGHT_GREEN, 0.1)
+		blink_tween.tween_property(menu_control.menu_points_label, "modulate", menu_control_points_label_modulate, 0.05)
+		await main_tween.finished
+		blink_tween.kill()
+		menu_control.menu_points_label.modulate = menu_control_points_label_modulate
 
-	menu_control.menu_points_label.modulate = menu_control_points_label_modulate
 	player.skin_sub_viewport.add_blob()
 
 	main_tween = create_tween().set_trans(Tween.TRANS_SINE)
@@ -157,3 +184,5 @@ func _end() -> void:
 	main_tween.parallel().tween_property(base_point_light, "texture_scale", base_point_light_start_texture_scale, 2.0)
 	await main_tween.finished
 	menu_control.start_button.disabled = false
+
+	is_back_pressed = false

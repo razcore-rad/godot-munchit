@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bskvs3ko2utnn"]
+[gd_scene load_steps=31 format=3 uid="uid://bskvs3ko2utnn"]
 
 [ext_resource type="Script" uid="uid://tcg6bs55hw1w" path="res://main.gd" id="1_aaq20"]
 [ext_resource type="Shader" uid="uid://cowsy25kxhkiw" path="res://assets/light_only_group.gdshader" id="2_efxa6"]
@@ -6,9 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://c2mhgypppwjb3" path="res://entities/player/player_2d.tscn" id="4_p2fd5"]
 [ext_resource type="Script" uid="uid://dbta2an742hic" path="res://ui/menu_control.gd" id="5_dg77c"]
 [ext_resource type="Shader" uid="uid://nu0e1o8wd5d4" path="res://entities/outline.gdshader" id="6_dg77c"]
-[ext_resource type="Texture2D" uid="uid://dwb67e36aikmi" path="res://ui/assets/pick_texture_button/pick_texture_button_nornal.png" id="7_ycdy4"]
-[ext_resource type="Texture2D" uid="uid://ldn0aescwsku" path="res://ui/assets/pick_texture_button/pick_texture_button_pressed.png" id="8_w48qg"]
-[ext_resource type="Texture2D" uid="uid://drwxxjtt4sm0i" path="res://ui/assets/pick_texture_button/pick_texture_button_hover.png" id="9_vivmo"]
+[ext_resource type="Texture2D" uid="uid://dwb67e36aikmi" path="res://ui/assets/texture_button/texture_button_nornal.png" id="7_ycdy4"]
+[ext_resource type="Texture2D" uid="uid://ldn0aescwsku" path="res://ui/assets/texture_button/texture_button_pressed.png" id="8_w48qg"]
+[ext_resource type="Texture2D" uid="uid://drwxxjtt4sm0i" path="res://ui/assets/texture_button/texture_button_hover.png" id="9_vivmo"]
 [ext_resource type="Script" uid="uid://dpch7hvosvql3" path="res://ui/seed_text_edit.gd" id="11_yaehf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dg77c"]
@@ -31,6 +31,18 @@ fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 0.05)
 metadata/_snap_count = 20
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ycdy4"]
+shader = ExtResource("6_dg77c")
+shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
+shader_parameter/line_thickness = 2
+
+[sub_resource type="InputEventAction" id="InputEventAction_4c57u"]
+action = &"ui_cancel"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_efxa6"]
+events = [SubResource("InputEventAction_4c57u")]
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vivmo"]
 shader = ExtResource("6_dg77c")
 shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
@@ -41,10 +53,26 @@ shader = ExtResource("6_dg77c")
 shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
 shader_parameter/line_thickness = 2
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ycdy4"]
-shader = ExtResource("6_dg77c")
-shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
-shader_parameter/line_thickness = 2
+[sub_resource type="InputEventAction" id="InputEventAction_w48qg"]
+action = &"buy"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_vivmo"]
+events = [SubResource("InputEventAction_w48qg")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_efxa6"]
+action = &"ui_left"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_dg77c"]
+events = [SubResource("InputEventAction_efxa6")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_dg77c"]
+action = &"ui_right"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_ycdy4"]
+events = [SubResource("InputEventAction_dg77c")]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_w48qg"]
 shader = ExtResource("6_dg77c")
@@ -55,6 +83,13 @@ shader_parameter/line_thickness = 2
 shader = ExtResource("6_dg77c")
 shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
 shader_parameter/line_thickness = 2
+
+[sub_resource type="InputEventAction" id="InputEventAction_ycdy4"]
+action = &"ui_accept"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_w48qg"]
+events = [SubResource("InputEventAction_ycdy4")]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_efxa6"]
 shader = ExtResource("6_dg77c")
@@ -136,10 +171,17 @@ anchor_right = 1.0
 offset_left = 10.0
 offset_top = 20.0
 offset_right = -10.0
-offset_bottom = 20.0
+offset_bottom = 530.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="Control" type="Control" parent="CanvasLayer/Control/PlayerHUDControl"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
 grow_horizontal = 2
 
-[node name="BlobsHBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/PlayerHUDControl"]
+[node name="BlobsHBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/PlayerHUDControl/Control"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 4
@@ -147,35 +189,7 @@ anchor_top = 0.5
 anchor_bottom = 0.5
 grow_vertical = 2
 
-[node name="PointsHBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/PlayerHUDControl"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -118.0
-offset_top = -16.0
-offset_bottom = 16.0
-grow_horizontal = 0
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/Control/PlayerHUDControl/PointsHBoxContainer"]
-layout_mode = 2
-theme_type_variation = &"PointsLabel"
-text = "Points:"
-
-[node name="PointsLabel" type="Label" parent="CanvasLayer/Control/PlayerHUDControl/PointsHBoxContainer"]
-unique_name_in_owner = true
-modulate = Color(0.870588, 0.545098, 0.435294, 1)
-layout_mode = 2
-size_flags_vertical = 0
-theme_type_variation = &"NumberLabel"
-text = "0"
-horizontal_alignment = 2
-
-[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/Control/PlayerHUDControl"]
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/Control/PlayerHUDControl/Control"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(540, 0)
 layout_mode = 1
@@ -192,6 +206,51 @@ grow_horizontal = 2
 grow_vertical = 2
 value = 100.0
 show_percentage = false
+
+[node name="PointsHBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/PlayerHUDControl/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -118.0
+offset_top = -16.0
+offset_bottom = 16.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/PlayerHUDControl/Control/PointsHBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"PointsLabel"
+text = "Points:"
+
+[node name="PointsLabel" type="Label" parent="CanvasLayer/Control/PlayerHUDControl/Control/PointsHBoxContainer"]
+unique_name_in_owner = true
+modulate = Color(0.870588, 0.545098, 0.435294, 1)
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"NumberLabel"
+text = "0"
+horizontal_alignment = 2
+
+[node name="BackTextureButton" type="TextureButton" parent="CanvasLayer/Control/PlayerHUDControl"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_ycdy4")
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 30.0
+grow_vertical = 0
+tooltip_text = "Back to Menu"
+focus_mode = 0
+shortcut = SubResource("Shortcut_efxa6")
+texture_normal = ExtResource("7_ycdy4")
+texture_pressed = ExtResource("8_w48qg")
+texture_hover = ExtResource("9_vivmo")
 
 [node name="MenuControl" type="Control" parent="CanvasLayer"]
 unique_name_in_owner = true
@@ -310,6 +369,9 @@ unique_name_in_owner = true
 material = SubResource("ShaderMaterial_2cqfq")
 layout_mode = 2
 size_flags_horizontal = 10
+tooltip_text = "Buy Pattern"
+focus_mode = 0
+shortcut = SubResource("Shortcut_vivmo")
 text = "Buy"
 flat = true
 
@@ -325,6 +387,9 @@ offset_top = -20.0
 offset_right = 30.0
 offset_bottom = 20.0
 grow_vertical = 2
+tooltip_text = "Cycle Left"
+focus_mode = 0
+shortcut = SubResource("Shortcut_dg77c")
 texture_normal = ExtResource("7_ycdy4")
 texture_pressed = ExtResource("8_w48qg")
 texture_hover = ExtResource("9_vivmo")
@@ -344,6 +409,9 @@ offset_right = -180.0
 offset_bottom = 20.0
 grow_horizontal = 0
 grow_vertical = 2
+tooltip_text = "Cycle Reft"
+focus_mode = 0
+shortcut = SubResource("Shortcut_ycdy4")
 texture_normal = ExtResource("7_ycdy4")
 texture_pressed = ExtResource("8_w48qg")
 texture_hover = ExtResource("9_vivmo")
@@ -381,6 +449,9 @@ theme_type_variation = &"MenuHSeparator"
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_4c57u")
 layout_mode = 2
+tooltip_text = "Play Game"
+focus_mode = 0
+shortcut = SubResource("Shortcut_w48qg")
 text = "Start"
 flat = true
 
@@ -397,6 +468,9 @@ text = "Seed:"
 unique_name_in_owner = true
 custom_minimum_size = Vector2(240, 40)
 layout_mode = 2
+tooltip_text = "Game Seed.
+Note: Only affects tile & enemy placement."
+focus_mode = 0
 theme_type_variation = &"SeedTextEdit"
 placeholder_text = "world"
 context_menu_enabled = false

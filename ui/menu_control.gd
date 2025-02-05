@@ -15,7 +15,6 @@ var _move_area_index: int = -1:
 		_move_area_index = wrapi(new_move_area_index, 0, _move_areas.size())
 		var move_area: MoveArea2D = _move_areas[_move_area_index]
 		cost_label.text = str(move_area.cost)
-
 		for collision_shape: MoveAreaCollisionShape2D in move_area.get_children():
 			collision_shape.modulate = Palette.GREEN
 
@@ -23,10 +22,10 @@ var _move_area_index: int = -1:
 		tween.tween_property(areas_control, "position:x", -_move_area_index * STEP * Blackboard.TILE_SET.tile_size.x, 0.2)
 
 		var is_bought :=  move_area.cost == 0
-		var are_enough_points := Blackboard.point_count < move_area.cost
+		var are_enough_points := move_area.cost <= Blackboard.point_count
 		bought_label.visible = is_bought
 		buy_h_box_container.visible = not is_bought
-		buy_button.disabled = are_enough_points
+		buy_button.disabled = is_bought or not are_enough_points
 		start_button.disabled = not is_bought
 
 @onready var areas_control: Control = %AreasControl

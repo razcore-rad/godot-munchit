@@ -101,8 +101,9 @@ func _detect_enemy(target_position: Vector2) -> void:
 	if target_position in Blackboard.enemies_map:
 		var enemy := Blackboard.enemies_map[target_position]
 		Blackboard.enemies_map.erase(target_position)
-		_eat_enemy(enemy.move_area, enemy.points)
-		enemy.queue_free()
+		if Blackboard.is_valid(enemy):
+			_eat_enemy(enemy.move_area, enemy.points)
+			enemy.queue_free()
 	else:
 		Blackboard.point_count -= 1
 		skin_sub_viewport.remove_blob()
