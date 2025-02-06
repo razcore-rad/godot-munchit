@@ -1,25 +1,25 @@
 [gd_scene load_steps=7 format=3 uid="uid://bgp7ukyuf5mtq"]
 
 [ext_resource type="PackedScene" uid="uid://cyg5mmbtdwxb8" path="res://entities/enemies/enemy_2d.tscn" id="1_tlrju"]
-[ext_resource type="Texture2D" uid="uid://dvrf4i7iugy1t" path="res://entities/enemies/assets/slime.png" id="4_325t7"]
-[ext_resource type="PackedScene" uid="uid://6owe3mp3oab0" path="res://entities/enemies/move_areas/move_area_2d_1.tscn" id="5_scny1"]
+[ext_resource type="PackedScene" uid="uid://jlhatc0x6ggi" path="res://entities/move_area_collision_shape_2d.tscn" id="2_tlrju"]
+[ext_resource type="Texture2D" uid="uid://04l13dw4h1ao" path="res://entities/enemies/assets/enemies.png" id="3_tlrju"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_jwe6l"]
-atlas = ExtResource("4_325t7")
+[sub_resource type="AtlasTexture" id="AtlasTexture_eveg7"]
+atlas = ExtResource("3_tlrju")
 region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_g7iru"]
-atlas = ExtResource("4_325t7")
+[sub_resource type="AtlasTexture" id="AtlasTexture_scny1"]
+atlas = ExtResource("3_tlrju")
 region = Rect2(32, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tlrju"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_jwe6l")
+"texture": SubResource("AtlasTexture_eveg7")
 }, {
 "duration": 1.5,
-"texture": SubResource("AtlasTexture_g7iru")
+"texture": SubResource("AtlasTexture_scny1")
 }],
 "loop": true,
 "name": &"default",
@@ -28,9 +28,48 @@ animations = [{
 
 [node name="Enemy2DA" instance=ExtResource("1_tlrju")]
 
-[node name="MoveArea2D" parent="Areas2D" index="1" instance=ExtResource("5_scny1")]
+[node name="MoveArea2D" type="Area2D" parent="Areas2D" index="1"]
 unique_name_in_owner = true
+collision_layer = 256
+collision_mask = 7
+monitorable = false
+
+[node name="MoveAreaCollisionShape2D" parent="Areas2D/MoveArea2D" index="0" instance=ExtResource("2_tlrju")]
+modulate = Color(0.870588, 0.545098, 0.435294, 1)
+position = Vector2(0, -20)
+
+[node name="Sprite2D" parent="Areas2D/MoveArea2D/MoveAreaCollisionShape2D" index="0"]
+region_rect = Rect2(30, 40, 30, 20)
+
+[node name="MoveAreaCollisionShape2D2" parent="Areas2D/MoveArea2D" index="1" instance=ExtResource("2_tlrju")]
+modulate = Color(0.870588, 0.545098, 0.435294, 1)
+position = Vector2(30, 0)
+
+[node name="Sprite2D" parent="Areas2D/MoveArea2D/MoveAreaCollisionShape2D2" index="0"]
+region_rect = Rect2(30, 40, 30, 20)
+
+[node name="MoveAreaCollisionShape2D3" parent="Areas2D/MoveArea2D" index="2" instance=ExtResource("2_tlrju")]
+modulate = Color(0.870588, 0.545098, 0.435294, 1)
+position = Vector2(-30, 0)
+
+[node name="Sprite2D" parent="Areas2D/MoveArea2D/MoveAreaCollisionShape2D3" index="0"]
+region_rect = Rect2(30, 40, 30, 20)
+
+[node name="MoveAreaCollisionShape2D4" parent="Areas2D/MoveArea2D" index="3" instance=ExtResource("2_tlrju")]
+modulate = Color(0.870588, 0.545098, 0.435294, 1)
+position = Vector2(0, 20)
+
+[node name="Sprite2D" parent="Areas2D/MoveArea2D/MoveAreaCollisionShape2D4" index="0"]
+region_rect = Rect2(30, 40, 30, 20)
+
+[node name="ShadowSprite2D" parent="." index="1"]
+position = Vector2(0, 2)
 
 [node name="AnimatedSprite2D" parent="Skin2D" index="0"]
 modulate = Color(0.341176, 0.588235, 0.631373, 1)
 sprite_frames = SubResource("SpriteFrames_tlrju")
+
+[editable path="Areas2D/MoveArea2D/MoveAreaCollisionShape2D"]
+[editable path="Areas2D/MoveArea2D/MoveAreaCollisionShape2D2"]
+[editable path="Areas2D/MoveArea2D/MoveAreaCollisionShape2D3"]
+[editable path="Areas2D/MoveArea2D/MoveAreaCollisionShape2D4"]

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dvrf4i7iugy1t"
-path="res://.godot/imported/slime.png-dc34bf2be3f412d8b8a1586a52629920.ctex"
+uid="uid://cy5rbl1my2k84"
+path="res://.godot/imported/mouth.png-a43b915d738aff980df40a42fe630a15.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://entities/enemies/assets/slime.png"
-dest_files=["res://.godot/imported/slime.png-dc34bf2be3f412d8b8a1586a52629920.ctex"]
+source_file="res://entities/player/assets/mouth.png"
+dest_files=["res://.godot/imported/mouth.png-a43b915d738aff980df40a42fe630a15.ctex"]
 
 [params]
 

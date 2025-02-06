@@ -4,15 +4,17 @@ const Sector2DPackedScene := preload("sectors/sector_2d.tscn")
 const StingerEnemy2DPackedScene := preload("entities/enemies/stinger_enemy_2d.tscn")
 
 const TILE_SET := preload("sectors/tile_set.tres")
-const ENEMY_FILE_PATHS: Dictionary[String, int] = {
-	"entities/enemies/enemy_2d_a.tscn": 0  ,
-	"entities/enemies/enemy_2d_b.tscn": 0,
+const ENEMY_FILE_PATH := "entities/enemies/"
+const ENEMY_FILE_NAMES: Dictionary[String, int] = {
+	"enemy_2d_a.tscn": 0,
+	"enemy_2d_b.tscn": 0,
+	"enemy_2d_c.tscn": 2,
 }
 
 const MAX_ENEMIES := 300
-const MAX_STINGER_ENEMIES := 4
+const MAX_STINGER_ENEMIES := 3
 const STINGER_ENEMIES_DIV := 12
-const ENEMY_SPAN := Vector2i(MAX_ENEMIES - 20, MAX_ENEMIES)
+const ENEMY_SPAN := Vector2i(MAX_ENEMIES - 40, MAX_ENEMIES - 20)
 
 static var _blue_noise_tile_size := Vector2i(8, 7)
 static var _sector_offset_span := range(-1, 2)
@@ -26,13 +28,6 @@ static var enemies_map: Dictionary[Vector2, Enemy2D] = {}
 static var half_tile_size := TILE_SET.tile_size / 2
 static var seed_text: String = ""
 static var turn_count := 0
-static var point_count := 0:
-	set(new_point_count):
-		var delta := new_point_count - point_count
-		point_count = max(0, new_point_count)
-		points_label.text = str(point_count)
-		player.points_label.text = str(delta)
-		player.animation_player.play("eat" if delta > 0 else "lose_points")
 
 static var sector_tile_map_layer: TileMapLayer = null
 static var sectors: Node2D = null
@@ -57,8 +52,8 @@ static func _static_init() -> void:
 
 
 static func _add_enemy(enemy_position: Vector2) -> void:
-	var file_path: String = ENEMY_FILE_PATHS.keys().filter(func(s: String) -> bool: return ENEMY_FILE_PATHS[s] <= turn_count).pick_random()
-	var enemy: Enemy2D = load(file_path).instantiate()
+	var file_name: String = ENEMY_FILE_NAMES.keys().filter(func(s: String) -> bool: return ENEMY_FILE_NAMES[s] <= turn_count).pick_random()
+	var enemy: Enemy2D = load(ENEMY_FILE_PATH.path_join(file_name)).instantiate()
 	enemy.position = enemy_position
 	enemies.add_child(enemy)
 	enemies_map[enemy.position] = enemy
@@ -68,11 +63,6 @@ static func _add_stinger_enemey(position: Vector2) -> void:
 	var stinger: StingerEnemy2D = StingerEnemy2DPackedScene.instantiate()
 	stinger.position = position
 	stinger_enemies.add_child(stinger)
-
-
-static func get_sector(at: Vector2) -> Sector2D:
-	var coord := sector_tile_map_layer.local_to_map(at)
-	return sectors_map.get(coord)
 
 
 static func is_obstacle(at: Vector2) -> bool:
@@ -162,6 +152,11 @@ static func spawn_stinger_enemies() -> void:
 			_add_stinger_enemey(stinger_enemey_position)
 
 
+static func get_sector(at: Vector2) -> Sector2D:
+	var coord := sector_tile_map_layer.local_to_map(at)
+	return sectors_map.get(coord)
+
+
 static func get_neighbor_sector_coords(relative_to := Vector2i.ZERO) -> Array[Vector2i]:
 	var result: Array[Vector2i] = []
 	for x in _sector_offset_span:
@@ -183,3 +178,15 @@ static func get_entities() -> Array[Entity2D]:
 			return e.position.distance_squared_to(player.position) < DISTANCE_SQUARED_CHECK
 		))
 	return result
+
+
+static func get_point_count() -> int:
+	return points_label.text.to_int()
+
+
+static func set_point_count(to: int) -> void:
+	var delta := to - points_label.text.to_int()
+	points_label.text = str(max(0, to))
+	if to != 0:
+		player.points_label.text = str(delta)
+		player.animation_player.play("eat" if delta > 0 else "lose_points")

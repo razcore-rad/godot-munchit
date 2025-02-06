@@ -1,44 +1,28 @@
-[gd_scene load_steps=6 format=3 uid="uid://cyg5mmbtdwxb8"]
+[gd_scene load_steps=5 format=3 uid="uid://cyg5mmbtdwxb8"]
 
+[ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_xtcvm"]
 [ext_resource type="Script" uid="uid://dj0iekh3p1x31" path="res://entities/enemies/enemy_2d.gd" id="1_y50bo"]
-[ext_resource type="Texture2D" uid="uid://cr6fcs8x7v22" path="res://assets/atlas.png" id="2_5j8vw"]
 [ext_resource type="Shader" uid="uid://nu0e1o8wd5d4" path="res://entities/outline.gdshader" id="3_xtcvm"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_5mqu2"]
-size = Vector2(25, 15)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ph6fm"]
 shader = ExtResource("3_xtcvm")
 shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
 shader_parameter/line_thickness = 2
 
-[node name="Enemy2D" type="Node2D"]
+[node name="Enemy2D" instance=ExtResource("1_xtcvm")]
 script = ExtResource("1_y50bo")
+points = 1
+start_at_turn = 0
 
-[node name="Areas2D" type="Node2D" parent="."]
-unique_name_in_owner = true
-
-[node name="DetectArea2D" type="Area2D" parent="Areas2D"]
-unique_name_in_owner = true
-z_index = 1
+[node name="DetectArea2D" parent="Areas2D" index="0"]
 collision_layer = 2
 collision_mask = 7
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Areas2D/DetectArea2D"]
-shape = SubResource("RectangleShape2D_5mqu2")
-
-[node name="DetectAreaSprite2D" type="Sprite2D" parent="Areas2D/DetectArea2D/CollisionShape2D"]
+[node name="Skin2D" type="Node2D" parent="." index="2"]
 unique_name_in_owner = true
-visible = false
-modulate = Color(0.870588, 0.545098, 0.435294, 1)
-texture = ExtResource("2_5j8vw")
-region_enabled = true
-region_rect = Rect2(10, 65, 10, 10)
+position = Vector2(0, 1)
 
-[node name="Skin2D" type="Node2D" parent="."]
-unique_name_in_owner = true
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Skin2D"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Skin2D" index="0"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_ph6fm")
 position = Vector2(0, -5)

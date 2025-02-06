@@ -3,43 +3,43 @@
 [ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_0ail3"]
 [ext_resource type="Script" uid="uid://cc2jglfyhmqqn" path="res://entities/enemies/stinger_enemy_2d.gd" id="2_i3isv"]
 [ext_resource type="Shader" uid="uid://nu0e1o8wd5d4" path="res://entities/outline.gdshader" id="3_lf8yw"]
-[ext_resource type="Texture2D" uid="uid://bn1m6grrdllnq" path="res://entities/enemies/assets/stinger.png" id="4_0ds0w"]
+[ext_resource type="Texture2D" uid="uid://04l13dw4h1ao" path="res://entities/enemies/assets/enemies.png" id="4_0ail3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ail3"]
 shader = ExtResource("3_lf8yw")
 shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
 shader_parameter/line_thickness = 2
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ppxln"]
-atlas = ExtResource("4_0ds0w")
-region = Rect2(0, 0, 30, 30)
+[sub_resource type="AtlasTexture" id="AtlasTexture_i3isv"]
+atlas = ExtResource("4_0ail3")
+region = Rect2(0, 64, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mqpx5"]
-atlas = ExtResource("4_0ds0w")
-region = Rect2(30, 0, 30, 30)
+[sub_resource type="AtlasTexture" id="AtlasTexture_lf8yw"]
+atlas = ExtResource("4_0ail3")
+region = Rect2(32, 64, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_nmswc"]
-atlas = ExtResource("4_0ds0w")
-region = Rect2(60, 0, 30, 30)
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ds0w"]
+atlas = ExtResource("4_0ail3")
+region = Rect2(64, 64, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_4yiys"]
-atlas = ExtResource("4_0ds0w")
-region = Rect2(90, 0, 30, 30)
+[sub_resource type="AtlasTexture" id="AtlasTexture_ltgev"]
+atlas = ExtResource("4_0ail3")
+region = Rect2(96, 64, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_i3isv"]
 animations = [{
 "frames": [{
 "duration": 1.2,
-"texture": SubResource("AtlasTexture_ppxln")
+"texture": SubResource("AtlasTexture_i3isv")
 }, {
 "duration": 2.0,
-"texture": SubResource("AtlasTexture_mqpx5")
+"texture": SubResource("AtlasTexture_lf8yw")
 }, {
 "duration": 1.5,
-"texture": SubResource("AtlasTexture_nmswc")
+"texture": SubResource("AtlasTexture_0ds0w")
 }, {
 "duration": 0.01,
-"texture": SubResource("AtlasTexture_4yiys")
+"texture": SubResource("AtlasTexture_ltgev")
 }],
 "loop": false,
 "name": &"default",
@@ -90,7 +90,7 @@ light_mode = 1
 [node name="StingerEntity2D" instance=ExtResource("1_0ail3")]
 script = ExtResource("2_i3isv")
 
-[node name="Skin2D" type="Node2D" parent="." index="1"]
+[node name="Skin2D" type="Node2D" parent="." index="2"]
 unique_name_in_owner = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Skin2D" index="0"]
@@ -122,7 +122,7 @@ explosiveness = 0.26
 randomness = 0.68
 process_material = SubResource("ParticleProcessMaterial_ltgev")
 
-[node name="Eyes2D" type="Node2D" parent="." index="2"]
+[node name="Eyes2D" type="Node2D" parent="." index="3"]
 unique_name_in_owner = true
 position = Vector2(5, -3)
 
@@ -134,6 +134,7 @@ offset_top = -1.0
 offset_right = -1.0
 offset_bottom = 1.0
 color = Color(0.690196, 0.270588, 0.352941, 1)
+metadata/_edit_use_anchors_ = true
 
 [node name="RightColorRect" type="ColorRect" parent="Eyes2D" index="1"]
 material = SubResource("CanvasItemMaterial_cxko5")
@@ -143,12 +144,14 @@ offset_top = -1.0
 offset_right = 3.0
 offset_bottom = 1.0
 color = Color(0.690196, 0.270588, 0.352941, 1)
+metadata/_edit_use_anchors_ = true
 
 [node name="RayCast2D" type="RayCast2D" parent="Eyes2D" index="2"]
 unique_name_in_owner = true
 collision_mask = 5
+hit_from_inside = true
 collide_with_areas = true
 
-[node name="Timer" type="Timer" parent="." index="3"]
+[node name="Timer" type="Timer" parent="." index="4"]
 unique_name_in_owner = true
 one_shot = true

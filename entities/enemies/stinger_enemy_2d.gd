@@ -32,7 +32,7 @@ func _on_animated_sprite_animation_finished() -> void:
 	await tween.finished
 
 	Blackboard.player.skin_sub_viewport.remove_blob()
-	Blackboard.point_count -= POINTS
+	Blackboard.set_point_count(Blackboard.get_point_count() - POINTS)
 
 	skin.visible = false
 	fly_gpu_particles.emitting = false

@@ -18,11 +18,11 @@ var is_playing := false
 
 @onready var player_hud_control: Control = %PlayerHUDControl
 @onready var blobs_h_box_container: HBoxContainer = %BlobsHBoxContainer
-@onready var points_h_box_container: HBoxContainer = %PointsHBoxContainer
 @onready var progress_bar: ProgressBar = %ProgressBar
 @onready var points_label: Label = %PointsLabel
 @onready var menu_control: MenuControl = %MenuControl
 @onready var back_texture_button: TextureButton = %BackTextureButton
+@onready var credits_button: Button = %CreditsButton
 
 @onready var player_start_position := player.position
 @onready var base_point_light_start_enerty := base_point_light.energy
@@ -34,6 +34,7 @@ var is_playing := false
 func _ready() -> void:
 	menu_control.start_button.pressed.connect(_on_menu_control_start_button_pressed)
 	back_texture_button.pressed.connect(_on_back_texture_rect_pressed)
+	credits_button.pressed.connect(OS.shell_open.bind("https://github.com/razcore-rad/godot-munchit"))
 	player.turn_started.connect(_on_player_turn.bind(true))
 	player.turn_finished.connect(_on_player_turn.bind(false))
 	player.skin_sub_viewport.blob_added.connect(_on_player_skin_sub_viewport_blob.bind(true))
@@ -53,6 +54,7 @@ func _ready() -> void:
 
 
 func _on_menu_control_start_button_pressed() -> void:
+	Blackboard.turn_count = 0
 	Blackboard.generate(true)
 	_start_turn_based_loop()
 
@@ -100,7 +102,7 @@ func _on_player_skin_sub_viewport_blob(blob_count: int, is_added: bool) -> void:
 func _start_turn_based_loop() -> void:
 	is_playing = true
 
-	Blackboard.turn_count = 0
+	Blackboard.set_point_count(0)
 	Blackboard.spawn_stinger_enemies()
 	player.setup_move_area(menu_control.get_move_area(true))
 	for _i in player.skin_sub_viewport.MAX_BLOBS:
@@ -129,19 +131,19 @@ func _end() -> void:
 	is_playing = false
 
 	if is_back_pressed:
-		points_label.text = "0"
+		Blackboard.set_point_count(0)
 
 	for entity: Entity2D in Blackboard.get_entities():
 		if entity != player and Blackboard.is_valid(entity):
 			entity.queue_free()
 
 	menu_control.start_button.disabled = true
-	var point_count := points_label.text.to_int()
+	var point_count := Blackboard.get_point_count()
 	var main_tween := create_tween().set_trans(Tween.TRANS_SINE)
 	main_tween.tween_property(base_point_light, "energy", 0.0, 2.0)
 	main_tween.parallel().tween_property(base_point_light, "texture_scale", base_point_light_start_texture_scale, 2.0)
 	if point_count > 0:
-		main_tween.tween_method(func(x: int) -> void: points_label.text = str(x), point_count, 0, 1.0)
+		main_tween.tween_method(Blackboard.set_point_count, point_count, 0, 1.0)
 
 	var points_label_modulate := points_label.modulate
 	var blink_tween: Tween = null
@@ -162,9 +164,10 @@ func _end() -> void:
 	player_hud_control.visible = false
 
 	if point_count > 0:
-		main_tween = menu_control.menu_points_label.create_tween().set_trans(Tween.TRANS_SINE)
-		main_tween.tween_method(func(x: int) -> void: menu_control.menu_points_label.text = str(x), Blackboard.point_count, Blackboard.point_count + point_count, 1.0)
-	Blackboard.point_count += point_count
+		var menu_point_count := menu_control.get_menu_point_count()
+		main_tween = create_tween().set_trans(Tween.TRANS_SINE)
+		main_tween.tween_method(menu_control.set_menu_point_count, menu_point_count, menu_point_count + point_count, 1.0)
+
 	for _i in player.skin_sub_viewport.MAX_BLOBS:
 		player.skin_sub_viewport.add_blob()
 

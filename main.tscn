@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://bskvs3ko2utnn"]
+[gd_scene load_steps=38 format=3 uid="uid://bskvs3ko2utnn"]
 
 [ext_resource type="Script" uid="uid://tcg6bs55hw1w" path="res://main.gd" id="1_aaq20"]
 [ext_resource type="Shader" uid="uid://cowsy25kxhkiw" path="res://assets/light_only_group.gdshader" id="2_efxa6"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dwb67e36aikmi" path="res://ui/assets/texture_button/texture_button_nornal.png" id="7_ycdy4"]
 [ext_resource type="Texture2D" uid="uid://ldn0aescwsku" path="res://ui/assets/texture_button/texture_button_pressed.png" id="8_w48qg"]
 [ext_resource type="Texture2D" uid="uid://drwxxjtt4sm0i" path="res://ui/assets/texture_button/texture_button_hover.png" id="9_vivmo"]
+[ext_resource type="Resource" uid="uid://bmt8lt5ijlrif" path="res://save.tres" id="10_efxa6"]
 [ext_resource type="Script" uid="uid://dpch7hvosvql3" path="res://ui/seed_text_edit.gd" id="11_yaehf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dg77c"]
@@ -91,10 +92,31 @@ pressed = true
 [sub_resource type="Shortcut" id="Shortcut_w48qg"]
 events = [SubResource("InputEventAction_ycdy4")]
 
+[sub_resource type="InputEventAction" id="InputEventAction_yaehf"]
+action = &"reset"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_074og"]
+events = [SubResource("InputEventAction_yaehf")]
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_efxa6"]
 shader = ExtResource("6_dg77c")
 shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
 shader_parameter/line_thickness = 2
+
+[sub_resource type="InputEventAction" id="InputEventAction_2cqfq"]
+action = &"quit"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_yaehf"]
+events = [SubResource("InputEventAction_2cqfq")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_vivmo"]
+action = &"credits"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_2cqfq"]
+events = [SubResource("InputEventAction_vivmo")]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_aaq20")
@@ -208,7 +230,6 @@ value = 100.0
 show_percentage = false
 
 [node name="PointsHBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/PlayerHUDControl/Control"]
-unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -252,26 +273,28 @@ texture_normal = ExtResource("7_ycdy4")
 texture_pressed = ExtResource("8_w48qg")
 texture_hover = ExtResource("9_vivmo")
 
-[node name="MenuControl" type="Control" parent="CanvasLayer"]
+[node name="MenuControl" type="Control" parent="CanvasLayer/Control"]
 unique_name_in_owner = true
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("5_dg77c")
-
-[node name="PickControl" type="Control" parent="CanvasLayer/MenuControl"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("3_h2yge")
+mouse_filter = 2
+script = ExtResource("5_dg77c")
+save = ExtResource("10_efxa6")
 
-[node name="ClipControl" type="Control" parent="CanvasLayer/MenuControl/PickControl"]
+[node name="PickControl" type="Control" parent="CanvasLayer/Control/MenuControl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ClipControl" type="Control" parent="CanvasLayer/Control/MenuControl/PickControl"]
 clip_contents = true
 custom_minimum_size = Vector2(630, 140)
 layout_mode = 1
@@ -288,7 +311,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Control" type="Control" parent="CanvasLayer/MenuControl/PickControl/ClipControl"]
+[node name="Control" type="Control" parent="CanvasLayer/Control/MenuControl/PickControl/ClipControl"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -299,7 +322,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="AreasControl" type="Control" parent="CanvasLayer/MenuControl/PickControl/ClipControl/Control"]
+[node name="AreasControl" type="Control" parent="CanvasLayer/Control/MenuControl/PickControl/ClipControl/Control"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -311,7 +334,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="CostControl" type="Control" parent="CanvasLayer/MenuControl/PickControl"]
+[node name="CostControl" type="Control" parent="CanvasLayer/Control/MenuControl/PickControl"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -321,7 +344,7 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MenuControl/PickControl/CostControl"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MenuControl/PickControl/CostControl"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -335,27 +358,27 @@ offset_bottom = -120.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BoughtLabel" type="Label" parent="CanvasLayer/MenuControl/PickControl/CostControl/VBoxContainer"]
+[node name="BoughtLabel" type="Label" parent="CanvasLayer/Control/MenuControl/PickControl/CostControl/VBoxContainer"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_vivmo")
 layout_mode = 2
 text = "Bought"
 horizontal_alignment = 1
 
-[node name="BuyHBoxContainer" type="HBoxContainer" parent="CanvasLayer/MenuControl/PickControl/CostControl/VBoxContainer"]
+[node name="BuyHBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/MenuControl/PickControl/CostControl/VBoxContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="CanvasLayer/MenuControl/PickControl/CostControl/VBoxContainer/BuyHBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/Control/MenuControl/PickControl/CostControl/VBoxContainer/BuyHBoxContainer"]
 material = SubResource("ShaderMaterial_vivmo")
 layout_mode = 2
 size_flags_horizontal = 0
 theme_type_variation = &"PointsLabel"
 text = "Cost:"
 
-[node name="CostLabel" type="Label" parent="CanvasLayer/MenuControl/PickControl/CostControl/VBoxContainer/BuyHBoxContainer"]
+[node name="CostLabel" type="Label" parent="CanvasLayer/Control/MenuControl/PickControl/CostControl/VBoxContainer/BuyHBoxContainer"]
 unique_name_in_owner = true
 modulate = Color(0.870588, 0.545098, 0.435294, 1)
 material = SubResource("ShaderMaterial_vivmo")
@@ -364,7 +387,7 @@ size_flags_horizontal = 0
 theme_type_variation = &"NumberLabel"
 text = "0"
 
-[node name="BuyButton" type="Button" parent="CanvasLayer/MenuControl/PickControl/CostControl/VBoxContainer/BuyHBoxContainer"]
+[node name="BuyButton" type="Button" parent="CanvasLayer/Control/MenuControl/PickControl/CostControl/VBoxContainer/BuyHBoxContainer"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_2cqfq")
 layout_mode = 2
@@ -375,7 +398,7 @@ shortcut = SubResource("Shortcut_vivmo")
 text = "Buy"
 flat = true
 
-[node name="LeftTextureButton" type="TextureButton" parent="CanvasLayer/MenuControl/PickControl"]
+[node name="LeftTextureButton" type="TextureButton" parent="CanvasLayer/Control/MenuControl/PickControl"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_ycdy4")
 layout_mode = 1
@@ -394,7 +417,7 @@ texture_normal = ExtResource("7_ycdy4")
 texture_pressed = ExtResource("8_w48qg")
 texture_hover = ExtResource("9_vivmo")
 
-[node name="RightTextureButton" type="TextureButton" parent="CanvasLayer/MenuControl/PickControl"]
+[node name="RightTextureButton" type="TextureButton" parent="CanvasLayer/Control/MenuControl/PickControl"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_ycdy4")
 layout_mode = 1
@@ -417,7 +440,7 @@ texture_pressed = ExtResource("8_w48qg")
 texture_hover = ExtResource("9_vivmo")
 flip_h = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MenuControl"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MenuControl"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -431,21 +454,20 @@ offset_bottom = 230.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme = ExtResource("3_h2yge")
 
-[node name="TitleLabel" type="Label" parent="CanvasLayer/MenuControl/VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="CanvasLayer/Control/MenuControl/VBoxContainer"]
 material = SubResource("ShaderMaterial_w48qg")
 layout_mode = 2
 theme_type_variation = &"TitleLabel"
 text = "MunchIt"
 horizontal_alignment = 1
 
-[node name="MenuHSeparator" type="HSeparator" parent="CanvasLayer/MenuControl/VBoxContainer"]
+[node name="MenuHSeparator" type="HSeparator" parent="CanvasLayer/Control/MenuControl/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme_type_variation = &"MenuHSeparator"
 
-[node name="StartButton" type="Button" parent="CanvasLayer/MenuControl/VBoxContainer"]
+[node name="StartButton" type="Button" parent="CanvasLayer/Control/MenuControl/VBoxContainer"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_4c57u")
 layout_mode = 2
@@ -455,21 +477,31 @@ shortcut = SubResource("Shortcut_w48qg")
 text = "Start"
 flat = true
 
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/MenuControl/VBoxContainer"]
+[node name="ResetButton" type="Button" parent="CanvasLayer/Control/MenuControl/VBoxContainer"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_4c57u")
+layout_mode = 2
+tooltip_text = "Reset Game State"
+focus_mode = 0
+shortcut = SubResource("Shortcut_074og")
+text = "Reset"
+flat = true
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/Control/MenuControl/VBoxContainer"]
 layout_mode = 2
 columns = 2
 
-[node name="SeedLabel" type="Label" parent="CanvasLayer/MenuControl/VBoxContainer/GridContainer"]
+[node name="SeedLabel" type="Label" parent="CanvasLayer/Control/MenuControl/VBoxContainer/GridContainer"]
 material = SubResource("ShaderMaterial_efxa6")
 layout_mode = 2
 text = "Seed:"
 
-[node name="SeedTextEdit" type="TextEdit" parent="CanvasLayer/MenuControl/VBoxContainer/GridContainer"]
+[node name="SeedTextEdit" type="TextEdit" parent="CanvasLayer/Control/MenuControl/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(240, 40)
 layout_mode = 2
 tooltip_text = "Game Seed.
-Note: Only affects tile & enemy placement."
+Note: Only affects tile generation."
 focus_mode = 0
 theme_type_variation = &"SeedTextEdit"
 placeholder_text = "world"
@@ -485,7 +517,7 @@ scroll_fit_content_height = true
 caret_multiple = false
 script = ExtResource("11_yaehf")
 
-[node name="Label" type="Label" parent="CanvasLayer/MenuControl/VBoxContainer/GridContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/Control/MenuControl/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_efxa6")
 layout_mode = 2
@@ -493,10 +525,45 @@ theme_type_variation = &"PointsLabel"
 text = "Points:"
 horizontal_alignment = 2
 
-[node name="MenuPointsLabel" type="Label" parent="CanvasLayer/MenuControl/VBoxContainer/GridContainer"]
+[node name="MenuPointsLabel" type="Label" parent="CanvasLayer/Control/MenuControl/VBoxContainer/GridContainer"]
 unique_name_in_owner = true
 modulate = Color(0.870588, 0.545098, 0.435294, 1)
 material = SubResource("ShaderMaterial_efxa6")
 layout_mode = 2
 theme_type_variation = &"NumberLabel"
 text = "0"
+
+[node name="QuitButton" type="Button" parent="CanvasLayer/Control/MenuControl"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_efxa6")
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -40.0
+offset_right = 62.0
+offset_bottom = -10.0
+grow_vertical = 0
+shortcut = SubResource("Shortcut_yaehf")
+text = "Quit"
+flat = true
+
+[node name="CreditsButton" type="Button" parent="CanvasLayer/Control"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_ycdy4")
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -166.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+tooltip_text = "Game Source Code."
+theme_type_variation = &"CreditsButton"
+shortcut = SubResource("Shortcut_2cqfq")
+text = "@razcore-rad ©2025"
+flat = true
