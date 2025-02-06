@@ -90,6 +90,13 @@ light_mode = 1
 [node name="StingerEntity2D" instance=ExtResource("1_0ail3")]
 script = ExtResource("2_i3isv")
 
+[node name="DetectArea2D" parent="Areas2D" index="0"]
+collision_layer = 0
+
+[node name="ShadowSprite2D" parent="." index="1"]
+unique_name_in_owner = true
+visible = false
+
 [node name="Skin2D" type="Node2D" parent="." index="2"]
 unique_name_in_owner = true
 
@@ -124,7 +131,7 @@ process_material = SubResource("ParticleProcessMaterial_ltgev")
 
 [node name="Eyes2D" type="Node2D" parent="." index="3"]
 unique_name_in_owner = true
-position = Vector2(5, -3)
+position = Vector2(3, -3)
 
 [node name="LeftColorRect" type="ColorRect" parent="Eyes2D" index="0"]
 material = SubResource("CanvasItemMaterial_o8vu6")
@@ -146,12 +153,12 @@ offset_bottom = 1.0
 color = Color(0.690196, 0.270588, 0.352941, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="RayCast2D" type="RayCast2D" parent="Eyes2D" index="2"]
+[node name="RayCast2D" type="RayCast2D" parent="." index="4"]
 unique_name_in_owner = true
 collision_mask = 5
 hit_from_inside = true
 collide_with_areas = true
 
-[node name="Timer" type="Timer" parent="." index="4"]
+[node name="Timer" type="Timer" parent="." index="5"]
 unique_name_in_owner = true
 one_shot = true

@@ -37,16 +37,15 @@ func _get_random_move_choices() -> Array[Vector2]:
 	var result: Array[Vector2] = []
 	var move_choices = move_area.get_children()
 	move_choices.shuffle()
-	result.assign(
-		move_choices
-			.filter(func(cs: CollisionShape2D) -> bool: return not Blackboard.is_obstacle(cs.global_position))
-			.map(func(cs: CollisionShape2D) -> Vector2: return cs.position)
+	result.assign(move_choices
+		.filter(func(cs: CollisionShape2D) -> bool: return not Blackboard.is_obstacle(cs.global_position))
+		.map(func(cs: CollisionShape2D) -> Vector2: return cs.position)
 	)
 	return result
 
 
 func _move() -> void:
-	var is_random := randf() < MOVE_RANDOM_CHANCE
+	var is_random := randf() < MOVE_RANDOM_CHANCE or Blackboard.is_player_swarmed()
 	var target_positions := (
 		_get_random_move_choices()
 		if is_random
@@ -79,7 +78,8 @@ func _eat_player(original_position: Vector2, target_position: Vector2) -> void:
 	Blackboard.set_point_count(Blackboard.get_point_count() - points)
 	var player_move_area_collision_shape_positions: Dictionary[Vector2, MoveAreaCollisionShape2D] = {}
 	for collision_shape: MoveAreaCollisionShape2D in Blackboard.player.move_area.get_children():
-		player_move_area_collision_shape_positions[collision_shape.position] = collision_shape
+		if collision_shape.is_eaten:
+			player_move_area_collision_shape_positions[collision_shape.position] = collision_shape
 
 	for collision_shape: MoveAreaCollisionShape2D in move_area.get_children():
 		if collision_shape.position in player_move_area_collision_shape_positions:

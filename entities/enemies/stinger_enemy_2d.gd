@@ -12,6 +12,7 @@ var _life_turns := Blackboard.rng.randi_range(2, 4)
 @onready var dissolve_gpu_particles: GPUParticles2D = %DissolveGPUParticles2D
 @onready var skin: Node2D = %Skin2D
 @onready var eyes: Node2D = %Eyes2D
+@onready var shadow_sprite: Sprite2D = %ShadowSprite2D
 
 
 func _ready() -> void:
@@ -50,10 +51,13 @@ func start_turn() -> void:
 		queue_free()
 		return
 
-	ray_cast.target_position = Blackboard.player.extra.global_position - eyes.global_position
+	ray_cast.target_position = ray_cast.to_local(Blackboard.player.position)
 	ray_cast.force_raycast_update()
+	await _skip_process_frames()
+
 	var ray_cast_collider := ray_cast.get_collider()
 	if ray_cast_collider != null and ray_cast_collider.owner == Blackboard.player:
+		shadow_sprite.visible = true
 		animated_sprite.visible = true
 		animated_sprite.play()
 	else:

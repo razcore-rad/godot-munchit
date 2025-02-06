@@ -18,7 +18,7 @@ var _move_area_index: int = -1:
 		var move_area: MoveArea2D = _move_areas[_move_area_index]
 		cost_label.text = str(move_area.cost)
 		for collision_shape: MoveAreaCollisionShape2D in move_area.get_children():
-			collision_shape.modulate = Palette.GREEN
+			collision_shape.modulate = Player2D.MOVE_AREA_COLORS.default
 
 		var tween := create_tween()
 		tween.tween_property(areas_control, "position:x", -_move_area_index * STEP * Blackboard.TILE_SET.tile_size.x, 0.2)

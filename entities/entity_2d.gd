@@ -38,4 +38,4 @@ func start_turn() -> void:
 
 
 func end_turn() -> void:
-	pass
+	Blackboard.update_enemy_neighbor_count()

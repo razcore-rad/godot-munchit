@@ -9,7 +9,8 @@ const JUMP_HEIGHT := 15
 const DURATION := 0.3
 const MOVE_AREA_TEXTURE_RECT := Rect2(0.0, 40.0, 30.0, 20.0)
 const MOVE_AREA_COLORS: Dictionary[String, Color] = {
-	default = Palette.GREEN,
+	default = Palette.RED,
+	default_eaten = Palette.GREEN,
 	hover = Palette.LIGHT_GREEN,
 }
 
@@ -25,6 +26,7 @@ var move_area: MoveArea2D = null
 @onready var inner_eyes: Array[ColorRect] = [%LeftInnerColorRect, %RightInnerColorRect]
 @onready var ray_cast: RayCast2D = %RayCast2D
 @onready var spawn_tile_map_layer: TileMapLayer = %SpawnTileMapLayer
+@onready var neighbor_tile_map_layer: TileMapLayer = %NeighborTileMapLayer
 @onready var points_label: Label = %PointsLabel
 @onready var gpu_particles: GPUParticles2D = %GPUParticles2D
 @onready var shadow_sprite: Sprite2D = %ShadowSprite2D
@@ -91,7 +93,7 @@ func _on_move_area_input_event(_viewport: Node, event: InputEvent, shape_index: 
 
 func _on_move_area_mouse_exited() -> void:
 	for collision_shape: MoveAreaCollisionShape2D in move_area.get_children():
-		collision_shape.modulate = MOVE_AREA_COLORS.default
+		collision_shape.modulate = MOVE_AREA_COLORS.default_eaten if collision_shape.is_eaten else MOVE_AREA_COLORS.default
 
 
 func _connect_move_area() -> void:
@@ -120,8 +122,9 @@ func _eat_enemy(enemy_move_area: Area2D, enemy_points: int) -> void:
 		if collision_shape.position not in move_area_collision_shape_positions:
 			var new_move_area_collision_shape := MoveAreaCollisionShape2DPackedScene.instantiate()
 			move_area.add_child(new_move_area_collision_shape)
+			new_move_area_collision_shape.is_eaten = true
 			new_move_area_collision_shape.position = collision_shape.position
-			new_move_area_collision_shape.modulate = MOVE_AREA_COLORS.default
+			new_move_area_collision_shape.modulate = MOVE_AREA_COLORS.default_eaten
 			new_move_area_collision_shape.sprite.region_rect = MOVE_AREA_TEXTURE_RECT
 
 	move_area.visible = true
@@ -164,6 +167,7 @@ func end_turn() -> void:
 		if _sector_player_position.distance_squared_to(sector_offset) > DISTANCE_SQUARED_CHECK:
 			Blackboard.sectors_map[sector_offset].queue_free()
 			Blackboard.sectors_map.erase(sector_offset)
-	Blackboard.spawn_enemies(spawn_tile_map_layer)
+	Blackboard.spawn_enemy(spawn_tile_map_layer)
 	Blackboard.spawn_stinger_enemies()
 	Blackboard.generate()
+	super()

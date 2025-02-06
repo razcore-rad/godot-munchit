@@ -12,7 +12,6 @@ shader_parameter/line_thickness = 2
 [node name="Enemy2D" instance=ExtResource("1_xtcvm")]
 script = ExtResource("1_y50bo")
 points = 1
-start_at_turn = 0
 
 [node name="DetectArea2D" parent="Areas2D" index="0"]
 collision_layer = 2
@@ -23,7 +22,6 @@ unique_name_in_owner = true
 position = Vector2(0, 1)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Skin2D" index="0"]
-unique_name_in_owner = true
 material = SubResource("ShaderMaterial_ph6fm")
 position = Vector2(0, -5)
 autoplay = "default"

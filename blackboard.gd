@@ -5,19 +5,21 @@ const StingerEnemy2DPackedScene := preload("entities/enemies/stinger_enemy_2d.ts
 
 const TILE_SET := preload("sectors/tile_set.tres")
 const ENEMY_FILE_PATH := "entities/enemies/"
-const ENEMY_FILE_NAMES: Dictionary[String, int] = {
-	"enemy_2d_a.tscn": 0,
-	"enemy_2d_b.tscn": 0,
-	"enemy_2d_c.tscn": 2,
+const ENEMY_FILE_NAMES: Dictionary[String, Vector2i] = {
+	"enemy_2d_a.tscn": Vector2i(0, 20),
+	"enemy_2d_b.tscn": Vector2i(0, 20),
+	"enemy_2d_c.tscn": Vector2i(2, 30),
 }
 
 const MAX_ENEMIES := 300
 const MAX_STINGER_ENEMIES := 3
+const MAX_SWARM_ENEMIES := 7
 const STINGER_ENEMIES_DIV := 12
 const ENEMY_SPAN := Vector2i(MAX_ENEMIES - 40, MAX_ENEMIES - 20)
 
 static var _blue_noise_tile_size := Vector2i(8, 7)
 static var _sector_offset_span := range(-1, 2)
+static var _enemy_neighbor_count := 0
 static var _obstacle_patterns: Array[TileMapPattern] = []
 
 static var rng := RandomNumberGenerator.new()
@@ -52,7 +54,9 @@ static func _static_init() -> void:
 
 
 static func _add_enemy(enemy_position: Vector2) -> void:
-	var file_name: String = ENEMY_FILE_NAMES.keys().filter(func(s: String) -> bool: return ENEMY_FILE_NAMES[s] <= turn_count).pick_random()
+	var file_name: String = ENEMY_FILE_NAMES.keys().filter(func(s: String) -> bool:
+		var min_max := ENEMY_FILE_NAMES[s]
+		return min_max.x <= turn_count and turn_count <= min_max.y).pick_random()
 	var enemy: Enemy2D = load(ENEMY_FILE_PATH.path_join(file_name)).instantiate()
 	enemy.position = enemy_position
 	enemies.add_child(enemy)
@@ -72,6 +76,10 @@ static func is_obstacle(at: Vector2) -> bool:
 
 static func is_valid(v: Variant) -> bool:
 	return is_instance_valid(v) and not v.is_queued_for_deletion()
+
+
+static func is_player_swarmed() -> bool:
+	return _enemy_neighbor_count >= MAX_SWARM_ENEMIES
 
 
 static func generate(do_generate_enemies := false) -> void:
@@ -126,15 +134,11 @@ static func generate_enemies(sector: Sector2D) -> void:
 		available_coords.erase(coord)
 
 
-static func spawn_enemies(spawn_tile_map_layer: TileMapLayer) -> void:
+static func spawn_enemy(spawn_tile_map_layer: TileMapLayer) -> void:
 	var available_positions: Array[Vector2i] = spawn_tile_map_layer.get_used_cells().reduce(func(acc: Dictionary[Vector2i, Variant], v: Vector2i) -> Dictionary[Vector2i, Variant]:
 		v = spawn_tile_map_layer.to_global(spawn_tile_map_layer.map_to_local(v))
 		return acc.merged({v: null}) if not Blackboard.is_obstacle(v) else acc , {} as Dictionary[Vector2i, Variant]).keys()
-
-	for _i: int in range(enemies_map.size(), MAX_ENEMIES):
-		var enemy_position: Vector2i = available_positions.pick_random()
-		_add_enemy(enemy_position)
-		available_positions.erase(enemy_position)
+	_add_enemy(available_positions.pick_random())
 
 
 static func spawn_stinger_enemies() -> void:
@@ -152,20 +156,13 @@ static func spawn_stinger_enemies() -> void:
 			_add_stinger_enemey(stinger_enemey_position)
 
 
+static func update_enemy_neighbor_count() -> void:
+	_enemy_neighbor_count = player.neighbor_tile_map_layer.get_used_cells().filter(func(v: Vector2i) -> bool: return player.neighbor_tile_map_layer.to_global(player.neighbor_tile_map_layer.map_to_local(v)) in enemies_map).size()
+
+
 static func get_sector(at: Vector2) -> Sector2D:
 	var coord := sector_tile_map_layer.local_to_map(at)
 	return sectors_map.get(coord)
-
-
-static func get_neighbor_sector_coords(relative_to := Vector2i.ZERO) -> Array[Vector2i]:
-	var result: Array[Vector2i] = []
-	for x in _sector_offset_span:
-		for y in _sector_offset_span:
-			var xy := Vector2i(x, y)
-			if xy == Vector2i.ZERO:
-				continue
-			result.push_back(relative_to + xy)
-	return result
 
 
 static func get_entities() -> Array[Entity2D]:
