@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://ldn0aescwsku" path="res://ui/assets/texture_button/texture_button_pressed.png" id="8_w48qg"]
 [ext_resource type="Texture2D" uid="uid://ccexmaa42v6fj" path="res://ui/assets/texture_button/texture_button_disabled.png" id="9_dg77c"]
 [ext_resource type="Texture2D" uid="uid://drwxxjtt4sm0i" path="res://ui/assets/texture_button/texture_button_hover.png" id="9_vivmo"]
-[ext_resource type="Resource" uid="uid://d2k3ulm8cbi7y" path="res://save.tres" id="10_efxa6"]
+[ext_resource type="Resource" uid="uid://b46tkn46g6nya" path="res://save.tres" id="10_efxa6"]
 [ext_resource type="Script" uid="uid://dpch7hvosvql3" path="res://ui/seed_text_edit.gd" id="11_yaehf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dg77c"]
@@ -495,10 +495,51 @@ flat = true
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_4c57u")
 layout_mode = 2
+size_flags_horizontal = 3
 tooltip_text = "Reset Game State"
 focus_mode = 0
 shortcut = SubResource("Shortcut_074og")
 text = "Reset"
+flat = true
+
+[node name="ResetHBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/MenuControl/VBoxContainer/InputVBoxContainer/ResetButton"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -110.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="ResetYesButton" type="Button" parent="CanvasLayer/Control/MenuControl/VBoxContainer/InputVBoxContainer/ResetButton/ResetHBoxContainer"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_4c57u")
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Reset Game State"
+focus_mode = 0
+text = "Yes"
+flat = true
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/MenuControl/VBoxContainer/InputVBoxContainer/ResetButton/ResetHBoxContainer"]
+layout_mode = 2
+text = "/"
+
+[node name="ResetNoButton" type="Button" parent="CanvasLayer/Control/MenuControl/VBoxContainer/InputVBoxContainer/ResetButton/ResetHBoxContainer"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_4c57u")
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Reset Game State"
+focus_mode = 0
+text = "No"
 flat = true
 
 [node name="GridContainer" type="GridContainer" parent="CanvasLayer/Control/MenuControl/VBoxContainer/InputVBoxContainer"]

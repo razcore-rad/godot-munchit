@@ -1,25 +1,32 @@
-[gd_scene load_steps=7 format=3 uid="uid://b37o62553ksjd"]
+[gd_scene load_steps=8 format=3 uid="uid://b37o62553ksjd"]
 
 [ext_resource type="PackedScene" uid="uid://cyg5mmbtdwxb8" path="res://entities/enemies/enemy_2d.tscn" id="1_w4d5f"]
 [ext_resource type="PackedScene" uid="uid://jlhatc0x6ggi" path="res://entities/move_area_collision_shape_2d.tscn" id="2_x6mj7"]
-[ext_resource type="Texture2D" uid="uid://04l13dw4h1ao" path="res://entities/enemies/assets/enemies.png" id="3_4jpuy"]
+[ext_resource type="Texture2D" uid="uid://1gqo64nu17or" path="res://entities/enemies/enemies.png" id="3_w4d5f"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_miwre"]
-atlas = ExtResource("3_4jpuy")
-region = Rect2(0, 32, 32, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_x6mj7"]
+atlas = ExtResource("3_w4d5f")
+region = Rect2(0, 160, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_563na"]
-atlas = ExtResource("3_4jpuy")
-region = Rect2(32, 32, 32, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_4jpuy"]
+atlas = ExtResource("3_w4d5f")
+region = Rect2(32, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mw48n"]
+atlas = ExtResource("3_w4d5f")
+region = Rect2(64, 160, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_vejp2"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_miwre")
+"texture": SubResource("AtlasTexture_x6mj7")
 }, {
-"duration": 1.5,
-"texture": SubResource("AtlasTexture_563na")
+"duration": 1.6,
+"texture": SubResource("AtlasTexture_4jpuy")
+}, {
+"duration": 0.94,
+"texture": SubResource("AtlasTexture_mw48n")
 }],
 "loop": true,
 "name": &"default",
@@ -106,7 +113,7 @@ position = Vector2(0, 2)
 
 [node name="AnimatedSprite2D" parent="Skin2D" index="0"]
 unique_name_in_owner = true
-modulate = Color(0.439216, 0.152941, 0.509804, 1)
+modulate = Color(0.690196, 0.270588, 0.352941, 1)
 sprite_frames = SubResource("SpriteFrames_vejp2")
 
 [editable path="Areas2D/MoveArea2D/MoveAreaCollisionShape2D"]

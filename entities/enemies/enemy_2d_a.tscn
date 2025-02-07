@@ -1,8 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://bgp7ukyuf5mtq"]
+[gd_scene load_steps=8 format=3 uid="uid://bgp7ukyuf5mtq"]
 
 [ext_resource type="PackedScene" uid="uid://cyg5mmbtdwxb8" path="res://entities/enemies/enemy_2d.tscn" id="1_tlrju"]
 [ext_resource type="PackedScene" uid="uid://jlhatc0x6ggi" path="res://entities/move_area_collision_shape_2d.tscn" id="2_tlrju"]
-[ext_resource type="Texture2D" uid="uid://04l13dw4h1ao" path="res://entities/enemies/assets/enemies.png" id="3_tlrju"]
+[ext_resource type="Texture2D" uid="uid://1gqo64nu17or" path="res://entities/enemies/enemies.png" id="3_tlrju"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_eveg7"]
 atlas = ExtResource("3_tlrju")
@@ -12,14 +12,21 @@ region = Rect2(0, 0, 32, 32)
 atlas = ExtResource("3_tlrju")
 region = Rect2(32, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_fdirg"]
+atlas = ExtResource("3_tlrju")
+region = Rect2(64, 0, 32, 32)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_tlrju"]
 animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_eveg7")
 }, {
-"duration": 1.5,
+"duration": 1.3,
 "texture": SubResource("AtlasTexture_scny1")
+}, {
+"duration": 0.78,
+"texture": SubResource("AtlasTexture_fdirg")
 }],
 "loop": true,
 "name": &"default",

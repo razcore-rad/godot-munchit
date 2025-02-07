@@ -177,6 +177,7 @@ func _end() -> void:
 		blink_tween.tween_property(points_label, "modulate", points_label_modulate, 0.05)
 
 	await main_tween.finished
+	player.animation_player.play("RESET")
 	if blink_tween != null and point_count > 0:
 		blink_tween.kill()
 
@@ -205,8 +206,6 @@ func _end() -> void:
 		await main_tween.finished
 		blink_tween.kill()
 		menu_control.menu_points_label.modulate = menu_control_points_label_modulate
-
-	player.skin_sub_viewport.add_blob()
 
 	main_tween = create_tween().set_trans(Tween.TRANS_SINE)
 	main_tween.tween_property(base_point_light, "energy", base_point_light_start_enerty, 2.0)

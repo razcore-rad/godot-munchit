@@ -43,6 +43,9 @@ var _move_area_index: int = -1:
 @onready var seed_text_edit: TextEdit = %SeedTextEdit
 @onready var menu_points_label: Label = %MenuPointsLabel
 @onready var reset_button: Button = %ResetButton
+@onready var reset_h_box_container: HBoxContainer = %ResetHBoxContainer
+@onready var reset_no_button: Button = %ResetNoButton
+@onready var reset_yes_button: Button = %ResetYesButton
 @onready var quit_button: Button = %QuitButton
 
 
@@ -71,7 +74,9 @@ func _ready() -> void:
 	left_texture_button.pressed.connect(_on_texture_button.bind(-1))
 	right_texture_button.pressed.connect(_on_texture_button.bind(1))
 	buy_button.pressed.connect(_on_buy_button_pressed)
-	reset_button.pressed.connect(_on_reset_button_pressed)
+	reset_button.pressed.connect(reset_h_box_container.set_visible.bind(true))
+	reset_no_button.pressed.connect(reset_h_box_container.set_visible.bind(false))
+	reset_yes_button.pressed.connect(_on_reset_yes_button_pressed)
 	quit_button.pressed.connect(get_tree().quit)
 	_setup()
 
@@ -111,7 +116,7 @@ func _on_buy_button_pressed() -> void:
 		unlocked_all.emit()
 
 
-func _on_reset_button_pressed() -> void:
+func _on_reset_yes_button_pressed() -> void:
 	set_menu_point_count(0)
 	update_save({point_count =  0, move_area_file_names = {} as Dictionary[String, Variant]})
 	_setup()

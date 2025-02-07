@@ -52,9 +52,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_skin_sub_viewport_blob(blob_count: int, is_added: bool) -> void:
-	visible = blob_count > 0
 	if not is_added:
 		eyes_animation_player.play("attacked")
+		if blob_count <= 0:
+			animation_player.play("die")
 
 
 func _on_detect_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
