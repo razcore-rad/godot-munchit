@@ -40,21 +40,21 @@ monitorable = false
 
 [node name="MoveAreaCollisionShape2D" parent="Areas2D/MoveArea2D" index="0" instance=ExtResource("2_wd2xg")]
 modulate = Color(0.341176, 0.588235, 0.631373, 1)
-position = Vector2(0, 40)
+position = Vector2(30, -20)
 
 [node name="Sprite2D" parent="Areas2D/MoveArea2D/MoveAreaCollisionShape2D" index="0"]
 region_rect = Rect2(30, 40, 30, 20)
 
 [node name="MoveAreaCollisionShape2D2" parent="Areas2D/MoveArea2D" index="1" instance=ExtResource("2_wd2xg")]
 modulate = Color(0.341176, 0.588235, 0.631373, 1)
-position = Vector2(30, -20)
+position = Vector2(-30, -20)
 
 [node name="Sprite2D" parent="Areas2D/MoveArea2D/MoveAreaCollisionShape2D2" index="0"]
 region_rect = Rect2(30, 40, 30, 20)
 
 [node name="MoveAreaCollisionShape2D3" parent="Areas2D/MoveArea2D" index="2" instance=ExtResource("2_wd2xg")]
 modulate = Color(0.341176, 0.588235, 0.631373, 1)
-position = Vector2(-30, -20)
+position = Vector2(0, 40)
 
 [node name="Sprite2D" parent="Areas2D/MoveArea2D/MoveAreaCollisionShape2D3" index="0"]
 region_rect = Rect2(30, 40, 30, 20)

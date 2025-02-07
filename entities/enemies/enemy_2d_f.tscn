@@ -1,0 +1,120 @@
+[gd_scene load_steps=7 format=3 uid="uid://b37o62553ksjd"]
+
+[ext_resource type="PackedScene" uid="uid://cyg5mmbtdwxb8" path="res://entities/enemies/enemy_2d.tscn" id="1_w4d5f"]
+[ext_resource type="PackedScene" uid="uid://jlhatc0x6ggi" path="res://entities/move_area_collision_shape_2d.tscn" id="2_x6mj7"]
+[ext_resource type="Texture2D" uid="uid://04l13dw4h1ao" path="res://entities/enemies/assets/enemies.png" id="3_4jpuy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_miwre"]
+atlas = ExtResource("3_4jpuy")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_563na"]
+atlas = ExtResource("3_4jpuy")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vejp2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_miwre")
+}, {
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_563na")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Enemy2DF" instance=ExtResource("1_w4d5f")]
+points = 24
+
+[node name="DetectAreaSprite2D" parent="Areas2D/DetectArea2D/CollisionShape2D" index="0"]
+modulate = Color(0.341176, 0.588235, 0.631373, 1)
+
+[node name="MoveArea2D" type="Area2D" parent="Areas2D" index="1"]
+unique_name_in_owner = true
+collision_layer = 256
+collision_mask = 7
+monitorable = false
+
+[node name="MoveAreaCollisionShape2D" parent="Areas2D/MoveArea2D" index="0" instance=ExtResource("2_x6mj7")]
+modulate = Color(0.341176, 0.588235, 0.631373, 1)
+position = Vector2(30, 0)
+
+[node name="Sprite2D" parent="Areas2D/MoveArea2D/MoveAreaCollisionShape2D" index="0"]
+region_rect = Rect2(30, 40, 30, 20)
+
+[node name="MoveAreaCollisionShape2D2" parent="Areas2D/MoveArea2D" index="1" instance=ExtResource("2_x6mj7")]
+modulate = Color(0.341176, 0.588235, 0.631373, 1)
+position = Vector2(60, -20)
+
+[node name="Sprite2D" parent="Areas2D/MoveArea2D/MoveAreaCollisionShape2D2" index="0"]
+region_rect = Rect2(30, 40, 30, 20)
+
+[node name="MoveAreaCollisionShape2D3" parent="Areas2D/MoveArea2D" index="2" instance=ExtResource("2_x6mj7")]
+modulate = Color(0.341176, 0.588235, 0.631373, 1)
+position = Vector2(0, -40)
+
+[node name="Sprite2D" parent="Areas2D/MoveArea2D/MoveAreaCollisionShape2D3" index="0"]
+region_rect = Rect2(30, 40, 30, 20)
+
+[node name="MoveAreaCollisionShape2D4" parent="Areas2D/MoveArea2D" index="3" instance=ExtResource("2_x6mj7")]
+modulate = Color(0.341176, 0.588235, 0.631373, 1)
+position = Vector2(0, -60)
+
+[node name="Sprite2D" parent="Areas2D/MoveArea2D/MoveAreaCollisionShape2D4" index="0"]
+region_rect = Rect2(30, 40, 30, 20)
+
+[node name="MoveAreaCollisionShape2D5" parent="Areas2D/MoveArea2D" index="4" instance=ExtResource("2_x6mj7")]
+modulate = Color(0.341176, 0.588235, 0.631373, 1)
+position = Vector2(-30, 0)
+
+[node name="Sprite2D" parent="Areas2D/MoveArea2D/MoveAreaCollisionShape2D5" index="0"]
+region_rect = Rect2(30, 40, 30, 20)
+
+[node name="MoveAreaCollisionShape2D6" parent="Areas2D/MoveArea2D" index="5" instance=ExtResource("2_x6mj7")]
+modulate = Color(0.341176, 0.588235, 0.631373, 1)
+position = Vector2(-60, -20)
+
+[node name="Sprite2D" parent="Areas2D/MoveArea2D/MoveAreaCollisionShape2D6" index="0"]
+region_rect = Rect2(30, 40, 30, 20)
+
+[node name="MoveAreaCollisionShape2D7" parent="Areas2D/MoveArea2D" index="6" instance=ExtResource("2_x6mj7")]
+modulate = Color(0.341176, 0.588235, 0.631373, 1)
+position = Vector2(0, 60)
+
+[node name="Sprite2D" parent="Areas2D/MoveArea2D/MoveAreaCollisionShape2D7" index="0"]
+region_rect = Rect2(30, 40, 30, 20)
+
+[node name="MoveAreaCollisionShape2D8" parent="Areas2D/MoveArea2D" index="7" instance=ExtResource("2_x6mj7")]
+modulate = Color(0.341176, 0.588235, 0.631373, 1)
+position = Vector2(-30, 40)
+
+[node name="Sprite2D" parent="Areas2D/MoveArea2D/MoveAreaCollisionShape2D8" index="0"]
+region_rect = Rect2(30, 40, 30, 20)
+
+[node name="MoveAreaCollisionShape2D9" parent="Areas2D/MoveArea2D" index="8" instance=ExtResource("2_x6mj7")]
+modulate = Color(0.341176, 0.588235, 0.631373, 1)
+position = Vector2(30, 40)
+
+[node name="Sprite2D" parent="Areas2D/MoveArea2D/MoveAreaCollisionShape2D9" index="0"]
+region_rect = Rect2(30, 40, 30, 20)
+
+[node name="ShadowSprite2D" parent="." index="1"]
+position = Vector2(0, 2)
+
+[node name="AnimatedSprite2D" parent="Skin2D" index="0"]
+unique_name_in_owner = true
+modulate = Color(0.439216, 0.152941, 0.509804, 1)
+sprite_frames = SubResource("SpriteFrames_vejp2")
+
+[editable path="Areas2D/MoveArea2D/MoveAreaCollisionShape2D"]
+[editable path="Areas2D/MoveArea2D/MoveAreaCollisionShape2D2"]
+[editable path="Areas2D/MoveArea2D/MoveAreaCollisionShape2D3"]
+[editable path="Areas2D/MoveArea2D/MoveAreaCollisionShape2D4"]
+[editable path="Areas2D/MoveArea2D/MoveAreaCollisionShape2D5"]
+[editable path="Areas2D/MoveArea2D/MoveAreaCollisionShape2D6"]
+[editable path="Areas2D/MoveArea2D/MoveAreaCollisionShape2D7"]
+[editable path="Areas2D/MoveArea2D/MoveAreaCollisionShape2D8"]
+[editable path="Areas2D/MoveArea2D/MoveAreaCollisionShape2D9"]

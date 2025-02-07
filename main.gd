@@ -23,6 +23,11 @@ var is_playing := false
 @onready var menu_control: MenuControl = %MenuControl
 @onready var back_texture_button: TextureButton = %BackTextureButton
 @onready var credits_button: Button = %CreditsButton
+@onready var pick_control: Control = %PickControl
+@onready var input_v_box_container: VBoxContainer = %InputVBoxContainer
+@onready var quit_button: Button = %QuitButton
+@onready var win_richt_text_label: RichTextLabel = %WinRichTextLabel
+@onready var win_back_texture_button: TextureButton = %WinBackTextureButton
 
 @onready var player_start_position := player.position
 @onready var base_point_light_start_enerty := base_point_light.energy
@@ -32,6 +37,9 @@ var is_playing := false
 
 
 func _ready() -> void:
+	menu_control.unlocked_all.connect(_on_menu_control_unlocked_all, CONNECT_ONE_SHOT)
+	win_richt_text_label.meta_clicked.connect(OS.shell_open, CONNECT_ONE_SHOT)
+	win_back_texture_button.pressed.connect(_on_win_back_texture_button_pressed, CONNECT_ONE_SHOT)
 	menu_control.start_button.pressed.connect(_on_menu_control_start_button_pressed)
 	back_texture_button.pressed.connect(_on_back_texture_rect_pressed)
 	credits_button.pressed.connect(OS.shell_open.bind("https://github.com/razcore-rad/godot-munchit"))
@@ -51,6 +59,12 @@ func _ready() -> void:
 	Blackboard.progress_bar = progress_bar
 	Blackboard.seed_text = menu_control.seed_text_edit.get_seed_text()
 	Blackboard.generate()
+
+func _on_menu_control_unlocked_all() -> void:
+	pick_control.visible = false
+	input_v_box_container.visible = false
+	quit_button.visible = false
+	win_richt_text_label.visible = true
 
 
 func _on_menu_control_start_button_pressed() -> void:
@@ -74,6 +88,16 @@ func _on_back_texture_rect_pressed() -> void:
 	for entity: Entity2D in Blackboard.get_entities():
 		if Blackboard.is_valid(entity):
 			entity.turn_finished.emit()
+
+
+func _on_win_back_texture_button_pressed() -> void:
+	if is_playing:
+		return
+
+	pick_control.visible = true
+	input_v_box_container.visible = true
+	quit_button.visible = true
+	win_richt_text_label.queue_free()
 
 
 func _on_player_turn(has_started: bool) -> void:
@@ -165,8 +189,10 @@ func _end() -> void:
 
 	if point_count > 0:
 		var menu_point_count := menu_control.get_menu_point_count()
+		var final_menu_point_count = menu_point_count + point_count
 		main_tween = create_tween().set_trans(Tween.TRANS_SINE)
-		main_tween.tween_method(menu_control.set_menu_point_count, menu_point_count, menu_point_count + point_count, 1.0)
+		main_tween.tween_method(menu_control.set_menu_point_count, menu_point_count, final_menu_point_count, 1.0)
+		menu_control.update_save({point_count = final_menu_point_count})
 
 	for _i in player.skin_sub_viewport.MAX_BLOBS:
 		player.skin_sub_viewport.add_blob()

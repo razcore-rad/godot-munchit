@@ -1,11 +1,13 @@
 class_name MenuControl extends Control
 
+signal unlocked_all
+
 const PLAYER_MOVE_AREAS_PATH := "entities/player/move_areas"
 const STEP := 8
 
 @export var save: Save = null
 
-var _move_areas: Array[Area2D] = []
+var _move_areas: Array[MoveArea2D] = []
 var _move_area_index: int = -1:
 	set(new_move_area_index):
 		if _move_areas.is_empty():
@@ -65,13 +67,12 @@ func _setup() -> void:
 		start += STEP
 	_move_area_index = 0
 
-
 func _ready() -> void:
 	left_texture_button.pressed.connect(_on_texture_button.bind(-1))
 	right_texture_button.pressed.connect(_on_texture_button.bind(1))
 	buy_button.pressed.connect(_on_buy_button_pressed)
 	reset_button.pressed.connect(_on_reset_button_pressed)
-	quit_button.pressed.connect(_on_quit_button_pressed)
+	quit_button.pressed.connect(get_tree().quit)
 	_setup()
 
 
@@ -83,30 +84,37 @@ func _on_buy_button_pressed() -> void:
 	var move_area := get_move_area()
 	var menu_point_count := get_menu_point_count()
 	if move_area.cost <= menu_point_count:
+		var final_menu_point_count := menu_point_count - move_area.cost
 		save.move_area_file_names[move_area.scene_file_path.get_file()] = null
+		update_save({
+			point_count = final_menu_point_count,
+			move_area_file_names = save.move_area_file_names.merged({move_area.scene_file_path.get_file(): null})
+		})
 
 		bought_label.visible = true
 		buy_h_box_container.visible = false
 		start_button.disabled = true
+		left_texture_button.disabled = true
+		right_texture_button.disabled = true
 
 		var tween = create_tween().set_trans(Tween.TRANS_SINE)
-		tween.tween_method(func(x: int) -> void: menu_points_label.text = str(x), menu_point_count, menu_point_count - move_area.cost, 1.0)
+		tween.tween_method(set_menu_point_count, menu_point_count, final_menu_point_count, 1.0)
 		await tween.finished
 
 		move_area.cost = 0
 		cost_label.text = "0"
 		start_button.disabled = false
+		left_texture_button.disabled = false
+		right_texture_button.disabled = false
+
+	if _move_areas.filter(func(m: MoveArea2D) -> bool: return m.cost > 0).is_empty():
+		unlocked_all.emit()
 
 
 func _on_reset_button_pressed() -> void:
 	set_menu_point_count(0)
-	save.move_area_file_names.clear()
+	update_save({point_count =  0, move_area_file_names = {} as Dictionary[String, Variant]})
 	_setup()
-
-
-func _on_quit_button_pressed() -> void:
-	ResourceSaver.save(save)
-	get_tree().quit()
 
 
 func get_move_area(is_duplicate: bool = false) -> MoveArea2D:
@@ -122,5 +130,10 @@ func get_menu_point_count() -> int:
 
 
 func set_menu_point_count(to: int) -> void:
-	save.point_count = to
 	menu_points_label.text = str(to)
+
+
+func update_save(info: Dictionary[String, Variant]) -> void:
+	for key in info:
+		save.set(key, info[key])
+	ResourceSaver.save(save)

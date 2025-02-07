@@ -6,9 +6,13 @@ const StingerEnemy2DPackedScene := preload("entities/enemies/stinger_enemy_2d.ts
 const TILE_SET := preload("sectors/tile_set.tres")
 const ENEMY_FILE_PATH := "entities/enemies/"
 const ENEMY_FILE_NAMES: Dictionary[String, Vector2i] = {
-	"enemy_2d_a.tscn": Vector2i(0, 20),
-	"enemy_2d_b.tscn": Vector2i(0, 20),
-	"enemy_2d_c.tscn": Vector2i(2, 30),
+	"enemy_2d_a.tscn": Vector2i(0, 62),
+	"enemy_2d_b.tscn": Vector2i(0, 84),
+	"enemy_2d_c.tscn": Vector2i(23, 123),
+	"enemy_2d_d.tscn": Vector2i(103, 204),
+	"enemy_2d_e.tscn": Vector2i(142, 258),
+	"enemy_2d_f.tscn": Vector2i(201, Vector2i.MAX.x),
+	"enemy_2d_g.tscn": Vector2i(342, Vector2i.MAX.x),
 }
 
 const MAX_ENEMIES := 300
@@ -135,9 +139,10 @@ static func generate_enemies(sector: Sector2D) -> void:
 
 
 static func spawn_enemy(spawn_tile_map_layer: TileMapLayer) -> void:
-	var available_positions: Array[Vector2i] = spawn_tile_map_layer.get_used_cells().reduce(func(acc: Dictionary[Vector2i, Variant], v: Vector2i) -> Dictionary[Vector2i, Variant]:
-		v = spawn_tile_map_layer.to_global(spawn_tile_map_layer.map_to_local(v))
-		return acc.merged({v: null}) if not Blackboard.is_obstacle(v) else acc , {} as Dictionary[Vector2i, Variant]).keys()
+	var available_positions: Array[Vector2i] = spawn_tile_map_layer.get_used_cells().reduce(
+		func(acc: Dictionary[Vector2i, Variant], v: Vector2i) -> Dictionary[Vector2i, Variant]:
+			v = spawn_tile_map_layer.to_global(spawn_tile_map_layer.map_to_local(v))
+			return acc.merged({v: null}) if not Blackboard.is_obstacle(v) else acc , {} as Dictionary[Vector2i, Variant]).keys()
 	_add_enemy(available_positions.pick_random())
 
 
@@ -157,7 +162,9 @@ static func spawn_stinger_enemies() -> void:
 
 
 static func update_enemy_neighbor_count() -> void:
-	_enemy_neighbor_count = player.neighbor_tile_map_layer.get_used_cells().filter(func(v: Vector2i) -> bool: return player.neighbor_tile_map_layer.to_global(player.neighbor_tile_map_layer.map_to_local(v)) in enemies_map).size()
+	_enemy_neighbor_count = player.neighbor_tile_map_layer.get_used_cells().filter( func(v: Vector2i) -> bool:
+		return player.neighbor_tile_map_layer.to_global(player.neighbor_tile_map_layer.map_to_local(v)) in enemies_map
+	).size()
 
 
 static func get_sector(at: Vector2) -> Sector2D:
