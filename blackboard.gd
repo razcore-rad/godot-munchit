@@ -191,6 +191,9 @@ static func get_point_count() -> int:
 static func set_point_count(to: int) -> void:
 	var delta := to - points_label.text.to_int()
 	points_label.text = str(max(0, to))
-	if to != 0:
+	if delta != 0:
 		player.points_label.text = str(delta)
+		player.animation_player.advance(0)
 		player.animation_player.play("eat" if delta > 0 else "lose_points")
+		await player.animation_player.animation_finished
+		player.gpu_particles.emitting = false

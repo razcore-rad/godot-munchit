@@ -177,7 +177,7 @@ func _end() -> void:
 		blink_tween.tween_property(points_label, "modulate", points_label_modulate, 0.05)
 
 	await main_tween.finished
-	player.animation_player.play("RESET")
+	player.animation_player.queue("RESET")
 	if blink_tween != null and point_count > 0:
 		blink_tween.kill()
 

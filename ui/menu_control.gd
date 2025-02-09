@@ -119,6 +119,7 @@ func _on_buy_button_pressed() -> void:
 func _on_reset_yes_button_pressed() -> void:
 	set_menu_point_count(0)
 	update_save({point_count =  0, move_area_file_names = {} as Dictionary[String, Variant]})
+	reset_h_box_container.visible = false
 	_setup()
 
 

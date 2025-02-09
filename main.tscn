@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://ldn0aescwsku" path="res://ui/assets/texture_button/texture_button_pressed.png" id="8_w48qg"]
 [ext_resource type="Texture2D" uid="uid://ccexmaa42v6fj" path="res://ui/assets/texture_button/texture_button_disabled.png" id="9_dg77c"]
 [ext_resource type="Texture2D" uid="uid://drwxxjtt4sm0i" path="res://ui/assets/texture_button/texture_button_hover.png" id="9_vivmo"]
-[ext_resource type="Resource" uid="uid://b46tkn46g6nya" path="res://save.tres" id="10_efxa6"]
+[ext_resource type="Resource" path="res://save.tres" id="10_efxa6"]
 [ext_resource type="Script" uid="uid://dpch7hvosvql3" path="res://ui/seed_text_edit.gd" id="11_yaehf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dg77c"]

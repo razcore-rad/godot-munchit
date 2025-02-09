@@ -55,7 +55,9 @@ func _on_skin_sub_viewport_blob(blob_count: int, is_added: bool) -> void:
 	if not is_added:
 		eyes_animation_player.play("attacked")
 		if blob_count <= 0:
-			animation_player.play("die")
+			animation_player.stop()
+			animation_player.play("RESET")
+			animation_player.queue("die")
 
 
 func _on_detect_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
@@ -117,6 +119,8 @@ func _detect_enemy(target_position: Vector2) -> void:
 
 func _eat_enemy(enemy_move_area: Area2D, enemy_points: int) -> void:
 	Blackboard.set_point_count(Blackboard.get_point_count() + enemy_points)
+	mouth_animated_sprite.play()
+
 	skin_sub_viewport.add_blob()
 	var move_area_collision_shape_positions := move_area.get_children().map(func(cs: MoveAreaCollisionShape2D) -> Vector2: return cs.position)
 	for collision_shape: MoveAreaCollisionShape2D in enemy_move_area.get_children():
@@ -130,11 +134,6 @@ func _eat_enemy(enemy_move_area: Area2D, enemy_points: int) -> void:
 
 	move_area.visible = true
 	_toggle_area_shapes(move_area, {is_disabled = false})
-
-	mouth_animated_sprite.play()
-	animation_player.play("eat")
-	await animation_player.animation_finished
-	gpu_particles.emitting = false
 
 
 func setup_move_area(new_move_area: MoveArea2D) -> void:
