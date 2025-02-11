@@ -94,15 +94,18 @@ func _on_move_area_input_event(_viewport: Node, event: InputEvent, shape_index: 
 		turn_finished.emit()
 
 
+func _on_move_area_mouse_shape_entered(shape_idx: int) -> void:
+	var collision_shape: MoveAreaCollisionShape2D = move_area.get_child(shape_idx)
+	if collision_shape == null:
+		return
+	var target_position := collision_shape.global_position
+	mouth_animated_sprite.frame = 1 if target_position in Blackboard.enemies_map else 3
+
+
 func _on_move_area_mouse_exited() -> void:
+	mouth_animated_sprite.frame = 3
 	for collision_shape: MoveAreaCollisionShape2D in move_area.get_children():
 		collision_shape.modulate = MOVE_AREA_COLORS.default_eaten if collision_shape.is_eaten else MOVE_AREA_COLORS.default
-
-
-func _connect_move_area() -> void:
-	move_area.body_shape_entered.connect(_on_move_area_body_shape_entered)
-	move_area.input_event.connect(_on_move_area_input_event)
-	move_area.mouse_exited.connect(_on_move_area_mouse_exited)
 
 
 func _detect_enemy(target_position: Vector2) -> void:
@@ -141,11 +144,15 @@ func setup_move_area(new_move_area: MoveArea2D) -> void:
 		move_area.queue_free()
 
 	move_area = new_move_area
+	move_area.body_shape_entered.connect(_on_move_area_body_shape_entered)
+	move_area.input_event.connect(_on_move_area_input_event)
+	move_area.mouse_exited.connect(_on_move_area_mouse_exited)
+	move_area.mouse_shape_entered.connect(_on_move_area_mouse_shape_entered)
+
 	areas.add_child(move_area)
 	move_area.position = Vector2.ZERO
 	for collision_shape:MoveAreaCollisionShape2D in move_area.get_children():
 		collision_shape.modulate = MOVE_AREA_COLORS.default
-	_connect_move_area()
 
 
 func is_dead() -> bool:
