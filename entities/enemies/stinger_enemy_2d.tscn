@@ -89,6 +89,7 @@ light_mode = 1
 
 [node name="StingerEntity2D" instance=ExtResource("1_0ail3")]
 script = ExtResource("2_i3isv")
+points = 1
 
 [node name="DetectArea2D" parent="Areas2D" index="0"]
 collision_layer = 0

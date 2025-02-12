@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://ldn0aescwsku" path="res://ui/assets/texture_button/texture_button_pressed.png" id="8_w48qg"]
 [ext_resource type="Texture2D" uid="uid://ccexmaa42v6fj" path="res://ui/assets/texture_button/texture_button_disabled.png" id="9_dg77c"]
 [ext_resource type="Texture2D" uid="uid://drwxxjtt4sm0i" path="res://ui/assets/texture_button/texture_button_hover.png" id="9_vivmo"]
-[ext_resource type="Resource" path="res://save.tres" id="10_efxa6"]
+[ext_resource type="Resource" uid="uid://xammwcsni41x" path="res://save.tres" id="10_efxa6"]
 [ext_resource type="Script" uid="uid://dpch7hvosvql3" path="res://ui/seed_text_edit.gd" id="11_yaehf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dg77c"]
@@ -33,6 +33,11 @@ fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 0.05)
 metadata/_snap_count = 20
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vivmo"]
+shader = ExtResource("6_dg77c")
+shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
+shader_parameter/line_thickness = 2
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ycdy4"]
 shader = ExtResource("6_dg77c")
 shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
@@ -44,11 +49,6 @@ pressed = true
 
 [sub_resource type="Shortcut" id="Shortcut_efxa6"]
 events = [SubResource("InputEventAction_4c57u")]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vivmo"]
-shader = ExtResource("6_dg77c")
-shader_parameter/line_color = Color(0.278431, 0.105882, 0.431373, 1)
-shader_parameter/line_thickness = 2
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2cqfq"]
 shader = ExtResource("6_dg77c")
@@ -219,6 +219,7 @@ grow_vertical = 2
 
 [node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/Control/PlayerHUDControl/Control"]
 unique_name_in_owner = true
+material = SubResource("ShaderMaterial_vivmo")
 custom_minimum_size = Vector2(540, 0)
 layout_mode = 1
 anchors_preset = 8
@@ -249,6 +250,7 @@ grow_horizontal = 0
 grow_vertical = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/PlayerHUDControl/Control/PointsHBoxContainer"]
+material = SubResource("ShaderMaterial_vivmo")
 layout_mode = 2
 theme_type_variation = &"PointsLabel"
 text = "Points:"
@@ -256,6 +258,7 @@ text = "Points:"
 [node name="PointsLabel" type="Label" parent="CanvasLayer/Control/PlayerHUDControl/Control/PointsHBoxContainer"]
 unique_name_in_owner = true
 modulate = Color(0.870588, 0.545098, 0.435294, 1)
+material = SubResource("ShaderMaterial_vivmo")
 layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"NumberLabel"

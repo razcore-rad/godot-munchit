@@ -1,4 +1,5 @@
 shader_type canvas_item;
+render_mode unshaded;
 
 uniform vec3 line_color: source_color = vec3(1.0);
 uniform int line_thickness: hint_range(0, 10) = 1;

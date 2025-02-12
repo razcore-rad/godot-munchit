@@ -8,6 +8,7 @@ const MoveAreaCollisionShape2DPackedScene := preload("move_area_collision_shape_
 @onready var areas: Node2D = %Areas2D
 @onready var detect_area: Area2D = %DetectArea2D
 @onready var detect_area_sprite: Sprite2D = %DetectAreaSprite2D
+@onready var points_label: Label = %PointsLabel
 
 
 func _ready() -> void:

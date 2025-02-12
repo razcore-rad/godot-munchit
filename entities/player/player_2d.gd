@@ -27,7 +27,6 @@ var move_area: MoveArea2D = null
 @onready var ray_cast: RayCast2D = %RayCast2D
 @onready var spawn_tile_map_layer: TileMapLayer = %SpawnTileMapLayer
 @onready var neighbor_tile_map_layer: TileMapLayer = %NeighborTileMapLayer
-@onready var points_label: Label = %PointsLabel
 @onready var gpu_particles: GPUParticles2D = %GPUParticles2D
 @onready var shadow_sprite: Sprite2D = %ShadowSprite2D
 
@@ -42,6 +41,14 @@ func _ready() -> void:
 	await owner.ready
 	skin_sub_viewport.world_2d = World2D.new()
 	skin_sub_viewport.add_blob()
+
+	var tween := create_tween().set_trans(Tween.TRANS_CUBIC).set_loops()
+	tween.tween_property(mouth_animated_sprite, "position:x", 2, 0.7).as_relative()
+	tween.tween_property(mouth_animated_sprite, "position:x", -2, 0.3).as_relative()
+
+	tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_loops()
+	tween.tween_property(mouth_animated_sprite, "position:y", -1, 0.8).as_relative()
+	tween.tween_property(mouth_animated_sprite, "position:y", 1, 0.4).as_relative()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -98,6 +105,7 @@ func _on_move_area_mouse_shape_entered(shape_idx: int) -> void:
 	var collision_shape: MoveAreaCollisionShape2D = move_area.get_child(shape_idx)
 	if collision_shape == null:
 		return
+
 	var target_position := collision_shape.global_position
 	mouth_animated_sprite.frame = 1 if target_position in Blackboard.enemies_map else 3
 
@@ -122,6 +130,7 @@ func _detect_enemy(target_position: Vector2) -> void:
 
 func _eat_enemy(enemy_move_area: Area2D, enemy_points: int) -> void:
 	Blackboard.set_point_count(Blackboard.get_point_count() + enemy_points)
+	mouth_animated_sprite.frame = 0
 	mouth_animated_sprite.play()
 
 	skin_sub_viewport.add_blob()

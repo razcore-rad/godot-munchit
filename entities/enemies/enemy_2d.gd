@@ -2,20 +2,36 @@ class_name Enemy2D extends Entity2D
 
 const MOVE_RANDOM_CHANCE := 0.2
 
-@export var points := 1
+@export var points := 1:
+	set(new_points):
+		points = new_points
+		if points_label != null:
+			points_label.text = str(points)
 
-@onready var move_area: Area2D = %MoveArea2D
+var move_area: Area2D = null
 
 
 func _ready() -> void:
 	super()
+	points = points
+
+	move_area = %MoveArea2D
 	move_area.visible = false
 	_toggle_area_shapes(move_area, {is_disabled = true})
+
+	var tween := create_tween().set_trans(Tween.TRANS_CUBIC).set_loops()
+	tween.tween_property(points_label, "position:x", 2, 0.7).as_relative()
+	tween.tween_property(points_label, "position:x", -2, 0.3).as_relative()
+
+	tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_loops()
+	tween.tween_property(points_label, "position:y", -1, 0.8).as_relative()
+	tween.tween_property(points_label, "position:y", 1, 0.4).as_relative()
 
 
 func _on_detect_area_mouse(has_entered: bool) -> void:
 	super(has_entered)
 	move_area.visible = has_entered
+	points_label.visible = has_entered
 
 
 func _get_sorted_move_choices(to: Vector2) -> Array[Vector2]:

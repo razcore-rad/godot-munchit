@@ -1,4 +1,4 @@
-class_name StingerEnemy2D extends Entity2D
+class_name StingerEnemy2D extends Enemy2D
 
 const MAX_DISTANCE := 400.0 ** 2
 const POINTS := 3
@@ -57,6 +57,7 @@ func start_turn() -> void:
 
 	var ray_cast_collider := ray_cast.get_collider()
 	if ray_cast_collider != null and ray_cast_collider.owner == Blackboard.player:
+		points_label.visible = true
 		shadow_sprite.visible = true
 		animated_sprite.visible = true
 		animated_sprite.play()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=4 uid="uid://c2mhgypppwjb3"]
+[gd_scene load_steps=30 format=4 uid="uid://c2mhgypppwjb3"]
 
 [ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_e3jcg"]
 [ext_resource type="Script" uid="uid://e18wuex060o6" path="res://entities/player/player_2d.gd" id="2_d65nd"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://c01nkmxfnpxwj" path="res://entities/player/skin_sub_viewport.tscn" id="5_chs0w"]
 [ext_resource type="Texture2D" uid="uid://cr6fcs8x7v22" path="res://assets/atlas.png" id="8_is22s"]
 [ext_resource type="Texture2D" uid="uid://cy5rbl1my2k84" path="res://entities/player/assets/mouth.png" id="8_qalwy"]
-[ext_resource type="Theme" uid="uid://cwgp6l14spm0o" path="res://ui/assets/theme.tres" id="9_is22s"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u8ep7"]
 shader = ExtResource("4_c5hwq")
@@ -462,28 +461,13 @@ modulate = Color(0.545098, 0.780392, 0.74902, 1)
 [node name="ShadowSprite2D" parent="." index="1"]
 unique_name_in_owner = true
 
-[node name="PointsLabel" type="Label" parent="." index="2"]
-unique_name_in_owner = true
-visible = false
+[node name="PointsLabel" parent="." index="2"]
 modulate = Color(0.870588, 0.545098, 0.435294, 1)
-custom_minimum_size = Vector2(40, 0)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
 offset_left = -19.0
 offset_top = -24.0
 offset_right = 21.0
 offset_bottom = 8.0
-grow_horizontal = 2
-grow_vertical = 2
 scale = Vector2(1e-05, 1e-05)
-pivot_offset = Vector2(19, 16)
-theme = ExtResource("9_is22s")
-theme_type_variation = &"NumberLabel"
-text = "0"
-horizontal_alignment = 1
 
 [node name="CanvasGroup" type="CanvasGroup" parent="." index="3"]
 material = SubResource("ShaderMaterial_u8ep7")
@@ -504,6 +488,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 stretch = true
+metadata/_edit_use_anchors_ = true
 
 [node name="SkinSubViewport" parent="CanvasGroup/SkinSubViewportContainer" index="0" instance=ExtResource("5_chs0w")]
 unique_name_in_owner = true
@@ -548,6 +533,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(4, 4)
 mouse_filter = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="LeftInnerColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D/LeftEyeColorRect" index="0"]
 unique_name_in_owner = true
@@ -566,6 +552,7 @@ grow_horizontal = 0
 grow_vertical = 2
 pivot_offset = Vector2(0, 2)
 mouse_filter = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="RightEyeColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D" index="1"]
 material = SubResource("ShaderMaterial_4co2k")
@@ -583,6 +570,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(4, 4)
 mouse_filter = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="RightInnerColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D/RightEyeColorRect" index="0"]
 unique_name_in_owner = true
@@ -601,6 +589,7 @@ grow_horizontal = 0
 grow_vertical = 2
 pivot_offset = Vector2(0, 2)
 mouse_filter = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="EyesAnimationPlayer" type="AnimationPlayer" parent="CanvasGroup/Extra2D/Eyes2D" index="2"]
 unique_name_in_owner = true
