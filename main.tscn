@@ -1,16 +1,17 @@
-[gd_scene load_steps=39 format=3 uid="uid://bskvs3ko2utnn"]
+[gd_scene load_steps=41 format=3 uid="uid://bskvs3ko2utnn"]
 
 [ext_resource type="Script" uid="uid://tcg6bs55hw1w" path="res://main.gd" id="1_aaq20"]
 [ext_resource type="Shader" uid="uid://cowsy25kxhkiw" path="res://assets/light_only_group.gdshader" id="2_efxa6"]
 [ext_resource type="Theme" uid="uid://cwgp6l14spm0o" path="res://ui/assets/theme.tres" id="3_h2yge"]
 [ext_resource type="PackedScene" uid="uid://c2mhgypppwjb3" path="res://entities/player/player_2d.tscn" id="4_p2fd5"]
 [ext_resource type="Script" uid="uid://dbta2an742hic" path="res://ui/menu_control.gd" id="5_dg77c"]
+[ext_resource type="Script" uid="uid://hlpoo7p6uc8e" path="res://ui/ui_control.gd" id="5_w48qg"]
 [ext_resource type="Shader" uid="uid://nu0e1o8wd5d4" path="res://entities/outline.gdshader" id="6_dg77c"]
 [ext_resource type="Texture2D" uid="uid://dwb67e36aikmi" path="res://ui/assets/texture_button/texture_button_nornal.png" id="7_ycdy4"]
 [ext_resource type="Texture2D" uid="uid://ldn0aescwsku" path="res://ui/assets/texture_button/texture_button_pressed.png" id="8_w48qg"]
 [ext_resource type="Texture2D" uid="uid://ccexmaa42v6fj" path="res://ui/assets/texture_button/texture_button_disabled.png" id="9_dg77c"]
 [ext_resource type="Texture2D" uid="uid://drwxxjtt4sm0i" path="res://ui/assets/texture_button/texture_button_hover.png" id="9_vivmo"]
-[ext_resource type="Resource" uid="uid://xammwcsni41x" path="res://save.tres" id="10_efxa6"]
+[ext_resource type="Resource" uid="uid://cwuifcgknjr42" path="res://save.tres" id="10_efxa6"]
 [ext_resource type="Script" uid="uid://dpch7hvosvql3" path="res://ui/seed_text_edit.gd" id="11_yaehf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dg77c"]
@@ -119,6 +120,8 @@ pressed = true
 [sub_resource type="Shortcut" id="Shortcut_2cqfq"]
 events = [SubResource("InputEventAction_vivmo")]
 
+[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_ycdy4"]
+
 [node name="Main" type="Node"]
 script = ExtResource("1_aaq20")
 
@@ -175,7 +178,7 @@ color = Color(0.0785603, 0.0617619, 0.0932407, 1)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Control" type="Control" parent="CanvasLayer"]
+[node name="UIControl" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -184,8 +187,9 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("3_h2yge")
+script = ExtResource("5_w48qg")
 
-[node name="PlayerHUDControl" type="Control" parent="CanvasLayer/Control"]
+[node name="PlayerHUDControl" type="Control" parent="CanvasLayer/UIControl"]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(940, 510)
@@ -203,13 +207,13 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Control" type="Control" parent="CanvasLayer/Control/PlayerHUDControl"]
+[node name="Control" type="Control" parent="CanvasLayer/UIControl/PlayerHUDControl"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
 
-[node name="BlobsHBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/PlayerHUDControl/Control"]
+[node name="BlobsHBoxContainer" type="HBoxContainer" parent="CanvasLayer/UIControl/PlayerHUDControl/Control"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 4
@@ -217,7 +221,7 @@ anchor_top = 0.5
 anchor_bottom = 0.5
 grow_vertical = 2
 
-[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/Control/PlayerHUDControl/Control"]
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/UIControl/PlayerHUDControl/Control"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_vivmo")
 custom_minimum_size = Vector2(540, 0)
@@ -236,7 +240,7 @@ grow_vertical = 2
 value = 100.0
 show_percentage = false
 
-[node name="PointsHBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/PlayerHUDControl/Control"]
+[node name="PointsHBoxContainer" type="HBoxContainer" parent="CanvasLayer/UIControl/PlayerHUDControl/Control"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -249,13 +253,13 @@ offset_bottom = 16.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/PlayerHUDControl/Control/PointsHBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/UIControl/PlayerHUDControl/Control/PointsHBoxContainer"]
 material = SubResource("ShaderMaterial_vivmo")
 layout_mode = 2
 theme_type_variation = &"PointsLabel"
 text = "Points:"
 
-[node name="PointsLabel" type="Label" parent="CanvasLayer/Control/PlayerHUDControl/Control/PointsHBoxContainer"]
+[node name="PointsLabel" type="Label" parent="CanvasLayer/UIControl/PlayerHUDControl/Control/PointsHBoxContainer"]
 unique_name_in_owner = true
 modulate = Color(0.870588, 0.545098, 0.435294, 1)
 material = SubResource("ShaderMaterial_vivmo")
@@ -265,7 +269,7 @@ theme_type_variation = &"NumberLabel"
 text = "0"
 horizontal_alignment = 2
 
-[node name="BackTextureButton" type="TextureButton" parent="CanvasLayer/Control/PlayerHUDControl"]
+[node name="BackTextureButton" type="TextureButton" parent="CanvasLayer/UIControl/PlayerHUDControl"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_ycdy4")
 layout_mode = 1
@@ -283,7 +287,7 @@ texture_pressed = ExtResource("8_w48qg")
 texture_hover = ExtResource("9_vivmo")
 texture_disabled = ExtResource("9_dg77c")
 
-[node name="MenuControl" type="Control" parent="CanvasLayer/Control"]
+[node name="MenuControl" type="Control" parent="CanvasLayer/UIControl"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -295,7 +299,7 @@ mouse_filter = 2
 script = ExtResource("5_dg77c")
 save = ExtResource("10_efxa6")
 
-[node name="PickControl" type="Control" parent="CanvasLayer/Control/MenuControl"]
+[node name="PickControl" type="Control" parent="CanvasLayer/UIControl/MenuControl"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -305,7 +309,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="ClipControl" type="Control" parent="CanvasLayer/Control/MenuControl/PickControl"]
+[node name="ClipControl" type="Control" parent="CanvasLayer/UIControl/MenuControl/PickControl"]
 clip_contents = true
 custom_minimum_size = Vector2(630, 140)
 layout_mode = 1
@@ -322,7 +326,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Control" type="Control" parent="CanvasLayer/Control/MenuControl/PickControl/ClipControl"]
+[node name="Control" type="Control" parent="CanvasLayer/UIControl/MenuControl/PickControl/ClipControl"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -333,7 +337,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="AreasControl" type="Control" parent="CanvasLayer/Control/MenuControl/PickControl/ClipControl/Control"]
+[node name="AreasControl" type="Control" parent="CanvasLayer/UIControl/MenuControl/PickControl/ClipControl/Control"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -345,7 +349,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="CostControl" type="Control" parent="CanvasLayer/Control/MenuControl/PickControl"]
+[node name="CostControl" type="Control" parent="CanvasLayer/UIControl/MenuControl/PickControl"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -355,7 +359,7 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MenuControl/PickControl/CostControl"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UIControl/MenuControl/PickControl/CostControl"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -369,27 +373,27 @@ offset_bottom = -120.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BoughtLabel" type="Label" parent="CanvasLayer/Control/MenuControl/PickControl/CostControl/VBoxContainer"]
+[node name="BoughtLabel" type="Label" parent="CanvasLayer/UIControl/MenuControl/PickControl/CostControl/VBoxContainer"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_vivmo")
 layout_mode = 2
 text = "Bought"
 horizontal_alignment = 1
 
-[node name="BuyHBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/MenuControl/PickControl/CostControl/VBoxContainer"]
+[node name="BuyHBoxContainer" type="HBoxContainer" parent="CanvasLayer/UIControl/MenuControl/PickControl/CostControl/VBoxContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/MenuControl/PickControl/CostControl/VBoxContainer/BuyHBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/UIControl/MenuControl/PickControl/CostControl/VBoxContainer/BuyHBoxContainer"]
 material = SubResource("ShaderMaterial_vivmo")
 layout_mode = 2
 size_flags_horizontal = 0
 theme_type_variation = &"PointsLabel"
 text = "Cost:"
 
-[node name="CostLabel" type="Label" parent="CanvasLayer/Control/MenuControl/PickControl/CostControl/VBoxContainer/BuyHBoxContainer"]
+[node name="CostLabel" type="Label" parent="CanvasLayer/UIControl/MenuControl/PickControl/CostControl/VBoxContainer/BuyHBoxContainer"]
 unique_name_in_owner = true
 modulate = Color(0.870588, 0.545098, 0.435294, 1)
 material = SubResource("ShaderMaterial_vivmo")
@@ -398,7 +402,7 @@ size_flags_horizontal = 0
 theme_type_variation = &"NumberLabel"
 text = "0"
 
-[node name="BuyButton" type="Button" parent="CanvasLayer/Control/MenuControl/PickControl/CostControl/VBoxContainer/BuyHBoxContainer"]
+[node name="BuyButton" type="Button" parent="CanvasLayer/UIControl/MenuControl/PickControl/CostControl/VBoxContainer/BuyHBoxContainer"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_2cqfq")
 layout_mode = 2
@@ -409,7 +413,7 @@ shortcut = SubResource("Shortcut_vivmo")
 text = "Buy"
 flat = true
 
-[node name="LeftTextureButton" type="TextureButton" parent="CanvasLayer/Control/MenuControl/PickControl"]
+[node name="LeftTextureButton" type="TextureButton" parent="CanvasLayer/UIControl/MenuControl/PickControl"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_ycdy4")
 layout_mode = 1
@@ -429,7 +433,7 @@ texture_pressed = ExtResource("8_w48qg")
 texture_hover = ExtResource("9_vivmo")
 texture_disabled = ExtResource("9_dg77c")
 
-[node name="RightTextureButton" type="TextureButton" parent="CanvasLayer/Control/MenuControl/PickControl"]
+[node name="RightTextureButton" type="TextureButton" parent="CanvasLayer/UIControl/MenuControl/PickControl"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_ycdy4")
 layout_mode = 1
@@ -453,7 +457,7 @@ texture_hover = ExtResource("9_vivmo")
 texture_disabled = ExtResource("9_dg77c")
 flip_h = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MenuControl"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UIControl/MenuControl"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -468,23 +472,23 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="TitleLabel" type="Label" parent="CanvasLayer/Control/MenuControl/VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="CanvasLayer/UIControl/MenuControl/VBoxContainer"]
 material = SubResource("ShaderMaterial_w48qg")
 layout_mode = 2
 theme_type_variation = &"TitleLabel"
 text = "MunchIt"
 horizontal_alignment = 1
 
-[node name="MenuHSeparator" type="HSeparator" parent="CanvasLayer/Control/MenuControl/VBoxContainer"]
+[node name="MenuHSeparator" type="HSeparator" parent="CanvasLayer/UIControl/MenuControl/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme_type_variation = &"MenuHSeparator"
 
-[node name="InputVBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MenuControl/VBoxContainer"]
+[node name="InputVBoxContainer" type="VBoxContainer" parent="CanvasLayer/UIControl/MenuControl/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="StartButton" type="Button" parent="CanvasLayer/Control/MenuControl/VBoxContainer/InputVBoxContainer"]
+[node name="StartButton" type="Button" parent="CanvasLayer/UIControl/MenuControl/VBoxContainer/InputVBoxContainer"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_4c57u")
 layout_mode = 2
@@ -494,7 +498,7 @@ shortcut = SubResource("Shortcut_w48qg")
 text = "Start"
 flat = true
 
-[node name="ResetButton" type="Button" parent="CanvasLayer/Control/MenuControl/VBoxContainer/InputVBoxContainer"]
+[node name="ResetButton" type="Button" parent="CanvasLayer/UIControl/MenuControl/VBoxContainer/InputVBoxContainer"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_4c57u")
 layout_mode = 2
@@ -505,7 +509,7 @@ shortcut = SubResource("Shortcut_074og")
 text = "Reset"
 flat = true
 
-[node name="ResetHBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/MenuControl/VBoxContainer/InputVBoxContainer/ResetButton"]
+[node name="ResetHBoxContainer" type="HBoxContainer" parent="CanvasLayer/UIControl/MenuControl/VBoxContainer/InputVBoxContainer/ResetButton"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -521,7 +525,7 @@ grow_horizontal = 0
 grow_vertical = 2
 mouse_filter = 0
 
-[node name="ResetYesButton" type="Button" parent="CanvasLayer/Control/MenuControl/VBoxContainer/InputVBoxContainer/ResetButton/ResetHBoxContainer"]
+[node name="ResetYesButton" type="Button" parent="CanvasLayer/UIControl/MenuControl/VBoxContainer/InputVBoxContainer/ResetButton/ResetHBoxContainer"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_4c57u")
 layout_mode = 2
@@ -531,11 +535,11 @@ focus_mode = 0
 text = "Yes"
 flat = true
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/MenuControl/VBoxContainer/InputVBoxContainer/ResetButton/ResetHBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/UIControl/MenuControl/VBoxContainer/InputVBoxContainer/ResetButton/ResetHBoxContainer"]
 layout_mode = 2
 text = "/"
 
-[node name="ResetNoButton" type="Button" parent="CanvasLayer/Control/MenuControl/VBoxContainer/InputVBoxContainer/ResetButton/ResetHBoxContainer"]
+[node name="ResetNoButton" type="Button" parent="CanvasLayer/UIControl/MenuControl/VBoxContainer/InputVBoxContainer/ResetButton/ResetHBoxContainer"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_4c57u")
 layout_mode = 2
@@ -545,22 +549,21 @@ focus_mode = 0
 text = "No"
 flat = true
 
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/Control/MenuControl/VBoxContainer/InputVBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/UIControl/MenuControl/VBoxContainer/InputVBoxContainer"]
 layout_mode = 2
 columns = 2
 
-[node name="SeedLabel" type="Label" parent="CanvasLayer/Control/MenuControl/VBoxContainer/InputVBoxContainer/GridContainer"]
+[node name="SeedLabel" type="Label" parent="CanvasLayer/UIControl/MenuControl/VBoxContainer/InputVBoxContainer/GridContainer"]
 material = SubResource("ShaderMaterial_efxa6")
 layout_mode = 2
 text = "Seed:"
 
-[node name="SeedTextEdit" type="TextEdit" parent="CanvasLayer/Control/MenuControl/VBoxContainer/InputVBoxContainer/GridContainer"]
+[node name="SeedTextEdit" type="TextEdit" parent="CanvasLayer/UIControl/MenuControl/VBoxContainer/InputVBoxContainer/GridContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(240, 40)
 layout_mode = 2
 tooltip_text = "Game Seed.
 Note: Only affects tile generation."
-focus_mode = 0
 theme_type_variation = &"SeedTextEdit"
 placeholder_text = "world"
 context_menu_enabled = false
@@ -575,7 +578,7 @@ scroll_fit_content_height = true
 caret_multiple = false
 script = ExtResource("11_yaehf")
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/MenuControl/VBoxContainer/InputVBoxContainer/GridContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/UIControl/MenuControl/VBoxContainer/InputVBoxContainer/GridContainer"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_efxa6")
 layout_mode = 2
@@ -583,7 +586,7 @@ theme_type_variation = &"PointsLabel"
 text = "Points:"
 horizontal_alignment = 2
 
-[node name="MenuPointsLabel" type="Label" parent="CanvasLayer/Control/MenuControl/VBoxContainer/InputVBoxContainer/GridContainer"]
+[node name="MenuPointsLabel" type="Label" parent="CanvasLayer/UIControl/MenuControl/VBoxContainer/InputVBoxContainer/GridContainer"]
 unique_name_in_owner = true
 modulate = Color(0.870588, 0.545098, 0.435294, 1)
 material = SubResource("ShaderMaterial_efxa6")
@@ -591,7 +594,7 @@ layout_mode = 2
 theme_type_variation = &"NumberLabel"
 text = "0"
 
-[node name="QuitButton" type="Button" parent="CanvasLayer/Control/MenuControl"]
+[node name="QuitButton" type="Button" parent="CanvasLayer/UIControl/MenuControl"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_efxa6")
 layout_mode = 1
@@ -607,7 +610,7 @@ shortcut = SubResource("Shortcut_yaehf")
 text = "Quit"
 flat = true
 
-[node name="CreditsButton" type="Button" parent="CanvasLayer/Control"]
+[node name="CreditsButton" type="Button" parent="CanvasLayer/UIControl"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_ycdy4")
 layout_mode = 1
@@ -626,7 +629,7 @@ shortcut = SubResource("Shortcut_2cqfq")
 text = "@razcore-rad ©2025"
 flat = true
 
-[node name="WinRichTextLabel" type="RichTextLabel" parent="CanvasLayer/Control"]
+[node name="WinRichTextLabel" type="RichTextLabel" parent="CanvasLayer/UIControl"]
 unique_name_in_owner = true
 visible = false
 material = SubResource("ShaderMaterial_ycdy4")
@@ -643,6 +646,7 @@ offset_right = 470.0
 offset_bottom = 260.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 bbcode_enabled = true
 text = "[wave amp=25.0 freq=2.0 connected=1]Congratulations unlocking all patterns![/wave]
 Made by [url=https://linktr.ee/razcore.rad]@razcore-rad[/url][img=64]assets/avatar.png[/img]"
@@ -650,7 +654,7 @@ fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="WinBackTextureButton" type="TextureButton" parent="CanvasLayer/Control/WinRichTextLabel"]
+[node name="WinBackTextureButton" type="TextureButton" parent="CanvasLayer/UIControl/WinRichTextLabel"]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_ycdy4")
 layout_mode = 1
@@ -667,3 +671,8 @@ texture_normal = ExtResource("7_ycdy4")
 texture_pressed = ExtResource("8_w48qg")
 texture_hover = ExtResource("9_vivmo")
 texture_disabled = ExtResource("9_dg77c")
+
+[node name="UIAudioStreamPlayer" type="AudioStreamPlayer" parent="CanvasLayer/UIControl"]
+unique_name_in_owner = true
+stream = SubResource("AudioStreamPolyphonic_ycdy4")
+volume_db = -10.0
