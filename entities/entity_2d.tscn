@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bjxtrb37d1f6j" path="res://entities/entity_2d.gd" id="1_mwb1m"]
 [ext_resource type="Texture2D" uid="uid://cr6fcs8x7v22" path="res://assets/atlas.png" id="2_i4s38"]
 [ext_resource type="Shader" uid="uid://nu0e1o8wd5d4" path="res://entities/outline.gdshader" id="3_e4etq"]
-[ext_resource type="Theme" uid="uid://cwgp6l14spm0o" path="res://ui/assets/theme.tres" id="3_kp8qh"]
+[ext_resource type="Theme" uid="uid://cwgp6l14spm0o" path="res://assets/theme.tres" id="3_kp8qh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5mqu2"]
 size = Vector2(25, 15)

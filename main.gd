@@ -32,8 +32,6 @@ var is_playing := false
 @onready var player_start_position := player.position
 @onready var base_point_light_start_enerty := base_point_light.energy
 @onready var base_point_light_start_texture_scale := base_point_light.texture_scale
-@onready var progress_bar_stylebox: StyleBoxFlat = progress_bar.get_theme_stylebox("fill")
-@onready var progress_bar_stylebox_start_bg_color := progress_bar_stylebox.bg_color
 
 
 func _ready() -> void:
@@ -103,16 +101,11 @@ func _on_win_back_texture_button_pressed() -> void:
 func _on_player_turn(has_started: bool) -> void:
 	progress_bar.visible = has_started
 	if has_started:
-		var tween := create_tween()
-		player.turn_finished.connect(tween.kill)
-		tween.tween_property(progress_bar_stylebox, "bg_color", Palette.YELLOW, 4.0)
-		tween.tween_property(progress_bar_stylebox, "bg_color", Palette.RED, 7.0)
-		tween.parallel().tween_property(progress_bar, "value", 0.0, 7.0)
-		await tween.finished
+		progress_bar.animation_player.play("default")
+		await progress_bar.animation_player.animation_finished
 		player.turn_finished.emit()
 	else:
-		progress_bar.value = 100.0
-		progress_bar_stylebox.bg_color = progress_bar_stylebox_start_bg_color
+		progress_bar.animation_player.stop()
 
 
 func _on_player_skin_sub_viewport_blob(blob_count: int, is_added: bool) -> void:
@@ -125,6 +118,7 @@ func _on_player_skin_sub_viewport_blob(blob_count: int, is_added: bool) -> void:
 
 func _start_turn_based_loop() -> void:
 	is_playing = true
+	menu_control.start_button.disabled = is_playing
 
 	Blackboard.set_point_count(0)
 	Blackboard.spawn_stinger_enemies()
@@ -152,6 +146,7 @@ func _start_turn_based_loop() -> void:
 
 
 func _end() -> void:
+	ASP.play_stream("end.ogg")
 	is_playing = false
 
 	if is_back_pressed:
@@ -161,7 +156,6 @@ func _end() -> void:
 		if entity != player and Blackboard.is_valid(entity):
 			entity.queue_free()
 
-	menu_control.start_button.disabled = true
 	var point_count := Blackboard.get_point_count()
 	var main_tween := create_tween().set_trans(Tween.TRANS_SINE)
 	main_tween.tween_property(base_point_light, "energy", 0.0, 2.0)
@@ -177,6 +171,7 @@ func _end() -> void:
 		blink_tween.tween_property(points_label, "modulate", points_label_modulate, 0.05)
 
 	await main_tween.finished
+	ASP.play_stream("camera_to_start.ogg")
 	player.animation_player.queue("RESET")
 	if blink_tween != null and point_count > 0:
 		blink_tween.kill()

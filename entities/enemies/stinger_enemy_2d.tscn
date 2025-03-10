@@ -89,7 +89,7 @@ light_mode = 1
 
 [node name="StingerEntity2D" instance=ExtResource("1_0ail3")]
 script = ExtResource("2_i3isv")
-points = 1
+points = 3
 
 [node name="DetectArea2D" parent="Areas2D" index="0"]
 collision_layer = 0
@@ -106,7 +106,6 @@ unique_name_in_owner = true
 visible = false
 modulate = Color(0.321569, 0.294118, 0.701961, 1)
 material = SubResource("ShaderMaterial_0ail3")
-position = Vector2(0, -5)
 sprite_frames = SubResource("SpriteFrames_i3isv")
 
 [node name="FlyGPUParticles2D" type="GPUParticles2D" parent="Skin2D" index="1"]
@@ -132,7 +131,6 @@ process_material = SubResource("ParticleProcessMaterial_ltgev")
 
 [node name="Eyes2D" type="Node2D" parent="." index="3"]
 unique_name_in_owner = true
-position = Vector2(3, -3)
 
 [node name="LeftColorRect" type="ColorRect" parent="Eyes2D" index="0"]
 material = SubResource("CanvasItemMaterial_o8vu6")

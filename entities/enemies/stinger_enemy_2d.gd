@@ -1,7 +1,6 @@
 class_name StingerEnemy2D extends Enemy2D
 
 const MAX_DISTANCE := 400.0 ** 2
-const POINTS := 3
 
 var _start_turn := Blackboard.turn_count
 var _life_turns := Blackboard.rng.randi_range(2, 4)
@@ -16,6 +15,7 @@ var _life_turns := Blackboard.rng.randi_range(2, 4)
 
 
 func _ready() -> void:
+	points = points
 	animated_sprite.animation_finished.connect(_on_animated_sprite_animation_finished)
 	while true:
 		await get_tree().create_timer(Blackboard.rng.randf_range(0.5, 2.0)).timeout
@@ -23,6 +23,7 @@ func _ready() -> void:
 
 
 func _on_animated_sprite_animation_finished() -> void:
+	ASP.play_stream("stinger_woosh.ogg")
 	eyes.visible = false
 	fly_gpu_particles.emitting = true
 
@@ -31,8 +32,9 @@ func _on_animated_sprite_animation_finished() -> void:
 	var tween := create_tween()
 	tween.tween_property(self, "position", Blackboard.player.position, 0.2)
 	await tween.finished
+	ASP.play_stream("stinger_impact.ogg")
 
-	Blackboard.set_point_count(Blackboard.get_point_count() - POINTS)
+	Blackboard.set_point_count(Blackboard.get_point_count() - points)
 	Blackboard.player.skin_sub_viewport.remove_blob()
 
 	skin.visible = false
@@ -57,6 +59,7 @@ func start_turn() -> void:
 
 	var ray_cast_collider := ray_cast.get_collider()
 	if ray_cast_collider != null and ray_cast_collider.owner == Blackboard.player:
+		ASP.play_stream("stinger_chirp.ogg")
 		points_label.visible = true
 		shadow_sprite.visible = true
 		animated_sprite.visible = true

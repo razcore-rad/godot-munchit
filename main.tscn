@@ -1,17 +1,19 @@
-[gd_scene load_steps=41 format=3 uid="uid://bskvs3ko2utnn"]
+[gd_scene load_steps=42 format=3 uid="uid://bskvs3ko2utnn"]
 
 [ext_resource type="Script" uid="uid://tcg6bs55hw1w" path="res://main.gd" id="1_aaq20"]
 [ext_resource type="Shader" uid="uid://cowsy25kxhkiw" path="res://assets/light_only_group.gdshader" id="2_efxa6"]
-[ext_resource type="Theme" uid="uid://cwgp6l14spm0o" path="res://ui/assets/theme.tres" id="3_h2yge"]
+[ext_resource type="Theme" uid="uid://cwgp6l14spm0o" path="res://assets/theme.tres" id="3_h2yge"]
+[ext_resource type="PackedScene" uid="uid://btrmhc85024wm" path="res://entities/enemies/stinger_enemy_2d.tscn" id="3_vivmo"]
 [ext_resource type="PackedScene" uid="uid://c2mhgypppwjb3" path="res://entities/player/player_2d.tscn" id="4_p2fd5"]
 [ext_resource type="Script" uid="uid://dbta2an742hic" path="res://ui/menu_control.gd" id="5_dg77c"]
 [ext_resource type="Script" uid="uid://hlpoo7p6uc8e" path="res://ui/ui_control.gd" id="5_w48qg"]
 [ext_resource type="Shader" uid="uid://nu0e1o8wd5d4" path="res://entities/outline.gdshader" id="6_dg77c"]
-[ext_resource type="Texture2D" uid="uid://dwb67e36aikmi" path="res://ui/assets/texture_button/texture_button_nornal.png" id="7_ycdy4"]
-[ext_resource type="Texture2D" uid="uid://ldn0aescwsku" path="res://ui/assets/texture_button/texture_button_pressed.png" id="8_w48qg"]
-[ext_resource type="Texture2D" uid="uid://ccexmaa42v6fj" path="res://ui/assets/texture_button/texture_button_disabled.png" id="9_dg77c"]
-[ext_resource type="Texture2D" uid="uid://drwxxjtt4sm0i" path="res://ui/assets/texture_button/texture_button_hover.png" id="9_vivmo"]
-[ext_resource type="Resource" uid="uid://cwuifcgknjr42" path="res://save.tres" id="10_efxa6"]
+[ext_resource type="PackedScene" uid="uid://bbfc1oip71fy2" path="res://ui/progress_bar.tscn" id="6_w48qg"]
+[ext_resource type="Texture2D" uid="uid://dwb67e36aikmi" path="res://assets/texture_button/texture_button_nornal.png" id="7_ycdy4"]
+[ext_resource type="Texture2D" uid="uid://ldn0aescwsku" path="res://assets/texture_button/texture_button_pressed.png" id="8_w48qg"]
+[ext_resource type="Texture2D" uid="uid://ccexmaa42v6fj" path="res://assets/texture_button/texture_button_disabled.png" id="9_dg77c"]
+[ext_resource type="Texture2D" uid="uid://drwxxjtt4sm0i" path="res://assets/texture_button/texture_button_hover.png" id="9_vivmo"]
+[ext_resource type="Resource" uid="uid://dbopbgjcpmvyx" path="res://save.tres" id="10_efxa6"]
 [ext_resource type="Script" uid="uid://dpch7hvosvql3" path="res://ui/seed_text_edit.gd" id="11_yaehf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dg77c"]
@@ -120,8 +122,6 @@ pressed = true
 [sub_resource type="Shortcut" id="Shortcut_2cqfq"]
 events = [SubResource("InputEventAction_vivmo")]
 
-[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_ycdy4"]
-
 [node name="Main" type="Node"]
 script = ExtResource("1_aaq20")
 
@@ -141,6 +141,9 @@ unique_name_in_owner = true
 
 [node name="StingerEnemies2D" type="Node2D" parent="CanvasGroup"]
 unique_name_in_owner = true
+
+[node name="StingerEntity2D" parent="CanvasGroup/StingerEnemies2D" instance=ExtResource("3_vivmo")]
+position = Vector2(-122, -114)
 
 [node name="Player2D" parent="." instance=ExtResource("4_p2fd5")]
 unique_name_in_owner = true
@@ -221,24 +224,9 @@ anchor_top = 0.5
 anchor_bottom = 0.5
 grow_vertical = 2
 
-[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/UIControl/PlayerHUDControl/Control"]
+[node name="ProgressBar" parent="CanvasLayer/UIControl/PlayerHUDControl/Control" instance=ExtResource("6_w48qg")]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_vivmo")
-custom_minimum_size = Vector2(540, 0)
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -270.0
-offset_top = -2.0
-offset_right = 270.0
-offset_bottom = 2.0
-grow_horizontal = 2
-grow_vertical = 2
-value = 100.0
-show_percentage = false
 
 [node name="PointsHBoxContainer" type="HBoxContainer" parent="CanvasLayer/UIControl/PlayerHUDControl/Control"]
 layout_mode = 1
@@ -671,8 +659,3 @@ texture_normal = ExtResource("7_ycdy4")
 texture_pressed = ExtResource("8_w48qg")
 texture_hover = ExtResource("9_vivmo")
 texture_disabled = ExtResource("9_dg77c")
-
-[node name="UIAudioStreamPlayer" type="AudioStreamPlayer" parent="CanvasLayer/UIControl"]
-unique_name_in_owner = true
-stream = SubResource("AudioStreamPolyphonic_ycdy4")
-volume_db = -10.0

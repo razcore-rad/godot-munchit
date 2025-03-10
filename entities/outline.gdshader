@@ -11,7 +11,6 @@ void fragment() {
 			line_alpha += texture(TEXTURE, UV + vec2(i, j)).a;
 		}
 	}
-	vec4 color = COLOR;
 	vec4 outline = vec4(line_color, min(line_alpha, 1.0));
-	COLOR = mix(outline, color, color.a);
+	COLOR = mix(outline, COLOR, COLOR.a);
 }

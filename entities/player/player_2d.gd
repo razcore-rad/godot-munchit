@@ -60,6 +60,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _on_skin_sub_viewport_blob(blob_count: int, is_added: bool) -> void:
 	if not is_added:
+		ASP.play_stream("player_attacked.ogg")
+		eyes_animation_player.stop()
 		eyes_animation_player.play("attacked")
 		if blob_count <= 0:
 			animation_player.stop()
@@ -85,6 +87,7 @@ func _on_move_area_input_event(_viewport: Node, event: InputEvent, shape_index: 
 		collision_shape.modulate = MOVE_AREA_COLORS.hover
 
 	if not _move_tween.is_running() and event.is_action_pressed("left_click"):
+		ASP.play_stream("player_jump.ogg")
 		var tween := create_tween().set_trans(Tween.TRANS_QUAD)
 		tween.tween_property(shadow_sprite, "scale", 0.3 * Vector2.ONE, DURATION)
 		tween.tween_property(shadow_sprite, "scale", Vector2.ONE, DURATION)
@@ -107,7 +110,10 @@ func _on_move_area_mouse_shape_entered(shape_idx: int) -> void:
 		return
 
 	var target_position := collision_shape.global_position
-	mouth_animated_sprite.frame = 1 if target_position in Blackboard.enemies_map else 3
+	if target_position in Blackboard.enemies_map:
+		mouth_animated_sprite.frame = 1
+	else:
+		mouth_animated_sprite.frame = 3
 
 
 func _on_move_area_mouse_exited() -> void:
@@ -117,6 +123,7 @@ func _on_move_area_mouse_exited() -> void:
 
 
 func _detect_enemy(target_position: Vector2) -> void:
+	ASP.play_stream("player_land.ogg")
 	if target_position in Blackboard.enemies_map:
 		var enemy := Blackboard.enemies_map[target_position]
 		Blackboard.enemies_map.erase(target_position)
@@ -132,6 +139,7 @@ func _eat_enemy(enemy_move_area: Area2D, enemy_points: int) -> void:
 	Blackboard.set_point_count(Blackboard.get_point_count() + enemy_points)
 	mouth_animated_sprite.frame = 0
 	mouth_animated_sprite.play()
+	ASP.play_stream("player_eat.ogg")
 
 	skin_sub_viewport.add_blob()
 	var move_area_collision_shape_positions := move_area.get_children().map(func(cs: MoveAreaCollisionShape2D) -> Vector2: return cs.position)

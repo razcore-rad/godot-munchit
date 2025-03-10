@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=4 uid="uid://c2mhgypppwjb3"]
+[gd_scene load_steps=31 format=4 uid="uid://c2mhgypppwjb3"]
 
 [ext_resource type="PackedScene" uid="uid://b252do5nimfkg" path="res://entities/entity_2d.tscn" id="1_e3jcg"]
 [ext_resource type="Script" uid="uid://e18wuex060o6" path="res://entities/player/player_2d.gd" id="2_d65nd"]
@@ -6,6 +6,7 @@
 [ext_resource type="Shader" uid="uid://b4hq4b5ou6b8j" path="res://entities/outline_group.gdshader" id="4_c5hwq"]
 [ext_resource type="Shader" uid="uid://qkyq1k8xjn8l" path="res://entities/player/assets/fuzzyball.gdshader" id="4_lnv7a"]
 [ext_resource type="PackedScene" uid="uid://c01nkmxfnpxwj" path="res://entities/player/skin_sub_viewport.tscn" id="5_chs0w"]
+[ext_resource type="Theme" uid="uid://cwgp6l14spm0o" path="res://assets/theme.tres" id="7_is22s"]
 [ext_resource type="Texture2D" uid="uid://cr6fcs8x7v22" path="res://assets/atlas.png" id="8_is22s"]
 [ext_resource type="Texture2D" uid="uid://cy5rbl1my2k84" path="res://entities/player/assets/mouth.png" id="8_qalwy"]
 
@@ -39,7 +40,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Eyes2D:scale")
+tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -47,6 +48,54 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("%LeftInnerColorRect:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("%RightInnerColorRect:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("./LeftEyeColorRect/LeftEyeLabel:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("./RightEyeColorRect/RightEyeLabel:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_qalwy"]
@@ -56,7 +105,7 @@ step = 0.02
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Eyes2D:scale")
+tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -64,6 +113,54 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 2, 1),
 "update": 0,
 "values": [Vector2(1, 1), Vector2(1, 0.2), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("%LeftInnerColorRect:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("%RightInnerColorRect:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("./RightEyeColorRect/RightEyeLabel:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("./LeftEyeColorRect/LeftEyeLabel:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2sf31"]
@@ -360,6 +457,18 @@ tracks/3/keys = {
 "update": 0,
 "values": [Color(0.870588, 0.545098, 0.435294, 1), Color(0.545098, 0.780392, 0.74902, 1)]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CanvasGroup:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.0466527, 0.129109, 0.3),
+"transitions": PackedFloat32Array(0.5, 2, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.177, 0.622), Vector2(0.567, 1.471), Vector2(1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_2sf31"]
 resource_name = "lose_points"
@@ -533,6 +642,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(4, 4)
 mouse_filter = 2
+theme = ExtResource("7_is22s")
 metadata/_edit_use_anchors_ = true
 
 [node name="LeftInnerColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D/LeftEyeColorRect" index="0"]
@@ -554,6 +664,18 @@ pivot_offset = Vector2(0, 2)
 mouse_filter = 2
 metadata/_edit_use_anchors_ = true
 
+[node name="LeftEyeLabel" type="Label" parent="CanvasGroup/Extra2D/Eyes2D/LeftEyeColorRect" index="1"]
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_left = 3.0
+offset_top = -6.0
+offset_right = 8.0
+offset_bottom = 10.0
+scale = Vector2(1.2, 1.2)
+theme_type_variation = &"EyeLabel"
+text = ">"
+
 [node name="RightEyeColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D" index="1"]
 material = SubResource("ShaderMaterial_4co2k")
 custom_minimum_size = Vector2(8, 8)
@@ -570,6 +692,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(4, 4)
 mouse_filter = 2
+theme = ExtResource("7_is22s")
 metadata/_edit_use_anchors_ = true
 
 [node name="RightInnerColorRect" type="ColorRect" parent="CanvasGroup/Extra2D/Eyes2D/RightEyeColorRect" index="0"]
@@ -591,9 +714,20 @@ pivot_offset = Vector2(0, 2)
 mouse_filter = 2
 metadata/_edit_use_anchors_ = true
 
+[node name="RightEyeLabel" type="Label" parent="CanvasGroup/Extra2D/Eyes2D/RightEyeColorRect" index="1"]
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_left = 1.0
+offset_top = -6.0
+offset_right = 6.0
+offset_bottom = 10.0
+scale = Vector2(1.2, 1.2)
+theme_type_variation = &"EyeLabel"
+text = "<"
+
 [node name="EyesAnimationPlayer" type="AnimationPlayer" parent="CanvasGroup/Extra2D/Eyes2D" index="2"]
 unique_name_in_owner = true
-root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_2sf31")
 }
